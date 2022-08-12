@@ -1,0 +1,22 @@
+App listening on port 8000 started 8/8/2022, 3:51:45 PM
+[33m[nodemon] 2.0.15[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] or send SIGHUP to 19 to restart[39m
+[33m[nodemon] watching path(s): webapp/**/*[39m
+[33m[nodemon] watching extensions: js,html,css,ts,vue,json[39m
+[32m[nodemon] starting `/usr/local/bin/exec-node.sh /webapp/index.js`[39m
+[33m[nodemon] spawning[39m
+[33m[nodemon] child pid: 32[39m
+[33m[nodemon] watching 18 files[39m
+App listening on port 8000 started 8/8/2022, 3:52:06 PM
+[33m[nodemon] files triggering change check: webapp/scripts/mongo.js[39m
+[33m[nodemon] matched rule: /webapp/**/*[39m
+[33m[nodemon] changes after filters (before/after): 1/1[39m
+[33m[nodemon] delaying restart for 1000ms[39m
+[32m[nodemon] restarting due to changes...[39m
+[33m[nodemon] webapp/scripts/mongo.js[39m
+
+[32m[nodemon] starting `/usr/local/bin/exec-node.sh /webapp/index.js`[39m
+[33m[nodemon] spawning[39m
+[33m[nodemon] child pid: 57[39m
+App listening on port 8000 started 8/8/2022, 4:02:20 PM

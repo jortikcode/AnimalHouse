@@ -1,0 +1,18 @@
+.verdino {
+    background-color: #5cca33;
+    border-color: green;
+    color: black;
+}
+
+.responsive-img {
+    max-width: 100%;
+    height: auto;
+}
+
+a{
+    text-decoration:none;
+}
+ 
+a:hover {
+    text-decoration:underline;
+}
