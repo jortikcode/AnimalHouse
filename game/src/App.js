@@ -27,14 +27,14 @@ function App() {
       <Router>
         <Navbar togglerColorMode={toggle} darkMode={darkMode}/>
         <Routes>
-          <Route path="/" element={<Homepage />} />
+          <Route path="/" element={<Homepage darkMode={darkMode} />} />
           <Route path="/games" element={<Games />}>
             <Route path="hangman" element={<Hangman />} />
             <Route path="quiz" element={<Quiz />} />
             <Route path="memory" element={<Memory />} />
             <Route path="difference" element={<Difference />} />
           </Route>
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login darkMode={darkMode} />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>
       </Router>

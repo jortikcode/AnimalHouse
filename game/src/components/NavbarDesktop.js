@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 
 const NavbarDesktop = (props) => {
     return (
-        <nav className="hidden bg-white dark:bg-black md:flex w-full h-16 border-b-2 border-gray-200">
+        <nav className="hidden bg-white dark:bg-black md:flex w-full h-16 border-b-2 dark:border-white border-black">
             <div className="flex flex-wrap justify-between items-center w-full">
                 <Link to="/" className="text-neutral-700 hover:underline">
                     {
