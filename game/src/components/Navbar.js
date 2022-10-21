@@ -1,10 +1,10 @@
 import NavbarDesktop from './NavbarDesktop'
 import NavbarMobile from './NavbarMobile'
 
-const Navbar = (props) => {
+const Navbar = () => {
     return (
         <>
-            <NavbarDesktop togglerColorMode={props.togglerColorMode} darkMode={props.darkMode} />
+            <NavbarDesktop />
             <NavbarMobile />
         </>
     );

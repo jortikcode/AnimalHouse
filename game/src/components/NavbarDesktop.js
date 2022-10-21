@@ -1,16 +1,14 @@
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
+import SwitchMode from './SwitchMode';
 
 const NavbarDesktop = (props) => {
+    const { darkMode } = useSelector(state => state.themeReducer);
     return (
         <nav className="hidden bg-white dark:bg-black md:flex w-full h-16 border-b-2 dark:border-white border-black">
             <div className="flex flex-wrap justify-between items-center w-full">
                 <Link to="/" className="text-neutral-700 hover:underline">
-                    {
-                        props.darkMode ? 
-                        (<img src={"/images/white-logo.png"} alt="logo" className="ml-4 h-auto rounded-xl w-36 overflow-hidden"/>)
-                        :
-                        (<img src={"/images/black-logo.png"} alt="logo" className="ml-4 h-auto rounded-xl w-36 overflow-hidden"/>)
-                    }
+                    <img src={darkMode ? "/images/white-logo.png" : "/images/black-logo.png"} alt="logo" className="ml-4 h-auto rounded-xl w-36 overflow-hidden"/>
                 </Link>
                 <ul className="flex flex-column space-x-11 h-full items-center pr-5">
                     <li> <Link to="/" className="text-black dark:text-white hover:underline"> Home </Link> </li>
@@ -30,10 +28,7 @@ const NavbarDesktop = (props) => {
                         )
                     }
                     <li> 
-                        <button type="button" onClick={props.togglerColorMode}>
-                        {props.darkMode ? (<img className={"h-auto w-5"} src={"/images/light-toggle.png"} alt="Light mode toggle icon" />) : 
-                                          (<img className={"h-auto w-5"} src={"/images/dark-toggle.png"} alt="Dark mode toggle icon" />)} 
-                        </button> 
+                        <SwitchMode />
                     </li>
                 </ul>
 

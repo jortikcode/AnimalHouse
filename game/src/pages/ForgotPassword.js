@@ -1,10 +1,10 @@
 import { useForm } from 'react-hook-form'
-import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-export default function Login(){
+export default function PasswordRecover(){
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { darkMode } = useSelector(state => state.themeReducer);
+    const { darkMode } = useSelector(state => state.themeReducer);    
 
     const submitHandler = (data) => {
         console.log(data);
@@ -15,10 +15,10 @@ export default function Login(){
             <div
             style={{
                 height: "calc(100vh - 64px)"
-            }}  
+            }} 
             className="flex flex-col space-y-14 md:space-y-20 h-screen w-full pt-20 md:pt-32 justify-start items-center dark:bg-black">
                 <div className="flex md:flex-row flex-col items-center md:justify-center">
-                    <h1 className="text-4xl md:order-1 order-2 dark:text-white"> Login page </h1>
+                    <h1 className="text-4xl md:order-1 order-2 dark:text-white"> Recover your account </h1>
                     <img alt="white paws icon" src={ darkMode ? "/images/white-paws.png" : "/images/black-paws.png"} className="h-auto w-16 md:order-2 order-1" />
                 </div>
                 <form className="flex flex-col space-y-5" onSubmit={handleSubmit(submitHandler)}>
