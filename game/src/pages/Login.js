@@ -1,13 +1,17 @@
 import { useForm } from 'react-hook-form'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom'
+
+import { loginAttempt } from '../actions/customActions'
 
 export default function Login(){
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const dispatch = useDispatch();
     const { darkMode } = useSelector(state => state.themeReducer);
 
     const submitHandler = (data) => {
-        console.log(data);
+        const { username, password } = data;
+        dispatch(loginAttempt(username, password));
     }
 
     return (

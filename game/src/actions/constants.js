@@ -1,1 +1,2 @@
 export const THEME_ACTION = 'THEME_ACTION';
+export const LOGIN_ATTEMPT = 'LOGIN_ATTEMPT';

@@ -1,0 +1,63 @@
+<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col align-items-center">
+            <img class="mx-auto d-block responsive-img" src="/img/logo.png" alt="Animal House logo">
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <div class="col">
+            <form class="form-signup" action="/login" method="POST">
+                {{> messages }}
+                <div class="mb-3 w-100">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email"
+                        aria-describedby="Inserisci la tua email per accedere." required aria-required="true">
+                </div>
+                <div class="mb-3 w-100">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control" id="password" name="password"
+                            placeholder="Inserisci una password sicura"
+                            aria-describedby="Inserisci la tua password per accedere." required aria-required="true">
+                        <span class="input-group-text">
+                            <i class="bi bi-eye-slash" id="togglePassword" data-bs-toggle="tooltip"
+                                title="Mostra password"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="mb-3 w-100 d-grid col-12 ">
+                    <button type="submit" class="btn btn-success verdino">Accedi</button>
+                </div>
+                <div class="mb-1">
+                    <a href="/register">Non hai un account? Registrati</a>
+                </div>
+                <div class="mb-1">
+                    <a href="/reset">Hai dimenticato la password?</a>
+                </div>
+                <div class="mt-3 w-100 d-grid col-12">
+                    <button type="button" class="btn btn-warning">
+                        <i class="bi bi-google"></i>
+                        <a href="/google-auth">Entra con Google</a>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+    const togglePassword = document.querySelector("#togglePassword");
+    const password = document.querySelector("#password");
+    togglePassword.addEventListener("click", function () {
+
+        // toggle the type attribute
+        const type = password.getAttribute("type") === "password" ? "text" : "password";
+        password.setAttribute("type", type);
+        // toggle the eye icon
+        this.classList.toggle('bi-eye');
+        this.classList.toggle('bi-eye-slash');
+    });
+</script>
