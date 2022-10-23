@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 export default function PasswordRecover(){
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { darkMode } = useSelector(state => state.themeReducer);    
+    const { darkMode } = useSelector(state => state.theme);    
 
     const submitHandler = (data) => {
         console.log(data);

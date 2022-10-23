@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom'
@@ -7,11 +8,12 @@ import { loginAttempt } from '../actions/customActions'
 export default function Login(){
     const { register, handleSubmit, formState: { errors } } = useForm();
     const dispatch = useDispatch();
-    const { darkMode } = useSelector(state => state.themeReducer);
+    const { darkMode } = useSelector(state => state.theme);
+    const { loggedIn } = useSelector(state => state.account);
+    console.log(loggedIn);
 
     const submitHandler = (data) => {
-        const { username, password } = data;
-        dispatch(loginAttempt(username, password));
+        dispatch(loginAttempt(data));
     }
 
     return (
@@ -26,8 +28,8 @@ export default function Login(){
                     <img alt="white paws icon" src={ darkMode ? "/images/white-paws.png" : "/images/black-paws.png"} className="h-auto w-16 md:order-2 order-1" />
                 </div>
                 <form className="flex flex-col space-y-5" onSubmit={handleSubmit(submitHandler)}>
-                    <label className="text-center dark:text-white text-xl p-3" htmlFor="username">Username </label>
-                    <input className="border rounded p-3" type="text" placeholder="Username" name="username" id="username" {...register("username")}/>
+                    <label className="text-center dark:text-white text-xl p-3" htmlFor="email">Email </label>
+                    <input className="border rounded p-3" type="text" placeholder="Email" name="email" id="email" {...register("email")}/>
                     <label className="text-center dark:text-white text-xl p-3" htmlFor="password">Password </label>
                     <input className="border rounded p-3" type="password" placeholder="Password" name="password" id="password" {...register("password")}/>
                     <div className="flex flex-row space-x-2 p-3">

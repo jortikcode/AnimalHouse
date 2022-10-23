@@ -4,7 +4,7 @@ import { themeAction } from "../actions/customActions"
 
 
 export default function SwitchMode(){
-    const { darkMode } = useSelector(state => state.themeReducer);
+    const { darkMode } = useSelector(state => state.theme);
     const dispatch = useDispatch();
 
     const toggleColorMode = (event) => {

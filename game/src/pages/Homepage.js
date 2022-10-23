@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'
 import { useSelector } from 'react-redux';
 
 export default function Homepage(props){
-    const { darkMode } = useSelector(state => state.themeReducer);
+    const { darkMode } = useSelector(state => state.theme);
 
     const myStyle = {
         'backgroundImage': darkMode ? 'url(/images/homepage-desktop.jpg)' : 'url(/images/homepage-light-desktop.jpg)',
