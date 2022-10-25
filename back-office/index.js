@@ -2,7 +2,7 @@
  *---------- GLOBAL ----------
  */
 
- require('dotenv').config();
+require('dotenv').config();
 
 global.rootDir = __dirname;
 
@@ -28,6 +28,7 @@ const passport = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const { engine } = require('express-handlebars');
+const path = require("path");
 
 const login_routes = require(global.rootDir + '/routes/login.js');
 const admin_routes = require(global.rootDir + '/routes/admin.js');
@@ -41,8 +42,10 @@ app.use('/docs', express.static(global.rootDir +'/public/html'));
 app.use('/img' , express.static(global.rootDir +'/public/media'));
 app.use('/views' , express.static(global.rootDir +'/public/views'));
 app.use('/tpl' , express.static(global.rootDir +'/tpl'));
+app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.urlencoded({ extended: true })); 
 app.use(cors());
+app.use(express.json());
 
 app.enable('trust proxy');
 
@@ -90,6 +93,13 @@ app.use(passport.session());
 
  app.use('/', login_routes);
  app.use('/admin', admin_routes);
+
+/* 
+// TODO: Resolve /login and / conflict between game and backoffice
+app.get('/game', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+}); 
+*/
  
 
 /*
