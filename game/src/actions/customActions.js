@@ -17,16 +17,20 @@ export const themeAction = (darkMode) => {
 export const loginAttempt = (userData) => async (dispatch) => {
     const req = await fetch(`/login`, {
         method: 'POST',
-        mimeType: 'application/json',
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(userData)
+    })
+    .catch(error => {
+        throw new Error("Errore " + error);
     });
+    // Wrong condition, req.ok is always true even when login is rejected, you should check the body of the response
     if (req.ok)
-        dispatch(loginSuccess(await req.json()))
+        dispatch(loginSuccess())
     else
         dispatch(loginError())
 }
 
-const loginSuccess = (data) => {
+const loginSuccess = (data = {}) => {
     return ({
         type: LOGIN_SUCCESS,
         payload: data
