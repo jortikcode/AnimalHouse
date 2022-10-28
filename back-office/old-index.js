@@ -28,11 +28,11 @@ Copyright (c) 2021 by Fabio Vitali
 /* ========================== */
 
 
-global.rootDir = __dirname ;
+__dirname = __dirname ;
 global.startDate = null; 
 
-const template = require(global.rootDir + '/scripts/tpl.js'); 
-const mymongo = require(global.rootDir + '/scripts/mongo.js'); 
+const template = require(__dirname + '/scripts/tpl.js'); 
+const mymongo = require(__dirname + '/scripts/mongo.js'); 
 const express = require('express');
 const cors = require('cors');
 
@@ -43,11 +43,11 @@ const cors = require('cors');
 /* ========================== */
 
 let app = express(); 
-app.use('/js'  , express.static(global.rootDir +'/public/js'));
-app.use('/css' , express.static(global.rootDir +'/public/css'));
-app.use('/data', express.static(global.rootDir +'/public/data'));
-app.use('/docs', express.static(global.rootDir +'/public/html'));
-app.use('/img' , express.static(global.rootDir +'/public/media'));
+app.use('/js'  , express.static(path.join(__dirname +'/public/js'));
+app.use('/css' , express.static(path.join(__dirname +'/public/css'));
+app.use('/data', express.static(path.join(__dirname +'/public/data'));
+app.use('/docs', express.static(path.join(__dirname +'/public/html'));
+app.use('/img' , express.static(path.join(__dirname +'/public/media'));
 app.use(express.urlencoded({ extended: true })) 
 app.use(cors())
 
