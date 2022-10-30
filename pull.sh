@@ -1,2 +1,2 @@
 git pull
-chmod -R 775 .
+chmod -R g=u directory
