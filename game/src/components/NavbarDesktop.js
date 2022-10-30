@@ -1,29 +1,32 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom'
 import SwitchMode from './SwitchMode';
+import { motion } from 'framer-motion'
+
 
 const NavbarDesktop = (props) => {
     const { darkMode } = useSelector(state => state.theme);
+
     return (
-        <nav className="hidden bg-white dark:bg-black md:flex w-full h-16 border-b-2 dark:border-white border-black">
+        <nav className="hidden bg-yellow-400 dark:bg-black md:flex w-full h-16  ">
             <div className="flex flex-wrap justify-between items-center w-full">
-                <Link to="/" className="text-neutral-700 hover:underline">
+                <Link to="/game/login" className="text-neutral-700 hover:underline">
                     <img src={darkMode ? "/images/white-logo.png" : "/images/black-logo.png"} alt="logo" className="ml-4 h-auto rounded-xl w-36 overflow-hidden"/>
                 </Link>
                 <ul className="flex flex-column space-x-11 h-full items-center pr-5">
-                    <li> <Link to="/" className="text-black dark:text-white hover:underline"> Home </Link> </li>
-                    <li> <Link to="/games" className="text-black dark:text-white hover:underline"> Games </Link> </li>
+                    <motion.li whileHover={{scale: 1.3}}> <Link to="/game"  className="text-black dark:text-yellow-400 font-bold"> Home </Link> </motion.li>
+                    <motion.li whileHover={{scale: 1.3}}> <Link to="/game/games" className="text-black dark:text-yellow-400 font-bold"> Games </Link> </motion.li>
                     
                     {
                         !props.logged_in ? (
                             <>
-                                <li> <Link to="/login" className="h-full text-neutral-900 dark:text-white"> Login </Link> </li>
-                                <li> <Link to="/signup" className="h-full text-neutral-900 dark:text-white"> Sign up </Link> </li>
+                                <motion.li whileHover={{scale: 1.3}}> <Link to="/game/login" className="h-full text-neutral-900 dark:text-yellow-400 font-bold"> Login </Link> </motion.li>
+                                <motion.li whileHover={{scale: 1.3}}> <Link to="/game/signup" className="h-full text-neutral-900 dark:text-yellow-400 font-bold"> Sign up </Link> </motion.li>
                             </>
                         ) :
                         (
                             <>
-                                <li> <button type="button" className="h-full"> Log out </button> </li>
+                                <li> <button type="button" className="h-full text-neutral-900 dark:text-yellow-400 hover:underline font-bold"> Log out </button> </li>
                             </>
                         )
                     }
