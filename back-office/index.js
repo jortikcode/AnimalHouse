@@ -42,7 +42,7 @@ app.use("/img", express.static(path.join(__dirname, "public", "media")));
 app.use("/views", express.static(path.join(__dirname, "public", "views")));
 app.use("/tpl", express.static(path.join(__dirname, "tpl")));
 app.use(express.static(path.join(__dirname, "build")));
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(express.json());
 
