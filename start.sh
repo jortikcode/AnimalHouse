@@ -7,4 +7,4 @@ npm install
 npm run build
 cp -r ./build ../back-office
 cd ../back-office
-nodemon index.js
+npm start
