@@ -22,7 +22,7 @@ export default function Signup(){
             <div
             style={{
                 minHeight: "calc(100vh - 64px)",
-                height: "100%"
+                height: "auto"
             }}  
             className="flex flex-col space-y-14 md:space-y-20 h-screen w-full pt-20 md:pt-32 justify-start items-center dark:bg-black pb-20">
                 <div className="flex md:flex-row flex-col items-center md:justify-center">
