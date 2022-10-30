@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { themeAction } from "../actions/customActions"
+import { motion } from "framer-motion";
 
 
 export default function SwitchMode(){
@@ -21,8 +22,8 @@ export default function SwitchMode(){
     }, [darkMode, dispatch]);
 
     return (
-        <button type="button" onClick={toggleColorMode}>
+        <motion.button whileHover={{scale: 1.3}} type="button" onClick={toggleColorMode}>
             <img className={"h-auto w-5"} src={darkMode ? "/images/light-toggle.png" : "/images/dark-toggle.png"} alt="Dark mode toggle icon" />    
-        </button> 
+        </motion.button> 
     );
 }
