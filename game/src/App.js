@@ -20,16 +20,16 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Homepage />} />
-          <Route path="/games" element={<Games />}>
-            <Route path="hangman" element={<Hangman />} />
-            <Route path="quiz" element={<Quiz />} />
-            <Route path="memory" element={<Memory />} />
-            <Route path="difference" element={<Difference />} />
+          <Route path="/game" element={<Homepage />} />
+          <Route path="/game/games" element={<Games />}>
+            <Route path="/game/games/hangman" element={<Hangman />} />
+            <Route path="/game/games/quiz" element={<Quiz />} />
+            <Route path="/game/games/memory" element={<Memory />} />
+            <Route path="/game/games/difference" element={<Difference />} />
           </Route>
-          <Route path="/login" element={<Login />} />
-          <Route path="/passwordrecover" element={<ForgotPassword />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/game/login" element={<Login />} />
+          <Route path="/game/passwordrecover" element={<ForgotPassword />} />
+          <Route path="/game/signup" element={<Signup />} />
         </Routes>
       </Router>
     </>
