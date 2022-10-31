@@ -18,7 +18,9 @@ const UserSchema = new mongoose.Schema({
     cap: String,
     dtnascita: String,
     genere: String,
-    admin: Boolean
+    admin: Boolean,
+    animaliPreferiti: [String],
+    punteggiDeiGiochi: [Object]
 });
 
 const User = connection.model('users', UserSchema);

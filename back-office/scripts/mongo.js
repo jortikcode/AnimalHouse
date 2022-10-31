@@ -1,7 +1,7 @@
 ﻿const { MongoClient } = require("mongodb");
 const { exit } = require("process");
 const fs = require('fs').promises ;
-const template = require(global.rootDir + '/scripts/tpl.js') ;
+const template = require(__dirname + '/scripts/tpl.js') ;
 
 const mongo = new MongoClient(global.mongouri);
 
