@@ -15,18 +15,18 @@ const NavbarDesktop = (props) => {
                 </Link>
                 <ul className="flex flex-column space-x-11 h-full items-center pr-5">
                     <motion.li whileHover={{scale: 1.3}}> <Link to="/game"  className="text-black dark:text-yellow-400 font-bold"> Home </Link> </motion.li>
-                    <motion.li whileHover={{scale: 1.3}}> <Link to="/game/games" className="text-black dark:text-yellow-400 font-bold"> Games </Link> </motion.li>
+                    <motion.li whileHover={{scale: 1.3}}> <Link to="/game/games" className="text-black dark:text-yellow-400 font-bold"> Giochi </Link> </motion.li>
                     
                     {
                         !props.logged_in ? (
                             <>
-                                <motion.li whileHover={{scale: 1.3}}> <Link to="/game/login" className="h-full text-neutral-900 dark:text-yellow-400 font-bold"> Login </Link> </motion.li>
-                                <motion.li whileHover={{scale: 1.3}}> <Link to="/game/signup" className="h-full text-neutral-900 dark:text-yellow-400 font-bold"> Sign up </Link> </motion.li>
+                                <motion.li whileHover={{scale: 1.3}}> <Link to="/game/login" className="h-full text-neutral-900 dark:text-yellow-400 font-bold"> Accedi </Link> </motion.li>
+                                <motion.li whileHover={{scale: 1.3}}> <Link to="/game/signup" className="h-full text-neutral-900 dark:text-yellow-400 font-bold"> Registrati </Link> </motion.li>
                             </>
                         ) :
                         (
                             <>
-                                <li> <button type="button" className="h-full text-neutral-900 dark:text-yellow-400 hover:underline font-bold"> Log out </button> </li>
+                                <li> <button type="button" className="h-full text-neutral-900 dark:text-yellow-400 hover:underline font-bold"> Esci </button> </li>
                             </>
                         )
                     }
