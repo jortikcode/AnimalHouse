@@ -14,7 +14,7 @@ const genPassword = async (password, saltRounds = 10) => {
   return null;
 };
 
-/* GET https://site212222.tw.cs.unibo.it/api/users */
+/* GET http://site212222.tw.cs.unibo.it/api/users */
 router.get("/", (req, res) => {
   const result = User.find();
   result.exec((err, data) => {
@@ -34,7 +34,7 @@ router.get("/", (req, res) => {
   });
 });
 
-/* GET https://site212222.tw.cs.unibo.it/api/users/{emailUtente} */
+/* GET http://site212222.tw.cs.unibo.it/api/users/{emailUtente} */
 router.get("/:email", (req, res) => {
   const email = req.params.email;
   const result = User.findOne({ email: email });
@@ -55,7 +55,7 @@ router.get("/:email", (req, res) => {
   });
 });
 
-/* POST https://site212222.tw.cs.unibo.it/api/users/register */
+/* POST http://site212222.tw.cs.unibo.it/api/users/register */
 router.post("/register", async (req, res) => {
   try {
     if (!req.body.email || !req.body.password) {
@@ -103,7 +103,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-/* DELETE https://site212222.tw.cs.unibo.it/api/users/{ email } */
+/* DELETE http://site212222.tw.cs.unibo.it/api/users/{ email } */
 router.delete("/:email", (req, res) => {
   const email = req.params.email;
   const findResult = User.findOne({ email: email });
@@ -134,7 +134,7 @@ router.delete("/:email", (req, res) => {
   });
 });
 
-/* PATCH https://site212222.tw.cs.unibo.it/api/users/{ email }
+/* PATCH http://site212222.tw.cs.unibo.it/api/users/{ email }
   i dati da modificare nel body, del tipo campo: nuovoVal */
 router.patch("/:email", (req, res) => {
   const email = req.params.email;

@@ -114,5 +114,5 @@ app.get('/game', (req, res) => {
 /*
  *---------- SERVER ----------
  */
-const port = 5001;
+const port = 8000;
 app.listen(port, () => console.log(`app listening on port ${port}!`));
