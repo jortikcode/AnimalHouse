@@ -17,8 +17,8 @@ export default function Homepage(props){
         
         <>
             <div className="flex justify-center items-center" style={myStyle}>
-                <motion.h1 initial={{scale: 0}} animate={{scale:1}} transition={{delay: .4, duration: .2}} className="text-6xl font-bold w-80 text-black  dark:text-white" style={headingBorderStyle}> 
-                    Welcome to the AnimalHouse game portal!
+                <motion.h1 initial={{scale: 0}} animate={{scale:1}} transition={{delay: .4, duration: .2}} className="md:text-6xl text-center text-4xl font-bold w-80 text-black  dark:text-white" style={headingBorderStyle}> 
+                    Benvuto al portale dei giochi!
                 </motion.h1>
             </div>
         </>
