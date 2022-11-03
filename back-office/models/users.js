@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -63,18 +64,26 @@ const UserSchema = new mongoose.Schema({
 });
 
 // pre serve a eseguire un middleware prima di un dato evento.
-UserSchema.pre("save", async (next) => {
-  // se la password non viene modificata salta, altrimenti la salva con hash e salt
-  if (!this.isModified("password")) {
-    return next();
-  }
+UserSchema.pre("save", async function () {
   const salt = await bcrypt.genSalt(10);
   // aggiungiamo il sale alla password
   this.password = await bcrypt.hash(this.password, salt);
-  return next();
 });
 
-UserSchema.pre("findOneAndUpdate", async (next) => {
+// verifica se le password combaciano
+UserSchema.methods.matchPasswords = async function (password) {
+  const match = await bcrypt.compare(password, this.password);
+  return match;
+};
+
+// genero un nuovo jwt
+UserSchema.methods.getSignedToken = function () {
+  return jwt.sign({ id: this._id, email: this.email }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_LIFETIME,
+  });
+};
+
+UserSchema.pre("findOneAndUpdate", async function (next) {
   // in questo caso si modifica l'azione non il documento
   if (!this.getUpdate().$set.password) {
     return next();
@@ -87,16 +96,6 @@ UserSchema.pre("findOneAndUpdate", async (next) => {
   );
   return next();
 });
-
-// verifica se le password combaciano
-UserSchema.methods.matchPasswords = async (password) => {
-  return await bcrypt.compare(password, this.password);
-};
-
-// il token contiene i dati dell'utente e scade in un certo tempo definito in .env
-UserSchema.methods.getSignedToken = () => {
-  return jwt.sign({ id: this._id, role: this.role }, process.env.JWT_SECRET);
-};
 
 UserSchema.methods.getResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(20).toString("hex");

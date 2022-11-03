@@ -1,5 +1,6 @@
 const User = require("../models/users");
 const { createCustomError } = require("../errors/custom-error");
+const { StatusCodes } = require("http-status-codes");
 
 const getAllUsers = async (req, res) => {
   const { name, surname, email, sort, fields } = req.query;
@@ -34,29 +35,39 @@ const getAllUsers = async (req, res) => {
 
   result = result.skip(skip).limit(limit);
   const users = await result;
-  res.status(200).json(users);
+  res.status(StatusCodes.OK).json(users);
 };
 
 const getUser = async (req, res) => {
   const { id: userID } = req.params;
   const user = await User.findOne({ _id: userID });
   if (!user) {
-    throw createCustomError(`Non esiste nessun utente con id : ${userID}`, 404);
+    throw createCustomError(
+      `Non esiste nessun utente con id : ${userID}`,
+      StatusCodes.NOT_FOUND
+    );
   }
-  res.status(200).json({ user });
+  res.status(StatusCodes.OK).json({ user });
 };
 
 const updateUser = async (req, res) => {
   const { id: userID } = req.params;
   console.log(userID);
-  const user = await User.findOneAndUpdate({ _id: userID }, req.body, {
-    new: true,
-    runValidators: true,
-  });
+  const user = await User.findOneAndUpdate(
+    { _id: userID },
+    { $set: req.body },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
   if (!user) {
-    throw createCustomError(`Non esiste nessun utente con id : ${userID}`, 404);
+    throw createCustomError(
+      `Non esiste nessun utente con id : ${userID}`,
+      StatusCodes.NOT_FOUND
+    );
   }
-  res.status(200).json({ id: userID, data: req.body });
+  res.status(StatusCodes.OK).json({ id: userID, data: req.body });
 };
 
 const deleteUser = async (req, res) => {
@@ -66,14 +77,17 @@ const deleteUser = async (req, res) => {
     if (!user) {
       throw createCustomError(
         `Non esiste nessun utente con id : ${userID}`,
-        404
+        StatusCodes.NOT_FOUND
       );
     }
     res
-      .status(200)
+      .status(StatusCodes.OK)
       .json({ msg: `L'utente con id ${userID} è stato rimosso con successo` });
   } else {
-    throw createCustomError("Puoi eliminare solo il tuo account", 403);
+    throw createCustomError(
+      "Puoi eliminare solo il tuo account",
+      StatusCodes.FORBIDDEN
+    );
   }
 };
 

@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 const { createCustomError } = require("../errors/custom-error");
+const { StatusCodes } = require("http-status-codes");
 
 const getAllProducts = async (req, res) => {
   const { featured, name, sort, fields, numericFilters } = req.query;
@@ -51,7 +52,7 @@ const getAllProducts = async (req, res) => {
 
   result = result.skip(skip).limit(limit);
   const products = await result;
-  res.status(200).json(products);
+  res.status(StatusCodes.OK).json(products);
 };
 
 const createProduct = async (req, res) => {
@@ -65,25 +66,29 @@ const getProduct = async (req, res) => {
   if (!product) {
     throw createCustomError(
       `Non esiste nessun prodotto con id : ${productID}`,
-      404
+      StatusCodes.NOT_FOUND
     );
   }
-  res.status(200).json({ product });
+  res.status(StatusCodes.OK).json({ product });
 };
 
 const updateProduct = async (req, res) => {
   const { id: productID } = req.params;
-  const product = await Product.findOneAndUpdate({ _id: productID }, req.body, {
-    new: true,
-    runValidators: true,
-  });
+  const product = await Product.findOneAndUpdate(
+    { _id: productID },
+    { $set: req.body },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
   if (!product) {
     throw createCustomError(
       `Non esiste nessun prodotto con id : ${productID}`,
-      404
+      StatusCodes.NOT_FOUND
     );
   }
-  res.status(200).json({ id: productID, data: req.body });
+  res.status(StatusCodes.OK).json({ id: productID, data: req.body });
 };
 
 const deleteProduct = async (req, res) => {
@@ -92,14 +97,12 @@ const deleteProduct = async (req, res) => {
   if (!product) {
     throw createCustomError(
       `Non esiste nessun prodotto con id : ${productID}`,
-      404
+      StatusCodes.NOT_FOUND
     );
   }
-  res
-    .status(200)
-    .json({
-      msg: `Il prodotto con id ${productID} è stato rimosso con successo`,
-    });
+  res.status(StatusCodes.OK).json({
+    msg: `Il prodotto con id ${productID} è stato rimosso con successo`,
+  });
 };
 
 module.exports = {

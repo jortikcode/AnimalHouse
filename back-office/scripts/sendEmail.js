@@ -1,33 +1,35 @@
-const nodemailer = require('nodemailer');
+const nodemailer = require("nodemailer");
 
 const sendEmail = (options) => {
-    const transporter = nodemailer.createTransport({
-        host: "smtp-mail.outlook.com",
-        secureConnection: false, // TLS requires secureConnection to be false
-        port: 587, // port for secure SMTP
-        tls: {
-            ciphers: "SSLv3",
-        },
-        auth: {
-          user: 'TW212222@outlook.com',
-          pass: 'wsATfs9R'
-        }
-      });
-      
-      var mailOptions = {
-        from: 'TW212222@outlook.com',
-        to: options.dest,
-        subject: options.subject,
-        html: options.msg
-      };
-      
-      transporter.sendMail(mailOptions, function(error, info){
-        if (error) {
-          console.log(error);
-        } else {
-          console.log('Email sent: ' + info.response);
-        }
-      });
+  const transporter = nodemailer.createTransport({
+    host: "smtp-mail.outlook.com",
+    // Deve essere true solo per la porta 465
+    secureConnection: false,
+    // secure SMTP
+    port: 587,
+    tls: {
+      ciphers: "SSLv3",
+    },
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
+  var mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: options.dest,
+    subject: options.subject,
+    html: options.msg,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Email sent: " + info.response);
+    }
+  });
 };
 
 module.exports = sendEmail;
