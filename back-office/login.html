@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnimalHouse</title>
+    <!-- Bootstrap style -->
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <!-- Handlebars -->
+    <script src="/js/handlebars-v4.7.7.js"></script>
+    <!-- JQuery -->
+    <script src="/js/jquery.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center my-5">
+            <div class="col-lg-6">
+                <form id="form">
+                    <!-- Error messages -->
+                    <script type="text/x-handlebars-template" id="template">
+                        {{#each error_msg as |error|}}
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                {{error}}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {{/each}}
+                    </script>
+                    <div id="errors">
+
+                    </div>
+                    <!-- Email input -->
+                    <div>
+                        <label class="form-label" for="form-email">Email</label>
+                        <input type="email" id="form-email" class="form-control" name="email"
+                            aria-label="Inserisci la tua email per accedere." required placeholder="my@email.com" />
+                    </div>
+                    <!-- Password input -->
+                    <div class="form-outline mb-3">
+                        <label class="form-label" for="form-password">Password</label>
+                        <div>
+                            <input type="password" id="form-password" class="form-control" name="password"
+                                aria-label="Inserisci la tua password per accedere." required placeholder="password" />
+                        </div>
+                    </div>
+                    <div class="text-center pb-3">
+                        <a href="/reset">Hai dimenticato la password?</a>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-warning" id="form-submit">Accedi</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap js -->
+    <script src="/bootstrap/js/bootstrap.bundle.js"></script>
+    <!-- Compile -->
+    <script src="/js/login.js"></script>
+</body>
+
+</html>
