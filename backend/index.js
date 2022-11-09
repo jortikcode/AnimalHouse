@@ -51,7 +51,8 @@ const port = 8000;
 
 const start = async () => {
   try {
-    connectDB(process.env.DB_URL);
+    // connectDB(process.env.DB_URL);
+    connectDB("mongodb://site212222:Ziu0reeh@mongo_site212222?writeConcern=majority");
     app.listen(port, () => console.log(`app listening on port ${port}!`));
   } catch (error) {
     console.log(error);
