@@ -2,8 +2,6 @@
  *---------- GENERAL SETUP ----------
  */
 global.baseDir = __dirname;
-
-require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -11,11 +9,20 @@ const connectDB = require("./db/connect");
 const notFound = require("./middleware/not-found");
 const errorHandlerMiddleware = require("./middleware/error-handler");
 
+// includiamo il file delle variabili d'ambiente di sviluppo o di produzione
+if (process.argv.length > 2)
+  require("dotenv").config({
+    path: path.join(".env.development")
+  });
+else 
+  require("dotenv").config({
+    path: path.join(".env.production")
+  });
+
 const app = express();
 
 // gestore degli errori asincroni, per non usare il costrutto trycatch
 require("express-async-errors");
-
 app.use("/data", express.static(path.join(__dirname, "public", "data")));
 app.use("/img", express.static(path.join(__dirname, "public", "media")));
 app.use("/js", express.static(path.join(__dirname,"..", "back-office", "js")));
@@ -51,8 +58,7 @@ const port = 8000;
 
 const start = async () => {
   try {
-    // connectDB(process.env.DB_URL);
-    connectDB("mongodb://site212222:Ziu0reeh@mongo_site212222?writeConcern=majority");
+    connectDB(process.env.DB_URL);
     app.listen(port, () => console.log(`app listening on port ${port}!`));
   } catch (error) {
     console.log(error);
