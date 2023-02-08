@@ -1,0 +1,59 @@
+## Task da fare
+FRONT-OFFICE:
+Bacheca in stile forum (
+    lato backend-db: aggiungere un campo per distinguere la categoria di bacheca e data di creazione, 
+    lato frontend: visualizzazione in stile lista di tweet, form per postare )
+Utenti (
+    lato backend-db: aggiungere un campo per l'immagine del profilo
+)
+Servizi in presenza (veterinario, pensione animali, toelettatura,....) (
+    lato backend-db: crud
+    nota: [ogni servizio e' offerto da una o piu' sedi. ogni sede offre uno o piu' servizi. getservizi dovrebbe poter cercare per intervalli temporali o per sedi o per entrambi]
+
+    lato frontend: per ogni servizio illustrazione, e possibilita di prenotazione per sede e disponibilita'.
+)
+Animali(
+    lato frontend: permettere di aggiungere animali, qualsiasi tipo, ad un utente
+)
+
+BACK-OFFICE:
+- barra di ricerca generica
+- card inserimento dati generico (con dati riempiti o vuoti)
+
+Anagrafica clienti (
+    lato backoffice: 
+    - tasto registrare un nuovo utente (deve aprire la card inserimento dati vuota)
+    tabella di utenti che permetta di:
+    - cambio password
+    - reset password
+    - cancellazione utente
+    - modifica/aggiungi animali preferiti e punteggi dei giochi
+)
+
+Gestione Bacheca (
+    lato backoffice:
+    ricerca messaggi
+    tabella che permetta di:
+    - cancellare un messaggio fatto su una bacheca
+)
+
+Gestione ecommerce (
+    lato backoffice:
+    fare tabella prodotti che permetta:
+    - aggiungere prodotto/prezzo/descrizione
+    - rimuovere prodotto/prezzo/descrizione
+    nota: ogni prodotto ha una categoria e sottocategoria e immagine obbligatoria
+)
+
+Gestione sedi(
+    lato backend:
+    entita' sede: crud
+)
+
+Gestione servizi (
+    lato backoffice:
+    fare tabella per prenotazioni dei servizi:
+    - modifica/cancellazione prenotazioni
+    lato backend-db:
+    - entita' prenotazioni: crud, aggiungere campo id_sede (una sede ha piu' servizi, un servizio ha una sede), aggiungere campo prezzo
+)
