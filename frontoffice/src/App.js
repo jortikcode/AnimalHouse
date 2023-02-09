@@ -1,5 +1,4 @@
 import RegisterCard from './components/RegisterCard';
-import './App.css';
 import LoginCard from './components/LoginCard';
 
 
