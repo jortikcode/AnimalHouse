@@ -44,13 +44,6 @@ app.use(notFound);
 // Da usare sempre come ultimo
 app.use(errorHandlerMiddleware);
 
-/* 
-// TODO: Resolve /login and / conflict between game and backoffice
-app.get('/game', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-}); 
-*/
-
 /*
  *---------- SERVER ----------
  */

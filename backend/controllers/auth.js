@@ -14,7 +14,7 @@ const login = async (req, res) => {
     );
   }
   // verifico l'email
-  const user = User.findOne({ email: email });
+  const user = await User.findOne({ email: email });
   if (!user) {
     throw createCustomError("Credenziali non corrette", StatusCodes.NOT_FOUND);
   }

@@ -1,9 +1,12 @@
+import RegisterCard from './components/RegisterCard';
+import './App.css';
+import LoginCard from './components/LoginCard';
+
+
 function App() {
   return (
-    <div className="App">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+    <div className="w-full min-h-screen">
+      <LoginCard />
     </div>
   );
 }
