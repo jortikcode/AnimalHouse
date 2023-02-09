@@ -38,7 +38,7 @@ const getAllPosts = async (req, res) => {
 
 const createPost = async (req, res) => {
   const post = await Post.create(req.body);
-  res.status(201).json({ post });
+  res.status(StatusCodes.CREATED).json({ post });
 };
 
 const getPost = async (req, res) => {
