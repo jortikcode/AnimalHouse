@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
+const path = require("path");
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -17,7 +18,7 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Un utente deve avere un email"],
     unique: true,
     match: [
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
       "Un utente deve avere una mail valida",
     ],
   },
@@ -53,6 +54,10 @@ const UserSchema = new mongoose.Schema({
   punteggiDeiGiochi: {
     type: [Object],
     default: [],
+  },
+  imgPath: {
+    type: String,
+    default: path.join(__dirname, "..", "public", "media", "favicon.jpg"),
   },
   disabled: {
     type: Boolean,

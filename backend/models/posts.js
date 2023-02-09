@@ -15,11 +15,15 @@ const PostSchema = new mongoose.Schema(
         "Per postare sulla bacheca devi avere qualcosa da scrivere",
       ],
     },
+    category: {
+      type: String,
+      required: [true, "In quale bacheca si deve postare?"],
+    },
     createdBy: {
       type: mongoose.Types.ObjectId,
-      ref: 'User',
-      required: [true, "Dare un utente"]
-    }
+      ref: "User",
+      required: [true, "Dare un utente"],
+    },
   },
   { timestamps: true }
 );
