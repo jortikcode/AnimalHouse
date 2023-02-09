@@ -9,29 +9,25 @@ const BookingSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: [true, "Serve l'ID del servizio prenotato"],
+    required: [true, "Serve l'ID dell'utente che prenota il servizio"],
   },
   date: {
     type: Date,
-    required: [true, "Serve l'ID del servizio prenotato"],
+    required: [true, "Serve la data di prenotazione"],
   },
   startHour: {
     type: Number,
     min: 9,
-    max: 17,
-    required: [true, "Serve l'ID del servizio prenotato"],
+    max: 16,
+    required: [true, "Serve l'ora d'inizio della prenotazione"],
   },
   endHour: {
     type: Number,
     min: 10,
-    max: 18,
+    max: 17,
+    required: [true, "Serve l'ora di fine della prenotazione"],
   },
 });
 
-/* Imposta in modo automatico l'ora di fine prenotazione in quanto si suppone che 1 ora */
-BookingSchema.pre("save", function (next) {
-  this.endHour = this.startHour + 1;
-  next();
-});
 
 module.exports = mongoose.model("Booking", BookingSchema);

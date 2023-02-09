@@ -7,17 +7,17 @@ const getAllServices = async (req, res) => {
     if(req.location){
         queryObject["location"] = req.location;
     }
-  return await Service.find(queryObject);
+  return await Service.find(queryObject).populate("location");
 };
 
 const createService = async (req, res) => {
   const service = await Service.create(req.body);
-  res.status(201).json({ service });
+  res.status(StatusCodes.CREATED).json({ service });
 };
 
 const getService = async (req, res) => {
   const { id: serviceID } = req.params;
-  const service = await Service.findOne({ _id: serviceID });
+  const service = await Service.findOne({ _id: serviceID }).populate("location");
   if (!service) {
     throw createCustomError(
       `Non esiste nessun servizio con id : ${serviceID}`,
