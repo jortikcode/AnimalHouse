@@ -1,0 +1,26 @@
+[
+    {
+        "value": "Home",
+        "link": "/"
+    },
+    {
+        "value": "Negozio",
+        "link": "/marketplace"
+    },
+    {
+        "value": "Forum",
+        "link": "/forum"
+    },
+    {
+        "value": "Servizi",
+        "link": "/services"
+    },
+    {
+        "value": "Accedi",
+        "link": "/login"
+    },
+    {
+        "value": "Registrati",
+        "link": "/signup"
+    }
+]

@@ -1,17 +1,30 @@
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { login } from "../app/usersSlice";
-import { loginObject } from "../utils/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../app/usersSlice";
+import { loginObject } from "../../utils/auth";
 import { ErrorMessage } from '@hookform/error-message';
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function LoginCard(){
     const dispatch = useDispatch()
+    const { isLogged } = useSelector(state => state.auth)
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const navigate = useNavigate();
+    
     const onSubmit = data => {
         dispatch(login(loginObject(data)))
     };
 
-    return (
+    useEffect(() => {
+        // L'utente e' gia' loggato, lo rimandiamo alla Home
+        if (isLogged) 
+          navigate("/");
+      }, [isLogged, navigate]);
+
+    return ( 
+    <> 
+    { !isLogged &&
     <div className="flex items-center flex-col">
         <div className="prose"> <h1> Accedi </h1> </div>
         <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-96" onSubmit={handleSubmit(onSubmit)}>
@@ -51,6 +64,8 @@ function LoginCard(){
             </div>
         </form>
     </div>
+    } 
+    </> 
     )
 }
 

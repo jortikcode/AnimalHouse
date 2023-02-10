@@ -1,18 +1,31 @@
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { signup } from "../app/usersSlice";
-import { signupObject } from "../utils/auth";
-import InfoTooltip from "./InfoTooltip";
+import { useDispatch, useSelector } from "react-redux";
+import { signup } from "../../app/usersSlice";
+import { signupObject } from "../../utils/auth";
 import { ErrorMessage } from '@hookform/error-message';
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import InfoTooltip from "./InfoTooltip";
 
 function RegisterCard(){
     const dispatch = useDispatch()
+    const { isLogged } = useSelector(state => state.auth)
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const navigate = useNavigate();
+
     const onSubmit = data => {
         dispatch(signup(signupObject(data)))
     };
 
+    useEffect(() => {
+        // L'utente e' gia' loggato, lo rimandiamo alla Home
+        if (isLogged) 
+          navigate("/");
+      }, [isLogged, navigate]);
+    
     return (
+    <> 
+    { !isLogged &&
     <div className="flex items-center flex-col">
         <div className="prose"> <h1> Crea Account </h1> </div>
         <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-96" onSubmit={handleSubmit(onSubmit)}>
@@ -193,6 +206,8 @@ function RegisterCard(){
             </div>
         </form>
     </div>
+    } 
+    </>
     )
 }
 

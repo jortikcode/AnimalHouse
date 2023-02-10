@@ -1,7 +1,9 @@
 const Product = require("../models/product");
 const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
-
+/* 
+numericFilters = ""
+*/
 const getAllProducts = async (req, res) => {
   const { featured, name, sort, fields, numericFilters } = req.query;
   const queryObject = {};

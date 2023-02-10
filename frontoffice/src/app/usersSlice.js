@@ -40,7 +40,8 @@ const userSlice = createSlice({
     initialState, 
     reducers: {
         logout: (state) => {
-            state.user = null;
+            state.user = {};
+            state.isLogged = false;
             localStorage.removeItem('user');
         }
     }, 
@@ -69,4 +70,5 @@ const userSlice = createSlice({
 
 export const { logout } = { ...userSlice.actions }
 export { login, signup }
-export const userReducer = userSlice.reducer
+
+export const auth = userSlice.reducer

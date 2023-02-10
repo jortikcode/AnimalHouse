@@ -1,7 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { userReducer } from './usersSlice'
+import { auth } from './usersSlice'
+import { marketplace } from './productsSlice'
+
 export default configureStore({
   reducer: {
-    userReducer
+    auth,
+    marketplace
   }
 })
