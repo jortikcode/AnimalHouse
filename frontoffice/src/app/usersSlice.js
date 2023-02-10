@@ -4,7 +4,7 @@ const name = "user"
 // Stato iniziale dell'utente
 const initialState = {
     user: JSON.parse(localStorage.getItem('user') || "{}"),
-    error: null
+    isLogged: localStorage.getItem('user') ? true : false
 }
 // Url base della API (http://localhost:8000/api/v1 || http://site212222.tw.cs.unibo.it/api/v1)
 const baseUrl = process.env.REACT_APP_BASE_API_URL
@@ -48,11 +48,21 @@ const userSlice = createSlice({
         // Reducers dei thunks di login e registrazione
         builder.addCase(login.fulfilled, (state, action) => {
             localStorage.setItem('user', JSON.stringify(action.payload))
+            state.user = action.payload
+            state.isLogged = true
         })
         builder.addCase(login.rejected, (state, action) => {
+            state.user = {}
+            state.isLogged = false
         })
         builder.addCase(signup.fulfilled, (state, action) => {
             localStorage.setItem('user', JSON.stringify(action.payload))
+            state.user = action.payload
+            state.isLogged = true
+        })
+        builder.addCase(signup.rejected, (state, action) => {
+            state.user = {}
+            state.isLogged = false
         })
     }
 })

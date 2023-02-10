@@ -69,10 +69,11 @@ const UserSchema = new mongoose.Schema({
 });
 
 // pre serve a eseguire un middleware prima di un dato evento.
-UserSchema.pre("save", async function () {
+UserSchema.pre("save", async function (next) {
   const salt = await bcrypt.genSalt(10);
   // aggiungiamo il sale alla password
   this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
 // verifica se le password combaciano
