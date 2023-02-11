@@ -1,9 +1,9 @@
 const Product = require("../models/product");
 const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
-/* 
-numericFilters = ""
-*/
+
+
+
 const getAllProducts = async (req, res) => {
   const { featured, name, sort, fields, numericFilters } = req.query;
   const queryObject = {};
@@ -21,7 +21,7 @@ const getAllProducts = async (req, res) => {
       "<": "$lt",
       "<=": "$lte",
     };
-    const regEx = /\b(<|>|>=|=|<|<=)b/g;
+    const regEx = /\b(<|>|>=|=|<|<=)\b/g;
     let filters = numericFilters.replace(
       regEx,
       (match) => `-${operatorMap[match]}-`
