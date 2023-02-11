@@ -12,11 +12,11 @@ const errorHandlerMiddleware = require("./middleware/error-handler");
 // includiamo il file delle variabili d'ambiente di sviluppo o di produzione
 if (process.argv.length > 2)
   require("dotenv").config({
-    path: path.join(".env.development")
+    path: path.join(".env.development"),
   });
-else 
+else
   require("dotenv").config({
-    path: path.join(".env.production")
+    path: path.join(".env.production"),
   });
 
 const app = express();
@@ -25,8 +25,7 @@ const app = express();
 require("express-async-errors");
 app.use("/data", express.static(path.join(__dirname, "public", "data")));
 app.use("/img", express.static(path.join(__dirname, "public", "media")));
-app.use("/js", express.static(path.join(__dirname,"..", "back-office", "js")));
-app.use("/bootstrap", express.static(path.join(__dirname,"..", "back-office", "bootstrap")));
+app.use("/js", express.static(path.join(__dirname, "..", "back-office", "js")));
 app.use(express.static(path.join(__dirname, "./back-office")));
 app.use(express.static(path.join(__dirname, "build")));
 app.use(express.static(path.join(__dirname, "public", "")));

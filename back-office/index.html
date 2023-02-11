@@ -6,41 +6,149 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AnimalHouse</title>
-    <!-- Bootstrap style -->
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.css">
+    <!-- Tailwind css -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Handlebars -->
     <script src="/js/handlebars-v4.7.7.js"></script>
     <!-- JQuery -->
     <script src="/js/jquery.js"></script>
 </head>
 
-<body>
+<body class="flex flex-col min-h-screen">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg bg-warning">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">
+    <nav class="flex items-center justify-between flex-wrap bg-yellow-500 p-6">
+        <div class="flex items-center flex-shrink-0 text-white mr-6">
+            <a class="navbar-brand" href="/back-office">
                 <img class="mx-auto responsive-img" src="/img/black-logo.png" alt="Animal House logo"
                     style="max-height: 30PX" /></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="w-100 navbar-nav justify-content-evenly">
-                    <a class="nav-link" href="/back-office/users">Utenti</a>
-                    <a class="nav-link" href="/back-office/posts">Bacheche</a>
-                    <a class="nav-link" href="/back-office/products">Prodotti</a>
-                    <a class="nav-link" href="/back-office/services">Servizi</a>
-                    <a class="nav-link" href="/back-office/logout">Logout</a>
-                </div>
+        </div>
+        <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+            <div class="text-lg lg:flex-grow">
+                <a href="/back-office" class="block mt-4 lg:inline-block lg:mt-0 text-black mx-2">
+                    Home
+                </a>
+                <a href="/back-office/sedi" class="block mt-4 lg:inline-block lg:mt-0 text-black  mx-2">
+                    Sedi
+                </a>
+                <a href="/back-office/utenti" class="block mt-4 lg:inline-block lg:mt-0 text-black mx-2">
+                    Utenti
+                </a>
+                <a href="/back-office/prodotti" class="block mt-4 lg:inline-block lg:mt-0 text-black mx-2">
+                    Prodotti
+                </a>
+                <a href="/back-office/servizi" class="block mt-4 lg:inline-block lg:mt-0 text-black mx-2">
+                    Servizi
+                </a>
+                <a href="/back-office/bacheca" class="block mt-4 lg:inline-block lg:mt-0 text-black mx-2">
+                    Bacheca
+                </a>
+                <a href="/back-office/prenotazioni" class="block mt-4 lg:inline-block lg:mt-0 text-black mx-2">
+                    Prenotazioni
+                </a>
+                <a href="/back-office/fatture" class="block mt-4 lg:inline-block lg:mt-0 text-black mx-2">
+                    Fatture
+                </a>
+            </div>
+            <div>
+                <button id="logout" class="flex items-center px-3 text-white rounded">
+                    <img class="mx-auto responsive-img" src="/img/power-off.png" alt="Logout"
+                    style="max-height: 30PX" />
+                </button>
+
             </div>
         </div>
     </nav>
 
-    <!-- Bootstrap js -->
-    <script src="/bootstrap/js/bootstrap.bundle.js"></script>
+    <!-- Main -->
+    <main class="flex-1">
+        <div class="bg-gray-200 min-h-screen p-10">
+            <h1 class="text-center text-3xl font-bold">Back-Office Animal House</h1>
+            <div class="flex flex-wrap justify-center mt-10">
+                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
+                    <h2 class="text-lg font-medium mb-5">Sedi</h2>
+                    <p class="text-gray-700 mb-5">Visualizza, modifica e aggiungi nuove sedi Animal House.</p>
+                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a Sedi</a>
+                </div>
+                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
+                    <h2 class="text-lg font-medium mb-5">Utenti</h2>
+                    <p class="text-gray-700 mb-5">Visualizza, modifica e aggiungi nuovi utenti.</p>
+                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a Utenti</a>
+                </div>
+                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
+                    <h2 class="text-lg font-medium mb-5">Prodotti</h2>
+                    <p class="text-gray-700 mb-5">Visualizza, modifica e aggiungi nuovi prodotti.</p>
+                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a
+                        Prodotti</a>
+                </div>
+                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
+                    <h2 class="text-lg font-medium mb-5">Servizi</h2>
+                    <p class="text-gray-700 mb-5">Visualizza, modifica e aggiungi nuovi servizi.</p>
+                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a Servizi</a>
+                </div>
+                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
+                    <h2 class="text-lg font-medium mb-5">Bacheca</h2>
+                    <p class="text-gray-700 mb-5">Visualizza e analizza le statistiche delle vendite e delle prestazioni
+                        del
+                        tuo e-commerce per animali.</p>
+                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a
+                        Statistiche</a>
+                </div>
+                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
+                    <h2 class="text-lg font-medium mb-5">Prenotazioni</h2>
+                    <p class="text-gray-700 mb-5">Visualizza, gestisci e monitora tutti gli ordini effettuati sul tuo
+                        e-commerce per animali.</p>
+                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a Ordini</a>
+                </div>
+                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
+                    <h2 class="text-lg font-medium mb-5">Fatture</h2>
+                    <p class="text-gray-700 mb-5">Visualizza e analizza le statistiche delle vendite e delle prestazioni
+                        del
+                        tuo e-commerce per animali.</p>
+                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a
+                        Statistiche</a>
+                </div>
+                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
+                    <h2 class="text-lg font-medium mb-5">About</h2>
+                    <p class="text-gray-700 mb-5">Visualizza e analizza le statistiche delle vendite e delle prestazioni
+                        del
+                        tuo e-commerce per animali.</p>
+                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a
+                        Statistiche</a>
+                </div>
+                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
+                    <h2 class="text-lg font-medium mb-5">Me</h2>
+                    <p class="text-gray-700 mb-5">Visualizza e analizza le statistiche delle vendite e delle prestazioni
+                        del
+                        tuo e-commerce per animali.</p>
+                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a
+                        Statistiche</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center py-10">
+        <div class="container mx-auto">
+            <div class="flex flex-wrap justify-between">
+                <div class="w-1/3">
+                    <p class="text-sm font-medium mb-5">&copy; 2023 Animal House</p>
+                </div>
+                <div class="w-1/3">
+                    <a href="#" class="text-lg font-medium mb-5">Front-office</a>
+                </div>
+                <div class="w-1/3">
+                    <a href="https://github.com/AlexandruNicolescu00/AnimalHouse"
+                        class="text-lg font-medium mb-5">Github</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
     <!-- Compile -->
     <script src="/js/index.js"></script>
+
+    <!-- Logout -->
+    <script src="/js/logout.js"></script>
 </body>
 
 </html>
