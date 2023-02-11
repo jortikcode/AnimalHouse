@@ -8,7 +8,8 @@ const initialState = {
     products: [],
     product: {},
     cart: {},
-    loadingAll: false
+    loadingAll: false,
+    loadingOne: false
 }
 
 // Url base della API (http://localhost:8000/api/v1 || http://site212222.tw.cs.unibo.it/api/v1)
@@ -31,8 +32,8 @@ export const getAllProducts = createAsyncThunk(
 // Thunk per ottenere ottenere info di uno specifico prodotto
 export const getProduct = createAsyncThunk(
     `${name}/getProduct`,
-    async ({ product_id }) => {
-        const response = await fetch(`${baseUrl}/products/${product_id}`);
+    async ({ id }) => {
+        const response = await fetch(`${baseUrl}/products/${id}`);
         return response.json();
     }
 );
@@ -50,6 +51,9 @@ const productSlice = createSlice({
         },
         waitingGetAll: (state) => {
             state.loadingAll = true
+        },
+        waitingGetById: (state) => {
+            state.loadingOne = true
         }
     },
     extraReducers: (builder) => {
@@ -58,12 +62,11 @@ const productSlice = createSlice({
             state.products = action.payload
         })
         builder.addCase(getAllProducts.rejected, (state) => {
-            state.loadingAll = false
             state.products = []
-            state.product = {}
         })
         builder.addCase(getProduct.fulfilled, (state, action) => {
-            state.product = action.payload
+            state.loadingOne = false
+            state.product = action.payload.product
         })
         builder.addCase(getProduct.rejected, (state) => {
             state.product = {}
@@ -71,5 +74,5 @@ const productSlice = createSlice({
     }
 })
 
-export const { clearAll, clearCart, waitingGetAll } = productSlice.actions
+export const { clearAll, clearCart, waitingGetAll, waitingGetById } = productSlice.actions
 export const marketplace = productSlice.reducer
