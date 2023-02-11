@@ -19,7 +19,7 @@ const Navbar = () => {
   }, [ isLogged ])
 
   return (
-    <nav className="w-full p-5 bg-white md:flex md:items-center md:flex-row md:justify-between flex-col md:justify">
+    <nav className="w-full bg-yellow-500 p-5 md:flex md:items-center md:flex-row md:justify-between flex-col md:justify">
       <div>
         <span className="text-2xl font-bold font-Poppins cursor-pointer">
           AnimalHouse

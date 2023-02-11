@@ -17,16 +17,13 @@ const baseUrl = process.env.REACT_APP_BASE_API_URL
 // Thunk per ottenere la lista dei prodotti
 export const getAllProducts = createAsyncThunk(
     `${name}/getAllProducts`,
-    async ({ featured = false, name = "", sort = true, numericFilters = "price>0,rating>0" }) => {
+    async ({ featured = "", name = "", sort = "", numericFilters = ""}) => {
         const params = queryString.stringify({
-            featured: featured,
-            name: name,
-            sort: sort,
-            numericFilters: numericFilters
-        } , {
-            arrayFormat: 'comma'
+            featured,
+            name,
+            sort
         })
-        const response = await fetch(`${baseUrl}/products?${params}`);
+        const response = await fetch(`${baseUrl}/products?${params}&numericFilters=${numericFilters}`);
         return response.json();
     }
 );
@@ -62,14 +59,14 @@ const productSlice = createSlice({
         })
         builder.addCase(getAllProducts.rejected, (state) => {
             state.loadingAll = false
-            state.products = null
-            state.product = null
+            state.products = []
+            state.product = {}
         })
         builder.addCase(getProduct.fulfilled, (state, action) => {
             state.product = action.payload
         })
         builder.addCase(getProduct.rejected, (state) => {
-            state.product = null
+            state.product = {}
         })
     }
 })

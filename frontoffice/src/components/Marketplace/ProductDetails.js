@@ -4,6 +4,7 @@ const ProductDetails = () => {
     
     return (
         <>
+        <h1> Dettagli prodotto </h1>
         </>
     )
 }
