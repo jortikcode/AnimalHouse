@@ -62,9 +62,54 @@
     <!-- Main -->
     <main class="flex-1">
         <div class="bg-gray-200 min-h-screen p-10">
-            <h1 class="text-center text-3xl font-bold">Utenti</h1>
-            <div class="flex flex-wrap justify-center mt-10">
-                
+            <div class="flex flex-wrap justify-center">
+
+                <div class="p-6">
+                    <div class="container mx-auto">
+                        <div class="flex items-center justify-between">
+                            <h1 class="text-2xl font-bold text-black px-3">Gestione Fatture</h1>
+                            <form>
+                                <input class="bg-white rounded-lg p-2 mr-2" type="text" placeholder="Cerca fattura" />
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container mx-auto mt-6">
+                    <table class="table-auto w-full border-2 border-black rounded-lg">
+                        <thead>
+                            <tr>
+                                <th class="px-4 py-2">ID</th>
+                                <th class="px-4 py-2">Nome</th>
+                                <th class="px-4 py-2">Descrizione</th>
+                                <th class="px-4 py-2">Prezzo</th>
+                                <th class="px-4 py-2">Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-black px-4 py-2">1</td>
+                                <td class="border border-black px-4 py-2">Cibo per gatti</td>
+                                <td class="border border-black px-4 py-2">Cibo di alta qualità per gatti</td>
+                                <td class="border border-black px-4 py-2">10$</td>
+                                <td class="border border-black px-4 py-2 flex justify-center">
+                                    <button class="bg-yellow-500 text-black rounded-lg px-2 py-1">Modifica</button>
+                                    <button class="bg-red-500 text-black rounded-lg px-2 py-1 ml-2">Elimina</button>
+                                </td>
+                            </tr>
+                            <!-- Aggiungi altre righe per altri prodotti -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="container mx-auto mt-6">
+                    <div class="flex justify-center">
+                        <button class="bg-yellow-500 text-black rounded px-4 py-2 mx-2">Precedente</button>
+                        <button class="bg-yellow-500 text-black rounded px-4 py-2 mx-2">Successivo</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </main>
