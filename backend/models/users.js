@@ -43,10 +43,6 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "Un utente deve avere un genere"],
   },
-  isAdmin: {
-    type: Boolean,
-    default: false,
-  },
   animaliPreferiti: {
     type: [String],
     default: [],

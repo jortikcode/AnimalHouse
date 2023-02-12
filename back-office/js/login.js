@@ -5,7 +5,7 @@ $("#form").on("submit", function (event) {
   const localStorage = window.localStorage;
   const getToken = async () => {
     const response = await fetch(
-      "http://localhost:8000/api/v1/auth/loginAdmin",
+      `http://localhost:8000/api/v1/auth/loginAdmin`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -19,9 +19,9 @@ $("#form").on("submit", function (event) {
       const filled = template({ error_msg: err });
       $("#errors").html(filled);
     } else {
-      const token = await response.json();
-      localStorage.setItem("token", token.token);
-      localStorage.setItem("userInfo", token.userInfo);
+      const admin = await response.json();
+      localStorage.setItem("token", admin.token);
+      localStorage.setItem("locationInfo", admin.locationInfo);
       window.location.replace("/back-office");
     }
   };

@@ -107,10 +107,16 @@ const deleteProduct = async (req, res) => {
   });
 };
 
+const getAllCategories = async (req, res) => {
+  const categories = Product.distinct("category");
+  res.status(StatusCodes.OK).json({ categories });
+};
+
 module.exports = {
   getAllProducts,
   createProduct,
   getProduct,
   updateProduct,
   deleteProduct,
+  getAllCategories,
 };

@@ -23,9 +23,15 @@ const app = express();
 
 // gestore degli errori asincroni, per non usare il costrutto trycatch
 require("express-async-errors");
-app.use("/data", express.static(path.join(__dirname, "public", "data")));
+app.use("/css", express.static(path.join(__dirname, "public", "css")));
 app.use("/img", express.static(path.join(__dirname, "public", "media")));
 app.use("/js", express.static(path.join(__dirname, "..", "back-office", "js")));
+app.use(
+  "/elements",
+  express.static(
+    path.join(__dirname, "node_modules", "tw-elements", "dist", "js")
+  )
+);
 app.use(express.static(path.join(__dirname, "./back-office")));
 app.use(express.static(path.join(__dirname, "build")));
 app.use(express.static(path.join(__dirname, "public", "")));

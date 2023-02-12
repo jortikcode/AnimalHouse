@@ -1,8 +1,8 @@
 const { createCustomError } = require("../errors/custom-error");
 const User = require("../models/users");
+const Admin = require("../models/admin");
 const { StatusCodes } = require("http-status-codes");
 const crypto = require("crypto");
-const bcrypt = require("bcryptjs");
 const sendEmail = require("../scripts/sendEmail");
 
 const login = async (req, res) => {
@@ -36,17 +36,23 @@ const loginAdmin = async (req, res) => {
     );
   }
   // verifico l'email e che sia Admin
-  const user = await User.findOne({ email: email, isAdmin: true });
-  if (!user) {
+  const admin = await Admin.findOne({ email: email }).populate("location");
+  if (!admin) {
     throw createCustomError("Credenziali non corrette", StatusCodes.NOT_FOUND);
   }
   // verifico la password
-  const isCorrect = await user.matchPasswords(password);
+  const isCorrect = await admin.matchPasswords(password);
   if (!isCorrect) {
     throw createCustomError("Credenziali non corrette", StatusCodes.NOT_FOUND);
   }
-  const token = user.getSignedToken();
-  res.status(StatusCodes.OK).json({ token: token, userInfo: user });
+  const token = admin.getSignedToken();
+  res.status(StatusCodes.OK).json({ token: token, locationInfo: admin.location });
+};
+
+const registerAdmin = async (req, res) => {
+  const admin = await Admin.create({ ...req.body });
+  const token = admin.getSignedToken();
+  res.status(StatusCodes.CREATED).json({ token: token, adminInfo: admin });
 };
 
 const register = async (req, res) => {
@@ -115,6 +121,7 @@ module.exports = {
   login,
   register,
   loginAdmin,
+  registerAdmin,
   forgotPassword,
   resetPassword,
 };

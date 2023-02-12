@@ -52,7 +52,6 @@ const getUser = async (req, res) => {
 
 const updateUser = async (req, res) => {
   const { id: userID } = req.params;
-  console.log(userID);
   const user = await User.findOneAndUpdate(
     { _id: userID },
     { $set: req.body },
