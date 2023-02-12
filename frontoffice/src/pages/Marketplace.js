@@ -2,10 +2,14 @@ import { ErrorMessage } from "@hookform/error-message";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts, waitingGetAll } from "../app/productsSlice";
-import { MagnifyingGlass } from  'react-loader-spinner'
-import ProductCard from "../components/Marketplace/ProductCard"
-
+import {
+  getAllCategories,
+  getAllProducts,
+  waitingGetAll,
+} from "../app/productsSlice";
+import { FallingLines, MagnifyingGlass } from "react-loader-spinner";
+import ProductCard from "../components/Marketplace/ProductCard";
+import priceRanges from "./priceRanges.json";
 
 const Marketplace = () => {
   const dispatch = useDispatch();
@@ -15,25 +19,30 @@ const Marketplace = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      price: "min,-max,",
+      price: "price>=0",
       sort: "",
+      category: "featured",
+      featured: "true"
     },
   });
-  const { products, loadingAll } = useSelector((state) => state.marketplace);
+  const { products, loadingAll, loadingCategories, categories } = useSelector(
+    (state) => state.marketplace
+  );
   // Flag della scritta "I prodotti del mese"
   // const [ showcase, setShowcase ] = useState(true)
 
   const onSubmit = (data) => {
-    dispatch(waitingGetAll())
+    dispatch(waitingGetAll());
+    dispatch(getAllProducts({...data, numericFilters: data["price"]}))
   };
 
   useEffect(() => {
     // Presumibilmente, stiamo caricando per la prima volta i prodotti da mongo
     if (products.length === 0) {
-      dispatch(waitingGetAll())
-      dispatch(getAllProducts({}));
+      dispatch(waitingGetAll());
+      dispatch(getAllCategories({}));
+      dispatch(getAllProducts({ featured: "true" }));
     }
-    
   }, [dispatch, products.length]);
 
   return (
@@ -41,12 +50,12 @@ const Marketplace = () => {
       <article className="prose">
         <h1>Negozio</h1>
       </article>
-      <div className="flex justify-center md:w-[900px] w-full max-w-full">
+      <div className="flex justify-center">
         <form
-          className="bg-white shadow-md rounded pt-6 pb-8 mb-4"
+          className="bg-white shadow-lg w-[700px] max-w-sm rounded pt-6 pb-8 mb-4"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className="grid md:grid-cols-3 grid-cols-1 w-screen p-8 items-center space-x-3">
+          <div className="grid grid-cols-1 w-full px-8 pt-8 items-center">
             <div className="mb-4">
               <label
                 className="text-lg block text-gray-700 font-bold mb-2"
@@ -61,7 +70,7 @@ const Marketplace = () => {
                 placeholder="Pellet, Palla, Cibo"
                 {...register("name", {
                   pattern: {
-                    value: /([a-z][A-Z])*/,
+                    value: /^([a-zA-Z]*)$/,
                     message: "Parola Illegale",
                   },
                 })}
@@ -69,8 +78,44 @@ const Marketplace = () => {
               <ErrorMessage
                 as={<p className="text-red-600" />}
                 errors={errors}
-                name="email"
+                name="name"
               />
+            </div>
+
+            <div className="mb-4">
+              <label
+                className="text-lg block text-gray-700 font-bold mb-2"
+                htmlFor="category"
+              >
+                Categoria
+              </label>
+
+              {loadingCategories && (
+                <FallingLines
+                  color="#FBBF24"
+                  width="50"
+                  visible={true}
+                  ariaLabel="falling-lines-loading"
+                />
+              )}
+
+              {!loadingCategories && (
+                <>
+                  <select
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    id="category"
+                    {...register("category")}
+                  >
+                    <option value="all"> Tutte le categorie </option>
+                    {categories.map((category, index) => (
+                      <option value={category} key={index}>
+                        {" "}
+                        {category}{" "}
+                      </option>
+                    ))}
+                  </select>
+                </>
+              )}
             </div>
 
             <div className="mb-4">
@@ -85,20 +130,28 @@ const Marketplace = () => {
                 id="price"
                 {...register("price")}
               >
-                <option defaultValue value="min,-max,">
-                  {" "}
-                  Tutti i prezzi{" "}
-                </option>
-                <option value="min,0-max,5"> Fino a EURO 5 </option>
-                <option value="min,5-max,10"> 5 a 10 EURO </option>
-                <option value="min,10-max,20"> 10 a 20 EURO </option>
-                <option value="min,20-max,50"> 20 a 50 EURO </option>
-                <option value="min,50-max,-"> 50 EURO e oltre </option>
+                <option value="price>=0"> Tutti i prezzi </option>
+                {priceRanges.map((e, index) => (
+                  <option key={index} value={`price>=${e.min}${e.max ? `,price<${e.max}` : ""}`}>
+                    {e.max
+                      ? `da ${e.min} a ${e.max} `
+                      : `OLTRE ${e.min}`} EURO
+                  </option>
+                ))}
               </select>
-              <ErrorMessage
-                as={<p className="text-red-600" />}
-                errors={errors}
-                name="name"
+            </div>
+            <div className="mb-4">
+              <label
+                className="text-lg block text-gray-700 font-bold mb-2"
+                htmlFor="featured"
+              >
+                Consigliati
+              </label>
+              <input
+                id="featured"
+                {...register("featured")}
+                type="checkbox"
+                value="true"
               />
             </div>
             <div className="mb-4">
@@ -109,7 +162,6 @@ const Marketplace = () => {
                 Ordina i risultati
               </label>
               <input
-                selected
                 id="sort"
                 {...register("sort")}
                 type="checkbox"
@@ -120,34 +172,32 @@ const Marketplace = () => {
 
           <div className="justify-center flex">
             <input
-              value="Crea"
+              value="Cerca"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               type="submit"
             />
           </div>
         </form>
       </div>
-      { loadingAll && (
-      <div className="flex justify-center flex-col items-center">
-        <MagnifyingGlass
+      {loadingAll && (
+        <div className="flex justify-center flex-col items-center">
+          <MagnifyingGlass
             visible={true}
             height="80"
             width="80"
             ariaLabel="MagnifyingGlass-loading"
             wrapperStyle={{}}
             wrapperClass="MagnifyingGlass-wrapper"
-            glassColor = '#c0efff'
-            color = '#FBBF24'
-        />
-        <small>{" "} Caricando i prodotti della vetrina... {" "}</small>
-      </div>
-      ) }
+            glassColor="#c0efff"
+            color="#FBBF24"
+          />
+          <small> Caricando i prodotti della vetrina... </small>
+        </div>
+      )}
       <div className="grid md:grid-cols-3 grid-cols-1 mb-8 mt-8 md:space-y-0 space-y-6 md:space-x-6">
-        { products.map((product, index) => {
-            return (
-                <ProductCard {...product} key={index} />
-            )
-        }) }
+        {products.map((product, index) => {
+          return <ProductCard {...product} key={index} />;
+        })}
       </div>
     </div>
   );

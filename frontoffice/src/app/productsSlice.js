@@ -8,24 +8,43 @@ const name = "products"
 const initialState = {
     products: [],
     product: {},
+    categories: [],
     cart: {},
     loadingAll: false,
-    loadingOne: false
+    loadingOne: false,
+    loadingCategories: false
 }
 
 // Thunk per ottenere la lista dei prodotti
 export const getAllProducts = createAsyncThunk(
     `${name}/getAllProducts`,
-    async ({ featured = "", name = "", sort = "", numericFilters = ""}) => {
+    async ({ featured = "", name = "", sort = "", numericFilters = "", category = ""}) => {
+        if (category = "all")
+            category = ""
+        if (!featured)
+            featured = ""
+        if (!sort)
+            sort = ""
         const params = queryString.stringify({
             featured,
             name,
-            sort
+            sort,
+            category
         })
         const response = await fetch(`${baseApiUrl}/products?${params}&numericFilters=${numericFilters}`);
         return response.json();
     }
 );
+
+// Thunk per ottenere la lista dei prodotti
+export const getAllCategories = createAsyncThunk(
+    `${name}/getAllCategories`,
+    async () => {
+        const response = await fetch(`${baseApiUrl}/products?getCategories=true`);
+        return response.json();
+    }
+);
+
 
 // Thunk per ottenere ottenere info di uno specifico prodotto
 export const getProduct = createAsyncThunk(
@@ -52,6 +71,9 @@ const productSlice = createSlice({
         },
         waitingGetById: (state) => {
             state.loadingOne = true
+        },
+        waitingGetAllCategories: (state) => {
+            state.loadingCategories = true
         }
     },
     extraReducers: (builder) => {
@@ -69,8 +91,12 @@ const productSlice = createSlice({
         builder.addCase(getProduct.rejected, (state) => {
             state.product = {}
         })
+        builder.addCase(getAllCategories.fulfilled, (state, action) => {
+            state.categories = action.payload
+            state.loadingCategories = false
+        })
     }
 })
 
-export const { clearAll, clearCart, waitingGetAll, waitingGetById } = productSlice.actions
+export const { clearAll, clearCart, waitingGetAll, waitingGetById, waitingGetAllCategories } = productSlice.actions
 export const marketplace = productSlice.reducer
