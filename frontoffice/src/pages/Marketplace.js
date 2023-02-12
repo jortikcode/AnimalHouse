@@ -28,7 +28,6 @@ const Marketplace = () => {
   };
 
   useEffect(() => {
-    console.log(products.length)
     // Presumibilmente, stiamo caricando per la prima volta i prodotti da mongo
     if (products.length === 0) {
       dispatch(waitingGetAll())

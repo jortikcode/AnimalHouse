@@ -27,7 +27,7 @@ const ProductDetails = () => {
   useEffect(() => {
     dispatch(waitingGetById());
     dispatch(getProduct({ id }));
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   if (loadingOne)
     return (

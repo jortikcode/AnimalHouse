@@ -10,9 +10,6 @@ import { Provider } from 'react-redux'
 export const baseMediaUrl = process.env.REACT_APP_BASE_MEDIA_URL
 export const baseApiUrl = process.env.REACT_APP_BASE_API_URL
 
-console.log(baseMediaUrl)
-console.log(baseApiUrl)
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
