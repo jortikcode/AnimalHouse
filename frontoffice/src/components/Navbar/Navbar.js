@@ -5,6 +5,7 @@ import { logout } from "../../app/usersSlice";
 import menuLogged from "./menuLogged.json";
 import menuGuest from "./menuGuest.json";
 import { baseMediaUrl } from "../../index";
+import Cart from "../Marketplace/Cart";
 
 const Navbar = () => {
   const { isLogged } = useSelector(state => state.auth)
@@ -35,6 +36,12 @@ const Navbar = () => {
                   <button className="text-lg font-semibold" type="button" onClick={e => dispatch(logout())}>
                     Esci
                   </button>
+                </li>
+              )
+            case "/marketplace/cart":
+              return (
+                <li className="mx-4 mt-6 md:my-0" key={index}>
+                  <Cart />
                 </li>
               )
             default:

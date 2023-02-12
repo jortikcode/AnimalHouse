@@ -37,6 +37,22 @@ export const getAllProducts = createAsyncThunk(
 );
 
 // Thunk per ottenere la lista dei prodotti
+export const getCart = createAsyncThunk(
+    `${name}/getCart`,
+    async ({ id = "" }, thunkAPI) => {
+        const params = queryString.stringify({
+            id
+        })
+        const token = thunkAPI.getState().user.token
+        const response = await fetch(`${baseApiUrl}/carts?${params}`, {
+            headers: `Authorization: Bearer ${token}`
+        });
+        return response.json();
+    }
+);
+
+
+// Thunk per ottenere la lista delle categorie
 export const getAllCategories = createAsyncThunk(
     `${name}/getAllCategories`,
     async () => {
@@ -94,6 +110,9 @@ const productSlice = createSlice({
         builder.addCase(getAllCategories.fulfilled, (state, action) => {
             state.categories = action.payload
             state.loadingCategories = false
+        })
+        builder.addCase(getCart.fulfilled, (state, action) => {
+            state.cart = action.payload
         })
     }
 })

@@ -1,5 +1,9 @@
 [
     {
+        "value": "Cart",
+        "link": "/marketplace/cart"
+    },
+    {
         "value": "Home",
         "link": "/"
     },
