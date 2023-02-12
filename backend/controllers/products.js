@@ -2,11 +2,14 @@ const Product = require("../models/product");
 const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
 
-
-
 const getAllProducts = async (req, res) => {
-  const { featured, name, sort, fields, numericFilters } = req.query;
+  const { featured, name, sort, fields, numericFilters, getCategories } =
+    req.query;
   const queryObject = {};
+  if (getCategories) {
+    const categories = await Product.distinct("category");
+    return res.status(StatusCodes.OK).json(categories);
+  }
   if (featured) {
     queryObject.featured = featured === "true" ? true : false;
   }
@@ -107,16 +110,10 @@ const deleteProduct = async (req, res) => {
   });
 };
 
-const getAllCategories = async (req, res) => {
-  const categories = Product.distinct("category");
-  res.status(StatusCodes.OK).json({ categories });
-};
-
 module.exports = {
   getAllProducts,
   createProduct,
   getProduct,
   updateProduct,
   deleteProduct,
-  getAllCategories,
 };
