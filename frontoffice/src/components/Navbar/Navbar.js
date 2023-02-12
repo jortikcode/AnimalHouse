@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 import { logout } from "../../app/usersSlice";
 import menuLogged from "./menuLogged.json";
 import menuGuest from "./menuGuest.json";
+import { baseMediaUrl } from "../../index";
 
 const Navbar = () => {
   const { isLogged } = useSelector(state => state.auth)
   const dispatch = useDispatch();
   const [ menuItems, setMenuItems ] = useState(isLogged ? menuLogged : menuGuest)
-
+  console.log(`${baseMediaUrl}/black-logo.png`)
   useEffect(() => {
     // Al logout / login, la navbar deve cambiare (e.g. non deve essere piu' possibile fare accedi/uscire )
     if (isLogged)
@@ -21,9 +22,9 @@ const Navbar = () => {
   return (
     <nav className="w-full bg-yellow-500 p-5 md:flex md:items-center md:flex-row md:justify-between flex-col md:justify">
       <div>
-        <span className="text-2xl font-bold font-Poppins cursor-pointer">
-          AnimalHouse
-        </span>
+        <Link to="/"> 
+          <img src={`${baseMediaUrl}/black-logo.png`} className="text-2xl font-bold font-Poppins cursor-pointer w-[220px] max-w-full" />
+        </Link>
       </div>
       <ul className="flex md:flex-row flex-col" aria-labelledby="dropdownDefaultButton">
         {menuItems.map((item, index) => {

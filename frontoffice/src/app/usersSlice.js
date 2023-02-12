@@ -1,4 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { baseApiUrl } from '../index'
+
 // Nomae dello slice
 const name = "user"
 // Stato iniziale dell'utente
@@ -6,14 +8,12 @@ const initialState = {
     user: JSON.parse(localStorage.getItem('user') || "{}"),
     isLogged: localStorage.getItem('user') ? true : false
 }
-// Url base della API (http://localhost:8000/api/v1 || http://site212222.tw.cs.unibo.it/api/v1)
-const baseUrl = process.env.REACT_APP_BASE_API_URL
 
 // Thunk per il login di un utente
 const login = createAsyncThunk(
     `${name}/login`,
     async ({ email, password }) => {
-        const response = await fetch(`${baseUrl}/auth/login`, { 
+        const response = await fetch(`${baseApiUrl}/auth/login`, { 
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ email, password })
@@ -26,7 +26,7 @@ const login = createAsyncThunk(
 const signup = createAsyncThunk(
     `${name}/signup`,
     async (userInfo) => {
-        const response = await fetch(`${baseUrl}/auth/register`, { 
+        const response = await fetch(`${baseApiUrl}/auth/register`, { 
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(userInfo)

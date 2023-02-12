@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import queryString from 'query-string'
+import { baseApiUrl } from '../index'
 
 const name = "products"
 
@@ -12,9 +13,6 @@ const initialState = {
     loadingOne: false
 }
 
-// Url base della API (http://localhost:8000/api/v1 || http://site212222.tw.cs.unibo.it/api/v1)
-const baseUrl = process.env.REACT_APP_BASE_API_URL
-
 // Thunk per ottenere la lista dei prodotti
 export const getAllProducts = createAsyncThunk(
     `${name}/getAllProducts`,
@@ -24,7 +22,7 @@ export const getAllProducts = createAsyncThunk(
             name,
             sort
         })
-        const response = await fetch(`${baseUrl}/products?${params}&numericFilters=${numericFilters}`);
+        const response = await fetch(`${baseApiUrl}/products?${params}&numericFilters=${numericFilters}`);
         return response.json();
     }
 );
@@ -33,7 +31,7 @@ export const getAllProducts = createAsyncThunk(
 export const getProduct = createAsyncThunk(
     `${name}/getProduct`,
     async ({ id }) => {
-        const response = await fetch(`${baseUrl}/products/${id}`);
+        const response = await fetch(`${baseApiUrl}/products/${id}`);
         return response.json();
     }
 );

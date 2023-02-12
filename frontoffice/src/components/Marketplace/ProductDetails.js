@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { MagnifyingGlass } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { getProduct, waitingGetById } from "../../app/productsSlice";
+import Star from "./Star";
 
 const { useParams } = require("react-router-dom");
 
@@ -50,7 +51,9 @@ const ProductDetails = () => {
         <div className="flex flex-col space-y-6 md:justify-center justify-start ">
             <h1 className="hidden"> Dettagli prodotto </h1>
             <h2 className="font-bold text-3xl"> {name} </h2>
-            <span className="md:text-2xl text-xl"> Apprezzamento: <span className="text-yellow-500"> {rating} su 5 </span> </span>
+            <div className="flex flex-row">
+            { [...Array(rating)].map((e, index) => <span className="w-5" key={index}> <Star /> </span> ) }
+            </div>
             <span className="font-bold md:text-3xl text-xl text-red-600"> {price}€ </span>
         </div>
         <img
