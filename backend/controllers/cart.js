@@ -5,18 +5,18 @@ const { StatusCodes } = require("http-status-codes");
 
 /* Recupera tutti gli elementi nel carrello di un utente */
 const getCartItems = async (req, res) => {
-  const cart = await Cart.findOne({ user: req.userInfo.id }).populate(
+  const cart = await Cart.findOne({ user: req.query.id }).populate(
     "products"
   );
   if (!cart) {
     const newCart = new Cart({
-      user: req.userInfo.id,
+      user: req.query.id,
       products: [],
     });
     await newCart.save();
     res.status(StatusCodes.CREATED).json(newCart);
   } else {
-    res.status(StatusCodes.OK).json(cart.products);
+    res.status(StatusCodes.OK).json(cart);
   }
 };
 
@@ -30,10 +30,10 @@ const addToCart = async (req, res) => {
     );
   }
   /* In caso l'utente non avesso un carrello associato lo si crea */
-  const cart = await Cart.findOne({ user: req.userInfo.id });
+  const cart = await Cart.findOne({ user: req.query.id });
   if (!cart) {
     const newCart = new Cart({
-      user: req.userInfo.id,
+      user: req.query.id,
       products: [{ product: product._id, quantity: req.body.quantity }],
     });
     await newCart.save();
@@ -67,10 +67,10 @@ const updateCartItem = async (req, res) => {
     );
   }
 
-  const cart = await Cart.findOne({ user: req.userInfo.id });
+  const cart = await Cart.findOne({ user: req.query.id });
   if (!cart) {
     throw createCustomError(
-      `Non esiste nessun carrello associato all'utente : ${req.userInfo.id}`,
+      `Non esiste nessun carrello associato all'utente : ${req.query.id}`,
       StatusCodes.NOT_FOUND
     );
   }
@@ -85,7 +85,7 @@ const updateCartItem = async (req, res) => {
     );
   }
 
-  cart.products[productIndex].quantity = req.body.quantity;
+  cart.products[productIndex].quantity += req.body.quantity;
   /* In caso si imposta come quantità 0 equivale a eliminare dal carrello */
   cart.products = cart.products.filter(isPositive);
   await cart.save();
