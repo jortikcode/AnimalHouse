@@ -7,6 +7,8 @@ import Navbar from './components/Navbar/Navbar'
 import LoginRegisterPage from './pages/LoginRegisterPage';
 import QuestionDetails from './components/Forum/QuestionDetails';
 import ProductDetails from './components/Marketplace/ProductDetails';
+import ManageCart from './pages/ManageCart';
+import PersonalArea from './pages/PersonalArea';
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Route path='/marketplace' element={<Marketplace />} />
         <Route path='/marketplace/:id' element={<ProductDetails />} />
         <Route path='/services' element={<Services />} />
+        <Route path='/marketplace/cart' element={<ManageCart />} />
+        <Route path='/myarea' element={<PersonalArea />} />
         <Route path='/login' element={<LoginRegisterPage login={true} />} />
         <Route path='/signup' element={<LoginRegisterPage signup={true} />} />
       </Routes>

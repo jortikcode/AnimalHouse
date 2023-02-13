@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getAllCategories,
   getAllProducts,
+  getCart,
   waitingGetAll,
 } from "../app/productsSlice";
 import { FallingLines, MagnifyingGlass } from "react-loader-spinner";
@@ -21,7 +22,7 @@ const Marketplace = () => {
     defaultValues: {
       price: "price>=0",
       sort: "",
-      category: "featured",
+      category: "all",
       featured: "true"
     },
   });
@@ -42,6 +43,7 @@ const Marketplace = () => {
       dispatch(waitingGetAll());
       dispatch(getAllCategories({}));
       dispatch(getAllProducts({ featured: "true" }));
+      dispatch(getCart({}));
     }
   }, [dispatch, products.length]);
 
@@ -52,6 +54,7 @@ const Marketplace = () => {
       </article>
       <div className="flex justify-center">
         <form
+          autoComplete="off"
           className="bg-white shadow-lg w-[700px] max-w-sm rounded pt-6 pb-8 mb-4"
           onSubmit={handleSubmit(onSubmit)}
         >

@@ -4,6 +4,10 @@
         "link": "/marketplace/cart"
     },
     {
+        "value": "Area Utente",
+        "link": "/myarea"
+    },
+    {
         "value": "Home",
         "link": "/"
     },

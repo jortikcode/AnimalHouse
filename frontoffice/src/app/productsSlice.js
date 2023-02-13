@@ -19,7 +19,7 @@ const initialState = {
 export const getAllProducts = createAsyncThunk(
     `${name}/getAllProducts`,
     async ({ featured = "", name = "", sort = "", numericFilters = "", category = ""}) => {
-        if (category = "all")
+        if (category === "all")
             category = ""
         if (!featured)
             featured = ""
@@ -36,16 +36,63 @@ export const getAllProducts = createAsyncThunk(
     }
 );
 
-// Thunk per ottenere la lista dei prodotti
+// Thunk per ottenere il carrello di un utente
 export const getCart = createAsyncThunk(
     `${name}/getCart`,
-    async ({ id = "" }, thunkAPI) => {
+    async ({  }, thunkAPI) => {
+        const { token, userInfo } = thunkAPI.getState().auth.user
+        const id = userInfo["_id"]
         const params = queryString.stringify({
             id
         })
-        const token = thunkAPI.getState().user.token
-        const response = await fetch(`${baseApiUrl}/carts?${params}`, {
-            headers: `Authorization: Bearer ${token}`
+
+        const response = await fetch(`${baseApiUrl}/cart?${params}`, {
+            headers: {"Authorization": `Bearer ${token}`}
+        });
+        return response.json();
+    }
+);
+
+// Thunk per aggiungere un prodotto al carrello di un utente
+export const addToCart = createAsyncThunk(
+    `${name}/addToCart`,
+    async ({ id = ""}, thunkAPI) => {
+        const user = thunkAPI.getState().auth.user
+        const params = queryString.stringify({
+            id: user.userInfo["_id"]
+        })
+        const response = await fetch(`${baseApiUrl}/cart?${params}`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${user.token}`,
+            },
+            body: JSON.stringify({
+                productId: id
+            })
+        });
+        return response.json();
+    }
+);
+
+// Thunk per aggiungere un prodotto al carrello di un utente
+export const updateCart = createAsyncThunk(
+    `${name}/updateCart`,
+    async ({ id = "", quantity = ""}, thunkAPI) => {
+        const user = thunkAPI.getState().auth.user
+        const params = queryString.stringify({
+            id: user.userInfo["_id"]
+        })
+        const response = await fetch(`${baseApiUrl}/cart?${params}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${user.token}`,
+            },
+            body: JSON.stringify({
+                productId: id,
+                quantity
+            })
         });
         return response.json();
     }
@@ -112,6 +159,12 @@ const productSlice = createSlice({
             state.loadingCategories = false
         })
         builder.addCase(getCart.fulfilled, (state, action) => {
+            state.cart = action.payload
+        })
+        builder.addCase(updateCart.fulfilled, (state, action) => {
+            state.cart = action.payload
+        })
+        builder.addCase(addToCart.fulfilled, (state, action) => {
             state.cart = action.payload
         })
     }

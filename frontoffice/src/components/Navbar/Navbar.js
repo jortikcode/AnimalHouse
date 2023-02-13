@@ -27,7 +27,7 @@ const Navbar = () => {
           <img alt="animalhouse logo" src={`${baseMediaUrl}/black-logo.png`} className="text-2xl font-bold font-Poppins cursor-pointer w-[220px] max-w-full" />
         </Link>
       </div>
-      <ul className="flex md:flex-row flex-col" aria-labelledby="dropdownDefaultButton">
+      <ul className="flex md:flex-row flex-col md:items-center" aria-labelledby="dropdownDefaultButton">
         {menuItems.map((item, index) => {
           switch(item.link){
             case "/logout":
