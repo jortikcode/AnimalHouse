@@ -1,10 +1,49 @@
 const Bill = require("../models/bill");
+const Product = require("../models/product");
+const Cart = require("../models/cart")
 const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
+const mongoose = require("mongoose");
+const product = require("../models/product");
 
 /* Crea una nuova fattura */
 const createBill = async (req, res) => {
+  let quantities = []
+  for (const product of req.body.products) {
+    const { qta: quantity } = await Product.findById(product.product);
+    quantities.push(quantity)
+    if (quantity < parseInt(product.quantity))
+      throw createCustomError(
+        `Impossibile ordinare, svuotare il carrello e riprovare`,
+        StatusCodes.CONFLICT
+      );
+  }
+
+  const session = await mongoose.startSession();
+  // Inizio della transazione
+  session.startTransaction();
+  let index = 0
+  for (const product of req.body.products) {
+    const updatedProduct = await Product.findOneAndUpdate(
+      { _id: product.product },
+      {
+        $set: {
+          qta: quantities[index] - parseInt(product.quantity),
+        },
+      },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    index++
+  }
   const bill = await Bill.create(req.body);
+  // Il carrello puo' essere
+  const cart = await Cart.deleteOne({ user: req.body.user })
+  // Fine della transazione
+  await session.commitTransaction();
+  
   res.status(StatusCodes.CREATED).json({ bill });
 };
 
@@ -13,11 +52,9 @@ const getAllBills = async (req, res) => {
   const { userID, sort, fields } = req.query;
   const queryObject = {};
 
-  if (userID) {
-    queryObject.user = { $regex: userID, $options: "i" };
-  }
-
-  let result = Bill.find(queryObject).populate("user", "products");
+  let result = Bill.find({
+    user: userID
+  }).populate("user", "products");
   // sort
   if (sort) {
     const sortList = sort.split(",").join(" ");

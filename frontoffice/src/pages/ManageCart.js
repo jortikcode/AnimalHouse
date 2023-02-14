@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts, getCart } from "../app/productsSlice";
+import { getAllProducts, getCart, createBill } from "../app/productsSlice";
 import CartItem from "../components/Marketplace/CartItem";
+import paymentMethods from './data/paymentMethods.json'
 
 const getInfoFromCart = (cart, productsInfo) => {
     let result = []
@@ -21,6 +22,7 @@ const getInfoFromCart = (cart, productsInfo) => {
 }
 
 const ManageCart = () => {
+  const paymentMethod = useRef("contanti")
   const { cart, products } = useSelector((state) => state.marketplace);
   const dispatch = useDispatch()
   useEffect(() => {
@@ -34,10 +36,13 @@ const ManageCart = () => {
     </div>)
   else{
     const { productsWithInfo, total } = getInfoFromCart(cart.products, products)
+    const checkout = () => {
+      dispatch(createBill({ cart, total, paymentMethod: paymentMethod.current.value }))
+    }
+
     return (
       <section
         className="antialiased bg-gray-100 text-gray-600 h-screen px-4"
-        x-data="app"
       >
         <div className="flex flex-col justify-center h-full">
           <div className="w-full max-w-2xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
@@ -79,7 +84,16 @@ const ManageCart = () => {
               </div>
             </div>
           </div>
+          <div className="flex flex-col items-center justify-center py-4 space-y-3">
+            <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" ref={paymentMethod}>
+              { paymentMethods.map((method, index) => <option value={method} key={index}> {method} </option>) }
+            </select>
+            <button className="text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={e => checkout()}>
+              Compra
+            </button>
+          </div>
         </div>
+
       </section>
     );
   }

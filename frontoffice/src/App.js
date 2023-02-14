@@ -9,6 +9,8 @@ import QuestionDetails from './components/Forum/QuestionDetails';
 import ProductDetails from './components/Marketplace/ProductDetails';
 import ManageCart from './pages/ManageCart';
 import PersonalArea from './pages/PersonalArea';
+import Bills from './components/PersonalArea/Bills';
+import Bookings from './components/PersonalArea/Bookings';
 
 function App() {
   return (
@@ -23,7 +25,10 @@ function App() {
         <Route path='/marketplace/:id' element={<ProductDetails />} />
         <Route path='/services' element={<Services />} />
         <Route path='/marketplace/cart' element={<ManageCart />} />
-        <Route path='/myarea' element={<PersonalArea />} />
+        <Route path='/myarea' element={<PersonalArea />}>
+          <Route path='/myarea/bills' element={<Bills />} />
+          <Route path='/myarea/bookings' element={<Bookings />} />
+        </Route>
         <Route path='/login' element={<LoginRegisterPage login={true} />} />
         <Route path='/signup' element={<LoginRegisterPage signup={true} />} />
       </Routes>

@@ -12,7 +12,8 @@ const initialState = {
     cart: {},
     loadingAll: false,
     loadingOne: false,
-    loadingCategories: false
+    loadingCategories: false,
+    bills: []
 }
 
 // Thunk per ottenere la lista dei prodotti
@@ -36,6 +37,20 @@ export const getAllProducts = createAsyncThunk(
     }
 );
 
+// Thunk per ottenere la lista dei prodotti
+export const getAllBills = createAsyncThunk(
+    `${name}/getAllBills`,
+    async ({  }, thunkAPI) => {
+        const { userInfo } = thunkAPI.getState().auth.user
+        const id = userInfo["_id"]
+        const params = queryString.stringify({
+            userID: id
+        })
+        const response = await fetch(`${baseApiUrl}/bill?${params}`);
+        return response.json();
+    }
+);
+
 // Thunk per ottenere il carrello di un utente
 export const getCart = createAsyncThunk(
     `${name}/getCart`,
@@ -48,6 +63,29 @@ export const getCart = createAsyncThunk(
 
         const response = await fetch(`${baseApiUrl}/cart?${params}`, {
             headers: {"Authorization": `Bearer ${token}`}
+        });
+        return response.json();
+    }
+);
+
+export const createBill = createAsyncThunk(
+    `${name}/createBill`,
+    async ({ cart, total, paymentMethod }, thunkAPI) => {
+        const { token, userInfo } = thunkAPI.getState().auth.user
+        const id = userInfo["_id"]
+
+        const response = await fetch(`${baseApiUrl}/bill`, {
+            method: 'post',
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user: id,
+                products: cart.products,
+                total,
+                paymentMethod
+            })
         });
         return response.json();
     }
@@ -166,6 +204,13 @@ const productSlice = createSlice({
         })
         builder.addCase(addToCart.fulfilled, (state, action) => {
             state.cart = action.payload
+        })
+        builder.addCase(createBill.fulfilled, (state, action) => {
+            state.cart = {}
+            state.bills.push(action.payload)
+        })
+        builder.addCase(getAllBills.fulfilled, (state, action) => {
+            state.bills = action.payload
         })
     }
 })

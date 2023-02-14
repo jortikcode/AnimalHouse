@@ -1,0 +1,10 @@
+[
+    {
+        "value": "Ordini",
+        "link": "/myarea/bills"
+    },
+    {
+        "value": "Prenotazioni",
+        "link": "/myarea/bookings"
+    }
+]

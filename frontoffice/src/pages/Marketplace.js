@@ -10,7 +10,7 @@ import {
 } from "../app/productsSlice";
 import { FallingLines, MagnifyingGlass } from "react-loader-spinner";
 import ProductCard from "../components/Marketplace/ProductCard";
-import priceRanges from "./priceRanges.json";
+import priceRanges from "./data/priceRanges.json";
 
 const Marketplace = () => {
   const dispatch = useDispatch();
