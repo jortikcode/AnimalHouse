@@ -50,7 +50,7 @@ const userSlice = createSlice({
         builder.addCase(login.fulfilled, (state, action) => {
             localStorage.setItem('user', JSON.stringify(action.payload))
             state.user = action.payload
-            if (!state.user.name)
+            if (!state.user.userInfo)
                 state.isLogged = false
             else
                 state.isLogged = true

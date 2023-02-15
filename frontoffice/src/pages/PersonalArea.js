@@ -4,12 +4,12 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import personalItems from "./data/personalItems.json";
 
 const PersonalArea = () => {
-  const { user } = useSelector((state) => state.auth);
+  const { isLogged, user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   useEffect(() => {
-    if (!user.isLogged) navigate("/login");
+    if (!isLogged) navigate("/login");
   }, []);
-  if (!user.isLogged) return <></>;
+  if (!isLogged) return <></>;
   else
     return (
       <>
