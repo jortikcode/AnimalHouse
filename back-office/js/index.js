@@ -8,7 +8,6 @@ jQuery(function () {
   const city = locationInfo.city;
   const province = locationInfo.province;
   const postalCode = locationInfo.postalCode;
-  console.log(address);
   const template = Handlebars.compile($("#template").html());
   const filled = template({
     address: address,

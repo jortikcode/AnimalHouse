@@ -12,7 +12,7 @@ const prepareQuery = (query) => {
     queryObject.name = { $regex: name, $options: "i" };
   }
   if (location) {
-    queryObject.location = location
+    queryObject.location = location.trim();
   }
   if (category) {
     queryObject.category = { $regex: category, $options: "i" };
@@ -36,10 +36,7 @@ const getAllProducts = async (req, res) => {
       "<=": "$lte",
     };
     const regEx = /\b(<|>|>=|=|<|<=)\b/g;
-    let filters = numericFilters.replace(
-      regEx,
-      (match) => `-${operatorMap[match]}-`
-    );
+    let filters = numericFilters.replace(regEx, (match) => `-${operatorMap[match]}-`);
     const options = ["price", "rating"];
     filters.split(",").forEach((item) => {
       const [field, operator, value] = item.split("-");
@@ -73,18 +70,26 @@ const getAllProducts = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-  const product = await Product.create(req.body);
-  res.status(201).json({ product });
+  const { name, price, description, featured, qta, category, subcategory, location } = req.body;
+  await Product.create({
+    name,
+    price,
+    description,
+    featured: Boolean(featured),
+    qta: Number(qta),
+    category,
+    subcategory: subcategory.split(",").map((sub) => sub.trim()),
+    imgPath: req.file.path,
+    location,
+  });
+  res.redirect(`/back-office/prodotti`);
 };
 
 const getProduct = async (req, res) => {
   const { id: productID } = req.params;
   const product = await Product.findOne({ _id: productID });
   if (!product) {
-    throw createCustomError(
-      `Non esiste nessun prodotto con id : ${productID}`,
-      StatusCodes.NOT_FOUND
-    );
+    throw createCustomError(`Non esiste nessun prodotto con id : ${productID}`, StatusCodes.NOT_FOUND);
   }
   res.status(StatusCodes.OK).json({ product });
 };
@@ -100,10 +105,7 @@ const updateProduct = async (req, res) => {
     }
   );
   if (!product) {
-    throw createCustomError(
-      `Non esiste nessun prodotto con id : ${productID}`,
-      StatusCodes.NOT_FOUND
-    );
+    throw createCustomError(`Non esiste nessun prodotto con id : ${productID}`, StatusCodes.NOT_FOUND);
   }
   res.status(StatusCodes.OK).json({ id: productID, data: req.body });
 };
@@ -112,10 +114,7 @@ const deleteProduct = async (req, res) => {
   const { id: productID } = req.params;
   const product = await Product.findOneAndDelete({ _id: productID });
   if (!product) {
-    throw createCustomError(
-      `Non esiste nessun prodotto con id : ${productID}`,
-      StatusCodes.NOT_FOUND
-    );
+    throw createCustomError(`Non esiste nessun prodotto con id : ${productID}`, StatusCodes.NOT_FOUND);
   }
   res.status(StatusCodes.OK).json({
     msg: `Il prodotto con id ${productID} è stato rimosso con successo`,
