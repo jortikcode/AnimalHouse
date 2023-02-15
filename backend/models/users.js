@@ -55,6 +55,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: path.join(__dirname, "..", "public", "media", "favicon.jpg"),
   },
+  isVip: {
+    type: Boolean,
+    default: false,
+  },
   disabled: {
     type: Boolean,
     default: false,

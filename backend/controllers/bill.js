@@ -23,6 +23,7 @@ const createBill = async (req, res) => {
   // Inizio della transazione
   session.startTransaction();
   let index = 0;
+  const updatedProducts = [];
   for (const product of req.body.products) {
     const updatedProduct = await Product.findOneAndUpdate(
       { _id: product.product },
@@ -36,6 +37,7 @@ const createBill = async (req, res) => {
         runValidators: true,
       }
     );
+    updatedProducts.push(updatedProduct);
     index++;
   }
   const bill = await Bill.create(req.body);
@@ -44,17 +46,22 @@ const createBill = async (req, res) => {
   // Fine della transazione
   await session.commitTransaction();
 
-  res.status(StatusCodes.CREATED).json({ bill });
+  res
+    .status(StatusCodes.CREATED)
+    .json({ bill: bill, products: updatedProducts, cart: cart });
 };
 
 /* Ottiene tutte le fatture */
 const getAllBills = async (req, res) => {
   const { userID, location, sort } = req.query;
   const queryObject = {};
-
-  let result = Bill.find({
-    user: userID,
-  }).populate("user", "products");
+  if (location) {
+    queryObject.location = { $regex: location, $options: "i" };
+  }
+  if (userID) {
+    queryObject.user = { $regex: userID, $options: "i" };
+  }
+  let result = Bill.find(queryObject).populate("user", "products");
   // sort
   if (sort) {
     const sortList = sort.split(",").join(" ");
