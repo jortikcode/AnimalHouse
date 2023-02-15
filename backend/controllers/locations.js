@@ -3,8 +3,17 @@ const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
 
 const getAllLocations = async (req, res) => {
-  const {sort} = req.query;
-
+  const { sort, city } = req.query;
+  if (city){
+    const locations = await Location.find({ city });
+    if (!locations) {
+      throw createCustomError(
+        `Non esiste nassuna sede nella città : ${city}`,
+        StatusCodes.NOT_FOUND
+      );
+    }
+    return res.status(StatusCodes.OK).json([ ...locations ]);
+  }
   let result = Location.find();
   // sort
   if (sort) {
@@ -20,8 +29,8 @@ const getAllLocations = async (req, res) => {
   const skip = (page - 1) * limit;
 
   result = result.skip(skip).limit(limit);
-  const posts = await result;
-  res.status(StatusCodes.OK).json(posts);
+  const locations = await result;
+  res.status(StatusCodes.OK).json(locations);
 };
 
 const createLocation = async (req, res) => {
@@ -31,27 +40,20 @@ const createLocation = async (req, res) => {
 
 const getLocationByID = async (req, res) => {
   const { id: locationID } = req.params;
-  const location = await Post.findOne({ _id: locationID });
+  const location = await Location.findOne({ _id: locationID });
   if (!location) {
     throw createCustomError(
       `Non esiste nassuna sede con id : ${locationID}`,
       StatusCodes.NOT_FOUND
     );
   }
-  res.status(StatusCodes.OK).json({ location });
+  res.status(StatusCodes.OK).json(location);
 };
 
-const getLocationByCity = async (req, res) => {
-    const { city: locationCity } = req.params;
-    const location = await Post.findOne({ city: locationCity });
-    if (!location) {
-      throw createCustomError(
-        `Non esiste nassuna sede nella città : ${locationCity}`,
-        StatusCodes.NOT_FOUND
-      );
-    }
-    res.status(StatusCodes.OK).json({ location });
-  };
+const getAllCities = async (req, res) => {
+  const categories = await Location.distinct("city");
+  res.status(StatusCodes.OK).json(categories);
+}
 
 const updateLocation = async (req, res) => {
   const { id: locationID } = req.params;
@@ -83,14 +85,14 @@ const deleteLocation = async (req, res) => {
   }
   res
     .status(StatusCodes.OK)
-    .json({ msg: `La sede con id ${postID} è stata rimossa con successo` });
+    .json({ msg: `La sede con id ${locationID} è stata rimossa con successo` });
 };
 
 module.exports = {
   getAllLocations,
+  getAllCities,
   createLocation,
   getLocationByID,
-  getLocationByCity,
   updateLocation,
   deleteLocation,
 };

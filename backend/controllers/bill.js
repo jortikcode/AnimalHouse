@@ -53,13 +53,10 @@ const createBill = async (req, res) => {
 
 /* Ottiene tutte le fatture */
 const getAllBills = async (req, res) => {
-  const { userID, location, sort } = req.query;
+  const { userID, sort } = req.query;
   const queryObject = {};
-  if (location) {
-    queryObject.location = { $regex: location, $options: "i" };
-  }
   if (userID) {
-    queryObject.user = { $regex: userID, $options: "i" };
+    queryObject.user = userID;
   }
   let result = Bill.find(queryObject).populate("user", "products");
   // sort

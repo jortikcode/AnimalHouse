@@ -50,7 +50,10 @@ const userSlice = createSlice({
         builder.addCase(login.fulfilled, (state, action) => {
             localStorage.setItem('user', JSON.stringify(action.payload))
             state.user = action.payload
-            state.isLogged = true
+            if (!state.user.name)
+                state.isLogged = false
+            else
+                state.isLogged = true
         })
         builder.addCase(login.rejected, (state, action) => {
             state.user = {}

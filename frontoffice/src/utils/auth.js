@@ -10,7 +10,8 @@ export const signupObject = (formData) => {
         email: formData.email,
         password: formData.password,
         gender: formData.gender,
-        birth: formData.birth
+        birth: formData.birth,
+        isVip: formData.abbonamento === "vip"
     }
 }
 

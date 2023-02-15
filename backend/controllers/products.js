@@ -12,7 +12,7 @@ const prepareQuery = (query) => {
     queryObject.name = { $regex: name, $options: "i" };
   }
   if (location) {
-    queryObject.location = { $regex: location, $options: "i" };
+    queryObject.location = location
   }
   if (category) {
     queryObject.category = { $regex: category, $options: "i" };

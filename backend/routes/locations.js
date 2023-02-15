@@ -4,12 +4,15 @@ const {
   getAllLocations,
   createLocation,
   getLocationByID,
-  getLocationByCity,
   updateLocation,
   deleteLocation,
+  getAllCities,
 } = require("../controllers/locations");
 
 router.route("/").get(getAllLocations).post(createLocation);
+
+// Prima di /:id per evitare conflitti
+router.route("/city").get(getAllCities);
 
 router
   .route("/:id")
@@ -17,6 +20,5 @@ router
   .patch(updateLocation)
   .delete(deleteLocation);
 
-router.route("/city/:city").get(getLocationByCity);
 
 module.exports = router;

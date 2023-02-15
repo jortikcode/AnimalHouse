@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { MagnifyingGlass } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
+import { getLocationByID, waitingGetLocation } from "../../app/locationsSlice";
 import { getProduct, waitingGetById } from "../../app/productsSlice";
 import AddCart from "./AddCart";
 import BackArrow from "./BackArrow";
-import ProductCard from "./ProductCard";
 import Star from "./Star";
 
 const { useParams } = require("react-router-dom");
@@ -12,7 +12,9 @@ const { useParams } = require("react-router-dom");
 const ProductDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const { loadingOne, product } = useSelector((state) => state.marketplace);
+  const { loadingOne, product } = useSelector(state => state.marketplace);
+  const { location: locationInfo, loadingLocation } = useSelector(state => state.locations)
+
   const {
     _id,
     name,
@@ -24,6 +26,7 @@ const ProductDetails = () => {
     qta,
     imgPath,
     featured,
+    location: locationID
   } = product
 
   useEffect(() => {
@@ -31,7 +34,14 @@ const ProductDetails = () => {
     dispatch(getProduct({ id }));
   }, [dispatch, id]);
 
-  if (loadingOne)
+  useEffect(() => {
+    if (locationID){
+      dispatch(waitingGetLocation())
+      dispatch(getLocationByID({ id: locationID }))
+    }
+  }, [dispatch, locationID])
+
+  if (loadingOne || loadingLocation)
     return (
       <div className="flex mt-9 justify-center flex-col items-center">
         <MagnifyingGlass
@@ -104,6 +114,13 @@ const ProductDetails = () => {
               <dt className="font-medium text-gray-900">Prezzo</dt>
               <dd className="mt-2 text-sm text-gray-500">
                 {price}€
+              </dd>
+            </div>
+
+            <div className="border-t border-gray-200 pt-4">
+              <dt className="font-medium text-gray-900">Sede</dt>
+              <dd className="mt-2 text-sm text-gray-500">
+                {locationInfo.address}, {locationInfo.city}
               </dd>
             </div>
           </dl>
