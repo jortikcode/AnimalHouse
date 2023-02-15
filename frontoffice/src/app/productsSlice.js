@@ -13,7 +13,8 @@ const initialState = {
     loadingAll: false,
     loadingOne: false,
     loadingCategories: false,
-    bills: []
+    loadingBills: false,
+    bills: [],
 }
 
 // Thunk per ottenere la lista dei prodotti
@@ -173,6 +174,9 @@ const productSlice = createSlice({
         waitingGetById: (state) => {
             state.loadingOne = true
         },
+        waitingBills: (state) => {
+            state.loadingBills = true
+        },
         waitingGetAllCategories: (state) => {
             state.loadingCategories = true
         }
@@ -210,10 +214,11 @@ const productSlice = createSlice({
             state.bills.push(action.payload)
         })
         builder.addCase(getAllBills.fulfilled, (state, action) => {
+            state.loadingBills = false
             state.bills = action.payload
         })
     }
 })
 
-export const { clearAll, clearCart, waitingGetAll, waitingGetById, waitingGetAllCategories } = productSlice.actions
+export const { clearAll, clearCart, waitingGetAll, waitingGetById, waitingGetAllCategories, waitingBills } = productSlice.actions
 export const marketplace = productSlice.reducer

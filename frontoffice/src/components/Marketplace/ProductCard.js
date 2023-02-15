@@ -19,8 +19,7 @@ const ProductCard = ({ _id, name, price, imgPath, rating, qta }) => {
   }, [cart, _id])
 
   return (
-    <div className="max-w-full">
-      <div className="bg-white shadow-md rounded-lg max-w-sm hover:bg-yellow-100">
+      <div className="rounded-lg max-w-sm hover:bg-yellow-100 border-4 border-black">
         <Link to={`/marketplace/${_id}`}>
           <img className="rounded-t-lg p-8" src={imgPath} alt="product" />
         </Link>
@@ -49,7 +48,6 @@ const ProductCard = ({ _id, name, price, imgPath, rating, qta }) => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

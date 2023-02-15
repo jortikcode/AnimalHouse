@@ -7,16 +7,14 @@ const Cart = () => {
   const totalItems = cart?.products?.length || 0;
 
   return (
-    <div className="cursor-pointer rounded">
-      <div className="flex flex-start items-center w-full">
         <Link
           to="/marketplace/cart"
           type="button"
           role="button"
           slot="icon"
-          className="relative"
+          className="relative flex flex-col flex-start items-start w-fit"
         >
-          <div className="absolute text-xs rounded-full -mt-1 -mr-2 px-1 font-bold top-0 right-0 bg-red-700 text-white">
+          <div className="absolute text-xs rounded-full -mt-1 -mr-2 px-1 font-bold top-0 left-3 bg-red-700 text-white">
             {totalItems}
           </div>
           <svg
@@ -36,8 +34,6 @@ const Cart = () => {
             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
           </svg>
         </Link>
-      </div>
-    </div>
   );
 };
 

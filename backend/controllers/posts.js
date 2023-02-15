@@ -3,11 +3,15 @@ const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
 
 const getAllPosts = async (req, res) => {
-  const { title, text, sort, fields } = req.query;
+  const { title, text, sort, fields, getCategories } = req.query;
   const queryObject = {};
 
   if (title) {
     queryObject.title = { $regex: title, $options: "i" };
+  }
+  if (getCategories) {
+    const categories = await Post.distinct("category");
+    return res.status(StatusCodes.OK).json(categories);
   }
   if (text) {
     queryObject.text = { $regex: text, $options: "i" };

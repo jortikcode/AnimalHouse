@@ -5,22 +5,24 @@ import Marketplace from './pages/Marketplace';
 import Services from './pages/Services';
 import Navbar from './components/Navbar/Navbar'
 import LoginRegisterPage from './pages/LoginRegisterPage';
-import QuestionDetails from './components/Forum/QuestionDetails';
+import PostDetails from './components/Forum/PostDetails';
 import ProductDetails from './components/Marketplace/ProductDetails';
 import ManageCart from './pages/ManageCart';
 import PersonalArea from './pages/PersonalArea';
 import Bills from './components/PersonalArea/Bills';
 import Bookings from './components/PersonalArea/Bookings';
+import Footer from './components/Footer/Footer';
 
 function App() {
   return (
-  <div className="w-full min-h-screen">
+  
     <BrowserRouter>
+      <div className="w-full min-h-screen">
       <Navbar />
       <Routes>
         <Route path='/' element={<Homepage />} />
         <Route path='/forum' element={<Forum />} />
-        <Route path='/forum/:id' element={<QuestionDetails />} />
+        <Route path='/forum/:id' element={<PostDetails />} />
         <Route path='/marketplace' element={<Marketplace />} />
         <Route path='/marketplace/:id' element={<ProductDetails />} />
         <Route path='/services' element={<Services />} />
@@ -32,8 +34,9 @@ function App() {
         <Route path='/login' element={<LoginRegisterPage login={true} />} />
         <Route path='/signup' element={<LoginRegisterPage signup={true} />} />
       </Routes>
+      </div>
+      <Footer />
     </BrowserRouter>
-  </div>
   );
 }
 
