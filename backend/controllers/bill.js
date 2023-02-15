@@ -1,6 +1,6 @@
 const Bill = require("../models/bill");
 const Product = require("../models/product");
-const Cart = require("../models/cart")
+const Cart = require("../models/cart");
 const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
 const mongoose = require("mongoose");
@@ -8,10 +8,10 @@ const product = require("../models/product");
 
 /* Crea una nuova fattura */
 const createBill = async (req, res) => {
-  let quantities = []
+  let quantities = [];
   for (const product of req.body.products) {
     const { qta: quantity } = await Product.findById(product.product);
-    quantities.push(quantity)
+    quantities.push(quantity);
     if (quantity < parseInt(product.quantity))
       throw createCustomError(
         `Impossibile ordinare, svuotare il carrello e riprovare`,
@@ -22,7 +22,7 @@ const createBill = async (req, res) => {
   const session = await mongoose.startSession();
   // Inizio della transazione
   session.startTransaction();
-  let index = 0
+  let index = 0;
   for (const product of req.body.products) {
     const updatedProduct = await Product.findOneAndUpdate(
       { _id: product.product },
@@ -36,24 +36,24 @@ const createBill = async (req, res) => {
         runValidators: true,
       }
     );
-    index++
+    index++;
   }
   const bill = await Bill.create(req.body);
   // Il carrello puo' essere
-  const cart = await Cart.deleteOne({ user: req.body.user })
+  const cart = await Cart.deleteOne({ user: req.body.user });
   // Fine della transazione
   await session.commitTransaction();
-  
+
   res.status(StatusCodes.CREATED).json({ bill });
 };
 
 /* Ottiene tutte le fatture */
 const getAllBills = async (req, res) => {
-  const { userID, sort } = req.query;
+  const { userID, location, sort } = req.query;
   const queryObject = {};
 
   let result = Bill.find({
-    user: userID
+    user: userID,
   }).populate("user", "products");
   // sort
   if (sort) {

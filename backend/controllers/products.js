@@ -27,6 +27,9 @@ const getAllProducts = async (req, res) => {
   if (location) {
     queryObject.location = { $regex: location, $options: "i" };
   }
+  if (category) {
+    queryObject.category = { $regex: category, $options: "i" };
+  }
   if (numericFilters) {
     const operatorMap = {
       ">": "$gt",
