@@ -46,6 +46,11 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       default: path.join(__dirname, "..", "public", "media", "default.jpg"),
     },
+    location: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Location",
+      required: [true, "Serve la sede dove è situato il prodotto"],
+    },
   },
   { timestamps: true }
 );

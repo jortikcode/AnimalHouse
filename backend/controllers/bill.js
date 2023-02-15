@@ -49,7 +49,7 @@ const createBill = async (req, res) => {
 
 /* Ottiene tutte le fatture */
 const getAllBills = async (req, res) => {
-  const { userID, sort, fields } = req.query;
+  const { userID, sort } = req.query;
   const queryObject = {};
 
   let result = Bill.find({

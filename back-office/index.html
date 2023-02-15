@@ -58,69 +58,59 @@
 
     <!-- Main -->
     <main class="flex-1">
-        <div class="bg-gray-200 min-h-screen p-10">
-            <h1 class="text-center text-3xl font-bold">Back-Office Animal House</h1>
-            <div class="flex flex-wrap justify-center mt-10">
-                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
-                    <h2 class="text-lg font-medium mb-5">Sedi</h2>
-                    <p class="text-gray-700 mb-5">Visualizza, modifica e aggiungi nuove sedi Animal House.</p>
-                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a Sedi</a>
-                </div>
-                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
-                    <h2 class="text-lg font-medium mb-5">Utenti</h2>
-                    <p class="text-gray-700 mb-5">Visualizza, modifica e aggiungi nuovi utenti.</p>
-                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a Utenti</a>
-                </div>
-                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
-                    <h2 class="text-lg font-medium mb-5">Prodotti</h2>
-                    <p class="text-gray-700 mb-5">Visualizza, modifica e aggiungi nuovi prodotti.</p>
-                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a
-                        Prodotti</a>
-                </div>
-                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
-                    <h2 class="text-lg font-medium mb-5">Servizi</h2>
-                    <p class="text-gray-700 mb-5">Visualizza, modifica e aggiungi nuovi servizi.</p>
-                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a Servizi</a>
-                </div>
-                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
-                    <h2 class="text-lg font-medium mb-5">Bacheca</h2>
-                    <p class="text-gray-700 mb-5">Visualizza e analizza le statistiche delle vendite e delle prestazioni
-                        del
-                        tuo e-commerce per animali.</p>
-                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a
-                        Statistiche</a>
-                </div>
-                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
-                    <h2 class="text-lg font-medium mb-5">Prenotazioni</h2>
-                    <p class="text-gray-700 mb-5">Visualizza, gestisci e monitora tutti gli ordini effettuati sul tuo
-                        e-commerce per animali.</p>
-                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a Ordini</a>
-                </div>
-                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
-                    <h2 class="text-lg font-medium mb-5">Fatture</h2>
-                    <p class="text-gray-700 mb-5">Visualizza e analizza le statistiche delle vendite e delle prestazioni
-                        del
-                        tuo e-commerce per animali.</p>
-                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a
-                        Statistiche</a>
-                </div>
-                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
-                    <h2 class="text-lg font-medium mb-5">About</h2>
-                    <p class="text-gray-700 mb-5">Visualizza e analizza le statistiche delle vendite e delle prestazioni
-                        del
-                        tuo e-commerce per animali.</p>
-                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a
-                        Statistiche</a>
-                </div>
-                <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
-                    <h2 class="text-lg font-medium mb-5">Me</h2>
-                    <p class="text-gray-700 mb-5">Visualizza e analizza le statistiche delle vendite e delle prestazioni
-                        del
-                        tuo e-commerce per animali.</p>
-                    <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a
-                        Statistiche</a>
+        <script id="template" type="text/x-handlebars-template">
+            <div class="bg-gray-200 min-h-screen p-10">
+                <h1 class="text-center text-3xl font-bold">Back-Office Animal House</h1>
+                <div class="flex flex-wrap justify-center mt-10">
+                    <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
+                        <h2 class="text-lg font-medium mb-5">Sede</h2>
+
+                        <p class="text-gray-700 mb-5">Indirizzo:{{address}}</p>
+                        <p class="text-gray-700 mb-5">{{city}} ({{province}})</p>
+                        <p class="text-gray-700 mb-5">{{postalCode}}</p>
+                    </div>
+                    <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
+                        <h2 class="text-lg font-medium mb-5">Utenti</h2>
+                        <p class="text-gray-700 mb-5">Visualizza, modifica e aggiungi nuovi utenti.</p>
+                        <a href="/back-office/utenti" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a Utenti</a>
+                    </div>
+                    <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
+                        <h2 class="text-lg font-medium mb-5">Prodotti</h2>
+                        <p class="text-gray-700 mb-5">Visualizza, modifica e aggiungi nuovi prodotti.</p>
+                        <a href="/back-office/prodotti" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a
+                            Prodotti</a>
+                    </div>
+                    <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
+                        <h2 class="text-lg font-medium mb-5">Servizi</h2>
+                        <p class="text-gray-700 mb-5">Visualizza, modifica e aggiungi nuovi servizi.</p>
+                        <a href="/back-office/servizi" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a Servizi</a>
+                    </div>
+                    <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
+                        <h2 class="text-lg font-medium mb-5">Bacheca</h2>
+                        <p class="text-gray-700 mb-5">Visualizza e analizza le statistiche delle vendite e delle prestazioni
+                            del
+                            tuo e-commerce per animali.</p>
+                        <a href="/back-office/bacheca" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a
+                            Bacheca</a>
+                    </div>
+                    <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
+                        <h2 class="text-lg font-medium mb-5">Prenotazioni</h2>
+                        <p class="text-gray-700 mb-5">Visualizza, gestisci e modifica tutte le prenotazioni.</p>
+                        <a href="/back-office/prenotazioni" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a Prenotazioni</a>
+                    </div>
+                    <div class="w-full md:w-1/4 p-10 bg-white rounded-lg shadow-lg md:m-5 border-2 border-gray-300">
+                        <h2 class="text-lg font-medium mb-5">Fatture</h2>
+                        <p class="text-gray-700 mb-5">Visualizza e analizza le statistiche delle vendite e delle prestazioni
+                            del
+                            tuo e-commerce per animali.</p>
+                        <a href="#" class="bg-yellow-500 text-black px-5 py-3 rounded hover:bg-yellow-600">Vai a
+                            Statistiche</a>
+                    </div>
                 </div>
             </div>
+        </script>
+        <div id="output">
+
         </div>
     </main>
     <!-- Footer -->

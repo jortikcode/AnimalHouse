@@ -3,8 +3,16 @@ const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
 
 const getAllProducts = async (req, res) => {
-  const { featured, category, name, sort, fields, numericFilters, getCategories } =
-    req.query;
+  const {
+    featured,
+    category,
+    name,
+    sort,
+    location,
+    fields,
+    numericFilters,
+    getCategories,
+  } = req.query;
   const queryObject = {};
   if (getCategories) {
     const categories = await Product.distinct("category");
@@ -16,8 +24,8 @@ const getAllProducts = async (req, res) => {
   if (name) {
     queryObject.name = { $regex: name, $options: "i" };
   }
-  if (category) {
-    queryObject.category = { $regex: category, $options: "i" };
+  if (location) {
+    queryObject.location = { $regex: location, $options: "i" };
   }
   if (numericFilters) {
     const operatorMap = {
@@ -36,10 +44,8 @@ const getAllProducts = async (req, res) => {
     filters.split(",").forEach((item) => {
       const [field, operator, value] = item.split("-");
       if (options.includes(field)) {
-        if (queryObject[field])
-          queryObject[field][operator] = Number(value);
-        else
-          queryObject[field] = { [operator]: Number(value) }
+        if (queryObject[field]) queryObject[field][operator] = Number(value);
+        else queryObject[field] = { [operator]: Number(value) };
       }
     });
   }
