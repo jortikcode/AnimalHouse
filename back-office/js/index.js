@@ -1,15 +1,26 @@
 jQuery(function () {
   const token = window.localStorage.getItem("token");
-  if(!token){
+  if (!token) {
     window.location.replace("/back-office/login");
   }
+  const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
+  const address = locationInfo.address;
+  const city = locationInfo.city;
+  const province = locationInfo.province;
+  const postalCode = locationInfo.postalCode;
+  console.log(address);
   const template = Handlebars.compile($("#template").html());
-  const filled = template({ name: "ALEX" });
+  const filled = template({
+    address: address,
+    city: city,
+    province: province,
+    postalCode: postalCode,
+  });
   $("#output").html(filled);
 });
 
 const checkToken = () => {
-  if(!window.localStorage.getItem("token")){
+  if (!window.localStorage.getItem("token")) {
     return false;
   }
-}
+};

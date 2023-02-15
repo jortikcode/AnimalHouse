@@ -20,8 +20,9 @@ $("#form").on("submit", function (event) {
       $("#errors").html(filled);
     } else {
       const admin = await response.json();
-      localStorage.setItem("token", admin.token);
-      localStorage.setItem("locationInfo", admin.locationInfo);
+      const { token, locationInfo } = { ...admin };
+      localStorage.setItem("token", token);
+      localStorage.setItem("locationInfo", JSON.stringify(locationInfo));
       window.location.replace("/back-office");
     }
   };
