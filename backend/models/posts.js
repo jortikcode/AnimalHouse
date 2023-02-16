@@ -19,6 +19,10 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: [true, "In quale bacheca si deve postare?"],
     },
+    createdAt: {
+      type: Date,
+      default: Date.now(),
+    },
     createdBy: {
       type: mongoose.Types.ObjectId,
       ref: "User",
