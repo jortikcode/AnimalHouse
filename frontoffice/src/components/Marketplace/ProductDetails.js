@@ -62,52 +62,42 @@ const ProductDetails = () => {
       <BackArrow />
       <div className="mx-auto grid max-w-2xl grid-cols-1 items-center gap-y-16 gap-x-8 px-4 sm:px-6 lg:max-w-7xl lg:grid-cols-2 lg:px-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            {name}
-          </h1>
-          <p className="mt-4 text-gray-500">
-            {description}
-          </p>
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{name}</h1>
+          <p className="mt-4 text-gray-500">{description}</p>
 
           <dl className="mt-16 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-16 lg:gap-x-8">
             <div className="border-t border-gray-200 pt-4">
               <dt className="font-medium text-gray-900">Recensioni</dt>
               <dd className="mt-2 text-sm text-gray-500 flex flex-row">
                 {[...Array(rating)].map((e, index) => (
-                <span className="" key={index}>
-                  {" "}
-                  <Star />{" "}
-                </span>
-              ))}
+                  <span
+                    className=""
+                    key={index}>
+                    {" "}
+                    <Star />{" "}
+                  </span>
+                ))}
               </dd>
             </div>
 
             <div className="border-t border-gray-200 pt-4">
               <dt className="font-medium text-gray-900">Quantita' disponibile</dt>
-              <dd className="mt-2 text-sm text-gray-500">
-                {qta}
-              </dd>
+              <dd className="mt-2 text-sm text-gray-500">{qta}</dd>
             </div>
 
             <div className="border-t border-gray-200 pt-4">
               <dt className="font-medium text-gray-900">Categoria</dt>
-              <dd className="mt-2 text-sm text-gray-500">
-                {category}
-              </dd>
+              <dd className="mt-2 text-sm text-gray-500">{category}</dd>
             </div>
 
             <div className="border-t border-gray-200 pt-4">
               <dt className="font-medium text-gray-900">Sottocategoria</dt>
-              <dd className="mt-2 text-sm text-gray-500">
-              {subcategory}
-              </dd>
+              <dd className="mt-2 text-sm text-gray-500">{subcategory}</dd>
             </div>
 
             <div className="border-t border-gray-200 pt-4">
               <dt className="font-medium text-gray-900">Articolo del mese</dt>
-              <dd className="mt-2 text-sm text-gray-500">
-                {featured ? "SI" : "NO"}
-              </dd>
+              <dd className="mt-2 text-sm text-gray-500">{featured ? "SI" : "NO"}</dd>
             </div>
 
             <div className="border-t border-gray-200 pt-4">

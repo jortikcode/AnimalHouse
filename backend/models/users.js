@@ -96,10 +96,7 @@ UserSchema.pre("findOneAndUpdate", async function (next) {
   }
   const salt = await bcrypt.genSalt(10);
   //aggiungiamo il sale alla password
-  this.getUpdate().$set.password = await bcrypt.hash(
-    this.getUpdate().$set.password,
-    salt
-  );
+  this.getUpdate().$set.password = await bcrypt.hash(this.getUpdate().$set.password, salt);
   return next();
 });
 
@@ -107,10 +104,7 @@ UserSchema.methods.getResetPasswordToken = function () {
   const resetToken = crypto.randomBytes(20).toString("hex");
 
   // setta il campo resetPasswordToken di questo utente
-  this.resetPasswordToken = crypto
-    .createHash("sha256")
-    .update(resetToken)
-    .digest("hex");
+  this.resetPasswordToken = crypto.createHash("sha256").update(resetToken).digest("hex");
 
   // 10 minuti
   this.resetPasswordExpire = Date.now() + 10 * (60 * 1000);

@@ -37,14 +37,11 @@ const ProductSchema = new mongoose.Schema(
     },
     subcategory: {
       type: [String],
-      required: [
-        true,
-        "Il prodotto deve appartenere ad una o più sottocategorie",
-      ],
+      required: [true, "Il prodotto deve appartenere ad una o più sottocategorie"],
     },
     imgName: {
       type: String,
-      default: path.join(__dirname, "..", "public", "media", "default.jpg"),
+      default: "default_product_image.jpg",
     },
     location: {
       type: mongoose.Schema.Types.ObjectId,

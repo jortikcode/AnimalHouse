@@ -1,6 +1,8 @@
 const Product = require("../models/product");
 const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
+const fs = require("fs");
+const path = require("path");
 
 const prepareQuery = (query) => {
   const { featured, name, location, category } = query;
@@ -71,6 +73,10 @@ const getAllProducts = async (req, res) => {
 
 const createProduct = async (req, res) => {
   const { name, price, description, featured, qta, category, subcategory, location } = req.body;
+  let imgName = "default_product_image.jpg";
+  if (req.file?.filename) {
+    imgName = req.file.filename;
+  }
   await Product.create({
     name,
     price,
@@ -79,7 +85,7 @@ const createProduct = async (req, res) => {
     qta: Number(qta),
     category,
     subcategory: subcategory.split(",").map((sub) => sub.trim()),
-    imgName: req.file.path,
+    imgName,
     location,
   });
   res.redirect(`/back-office/prodotti`);
@@ -94,11 +100,58 @@ const getProduct = async (req, res) => {
   res.status(StatusCodes.OK).json({ product });
 };
 
+const prepareUpdate = (body) => {
+  const updateObj = {};
+  const { name, price, description, featured, qta, category, subcategory } = body;
+  if (name) {
+    updateObj.name = name;
+  }
+  if (price) {
+    updateObj.price = price;
+  }
+  if (description) {
+    updateObj.description = description;
+  }
+  if (featured) {
+    updateObj.featured = Boolean(featured);
+  }
+  if (qta) {
+    updateObj.qta = qta;
+  }
+  if (category) {
+    updateObj.category = category;
+  }
+  if (subcategory) {
+    updateObj.subcategory = subcategory.split(",").map((sub) => sub.trim());
+  }
+  return updateObj;
+};
+
 const updateProduct = async (req, res) => {
   const { id: productID } = req.params;
+  const updateObj = prepareUpdate(req.body);
+  if (req.file?.filename) {
+    updateObj.imgName = req.file.filename;
+    /* Cancello l'immagine precente */
+    const product = await Product.findOne({ _id: productID });
+    if (!product) {
+      console.log(productID);
+      throw createCustomError(`Non esiste nessun prodotto con id : ${productID}`, StatusCodes.NOT_FOUND);
+    }
+    if (product.imgName != "default_product_image.jpg") {
+      fs.unlink(path.join(global.baseDir, "public", "media", product.imgName), (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+    }
+  }
+
   const product = await Product.findOneAndUpdate(
     { _id: productID },
-    { $set: req.body },
+    {
+      $set: updateObj,
+    },
     {
       new: true,
       runValidators: true,
@@ -112,10 +165,19 @@ const updateProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
   const { id: productID } = req.params;
-  const product = await Product.findOneAndDelete({ _id: productID });
+  const product = await Product.findOne({ _id: productID });
   if (!product) {
+    console.log(productID);
     throw createCustomError(`Non esiste nessun prodotto con id : ${productID}`, StatusCodes.NOT_FOUND);
   }
+  if (product.imgName != "default_product_image.jpg") {
+    fs.unlink(path.join(global.baseDir, "public", "media", product.imgName), (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  }
+  await Product.deleteOne({ _id: productID });
   res.status(StatusCodes.OK).json({
     msg: `Il prodotto con id ${productID} è stato rimosso con successo`,
   });

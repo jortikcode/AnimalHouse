@@ -12,12 +12,14 @@
     <script src="/js/handlebars-v4.7.7.js"></script>
     <!-- JQuery -->
     <script src="/js/jquery.js"></script>
+
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
 </head>
 
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen items-center">
 
     <!-- Navbar -->
-    <nav class="flex items-center justify-between flex-wrap bg-yellow-500 p-6">
+    <nav class="flex items-center justify-between flex-wrap bg-yellow-500 p-6 w-full">
         <div class="flex items-center flex-shrink-0 text-white mr-6">
             <a class="navbar-brand" href="/back-office">
                 <img class="mx-auto responsive-img" src="/img/black-logo.png" alt="Animal House logo"
@@ -61,7 +63,7 @@
     </nav>
 
     <!-- Main -->
-    <main class="flex-1">
+    <main class="flex-1 w-full">
         <div class="bg-gray-200 min-h-screen p-10">
             <h1 class="text-center text-3xl font-bold">Prodotti</h1>
             <div class="flex flex-wrap justify-center">
@@ -81,8 +83,7 @@
                             <div class="text-gray-700">
                                 Ricerca per:
                                 <div class="flex items-center justify-start">
-                                    <select class="border border-gray-400 rounded-lg px-2 py-1">
-                                        <option value="__id">ID</option>
+                                    <select id="searchParam" class="border border-gray-400 rounded-lg px-2 py-1">
                                         <option value="name">Nome</option>
                                         <option value="category">Categoria</option>
                                     </select>
@@ -92,7 +93,7 @@
                                 <div class="container mx-auto ">
                                     <div class="flex items-center justify-start ">
                                         <form>
-                                            <input class="bg-white rounded-lg p-2" type="text"
+                                            <input id="search" class="bg-white rounded-lg p-2" type="text"
                                                 placeholder="Cerca prodotto" />
                                         </form>
                                     </div>
@@ -104,58 +105,51 @@
                                 data-bs-target="#createModal">Nuovo prodotto</button>
                         </div>
                     </div>
-                    <table class="table-auto w-full border-2 border-black rounded-lg"
+                    <table class="sortable table-auto w-full border-2 border-black rounded-lg border-spacing-0"
                         aria-label="tabella per la gestione dei prodotti">
                         <thead>
                             <tr class="bg-yellow-500">
-                                <th class="cursor-pointer px-4 py-2" data-order-by="__id">ID</th>
                                 <th class="cursor-pointer px-4 py-2" data-order-by="name">Nome</th>
                                 <th class="cursor-pointer px-4 py-2" data-order-by="price">Prezzo</th>
                                 <th class="cursor-pointer px-4 py-2" data-order-by="qta">Quantità</th>
                                 <th class="cursor-pointer px-4 py-2" data-order-by="rating">Valutazione</th>
+                                <th class="cursor-pointer px-4 py-2" data-order-by="category">Categoria</th>
                                 <th class="px-4 py-2">Azioni</th>
                             </tr>
                         </thead>
                         <tbody id="tableRows">
-
-                            <script id="productsTemplate" type="text/x-handlebars-template">
-                                {{#each products}}
-                                <tr>
-                                    <td class="border border-black px-4 py-2">{{this._id}}</td>
-                                    <td class="border border-black px-4 py-2">{{this.name}}</td>
-                                    <td class="border border-black px-4 py-2">{{this.price}}</td>
-                                    <td class="border border-black px-4 py-2">{{this.qta}}</td>
-                                    <td class="border border-black px-4 py-2">{{this.rating}}</td>
-                                    <td class="border border-black px-1 py-2 flex justify-center h-full">
-                                        <button class="bg-yellow-500 text-black rounded-lg px-2 py-1 mx-1"><img
-                                            class="mx-auto responsive-img" src="/img/view.png" alt="Visualizza"
-                                            style="max-height: 30PX; min-width: 1em;" /></button>
-                                        <button class="bg-yellow-500 text-black rounded-lg px-2 py-1 mx-1"><img
-                                            class="mx-auto responsive-img" src="/img/edit.png" alt="Modifica"
-                                            style="max-height: 30PX; min-width: 1em;" /></button>
-                                        <button class="bg-yellow-500 text-black rounded-lg px-2 py-1 mx-1"><img
-                                            class="mx-auto responsive-img" src="/img/remove.png" alt="Elimina"
-                                            style="max-height: 30PX; min-width: 1em;" /></button>
-                                    </td>
-                                </tr>
-                                {{/each}}
-                            </script>
                         </tbody>
+                        <script id="productsTemplate" type="text/x-handlebars-template">
+                            {{#if products}}
+                            {{#each products}}
+                            <tr>
+                                <td class="border border-black px-4 py-2">{{this.name}}</td>
+                                <td class="border border-black px-4 py-2">{{this.price}}</td>
+                                <td class="border border-black px-4 py-2">{{this.qta}}</td>
+                                <td class="border border-black px-4 py-2">{{this.rating}}</td>
+                                <td class="border border-black px-4 py-2">{{this.category}}</td>
+                                <td class="border border-black px-4 py-2">
+                                    <div class="flex items-center gap-2 justify-center">
+                                        <button id="{{this._id}}" onclick="populateViewProduct(this.id)" data-bs-toggle="modal" data-bs-target="#viewModal" class="bg-yellow-500  items-center px-2 py-2 mx-2 rounded-lg"><img
+                                            style="max-height: 2em; min-height: 1em; max-width: 3em; min-width: 1em;" src="/img/view.png" alt="Visualizza"/></button>
+                                        <button id="{{this._id}}" onclick="populateModifyProduct(this.id)" data-bs-toggle="modal" data-bs-target="#modifyModal" class="bg-yellow-500  items-center px-2 py-2 mx-2 rounded-lg "><img
+                                            style="max-height: 2em; min-height: 1em; max-width: 3em; min-width: 1em;" src="/img/edit.png" alt="Modifica"/></button>
+                                        <button id="{{this._id}}" onclick="confirmDelete(this.id)" class="bg-yellow-500 items-center px-2 py-2 rounded-lg mx-2 removeButton"><img
+                                            style="max-height: 2em; min-height: 1em; max-width: 3em; min-width: 1em;" src="/img/remove.png" alt="Elimina" /></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{/each}}
+                            {{/if}}
+                        </script>
                     </table>
-                </div>
-
-                <div class="container mx-auto mt-6">
-                    <div class="flex justify-center">
-                        <button class="bg-yellow-500 text-black rounded px-4 py-2 mx-2">Precedente</button>
-                        <button class="bg-yellow-500 text-black rounded px-4 py-2 mx-2">Successivo</button>
-                    </div>
                 </div>
             </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white text-center py-10">
+    <footer class="bg-gray-800 text-white text-center py-10 w-full">
         <div class="container mx-auto">
             <div class="flex flex-wrap justify-between">
                 <div class="w-1/3">
@@ -172,7 +166,140 @@
         </div>
     </footer>
 
-    <!-- Modal -->
+    <!-- View Modal -->
+    <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+        id="viewModal">
+        <div class="modal-dialog modal-dialog-scrollable relative w-auto pointer-events-none">
+            <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current"
+                style="max-height: 100%;">
+                <div>
+                    <!-- Modal header -->
+                    <div
+                        class="modal-header bg-yellow-500 flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+                        <h5 class="text-xl font-medium leading-normal text-gray-800">Dettaglio prodotto</h5>
+                    </div>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body relative p-4">
+                    <div class="bg-white p-4 rounded-md shadow-md">
+                        <div class="mb-4 flex justify-center">
+                            <img id="viewProductImg" class="w-1/2 mx-auto" src="" alt="Immagine del prodotto">
+                        </div>
+                        <div class="mb-4">
+                            <label for="viewProductName" class="block text-gray-700 font-bold mb-1">Nome
+                                prodotto</label>
+                            <span id="viewProductName" class="p-2 w-full"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label for="viewProductPrice" class="block text-gray-700 font-bold mb-1">Prezzo</label>
+                            <span id="viewProductPrice" class="p-2 w-full"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label for="viewProductDescription"
+                                class="block text-gray-700 font-bold mb-1">Descrizione</label>
+                            <span id="viewProductDescription" class="p-2 w-full"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label for="viewProductFeatured" class="block text-gray-700 font-bold mb-1">In primo
+                                piano</label>
+                            <span id="viewProductFeatured" class="p-2 w-full"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label for="viewProductRating"
+                                class="block text-gray-700 font-bold mb-1">Valutazione</label>
+                            <span id="viewProductRating" class="p-2 w-full"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label for="viewProductQta" class="block text-gray-700 font-bold mb-1">Quantità
+                                disponibile</label>
+                            <span id="viewProductQta" class="p-2 w-full"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label for="viewProductCategory"
+                                class="block text-gray-700 font-bold mb-1">Categoria</label>
+                            <span id="viewProductCategory" class="p-2 w-full"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label for="viewProductSubcategory"
+                                class="block text-gray-700 font-bold mb-1">Sottocategorie</label>
+                            <span id="viewProductSubcategory" class="p-2 w-full"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modify Modal -->
+    <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+        id="modifyModal">
+        <div class="modal-dialog modal-dialog-scrollable relative w-auto pointer-events-none">
+            <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current"
+                style="max-height: 100%;">
+                <div>
+                    <!-- Modal header -->
+                    <div
+                        class="modal-header bg-yellow-500 flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+                        <h5 class="text-xl font-medium leading-normal text-gray-800">Modifica prodotto</h5>
+                    </div>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body relative p-4">
+                    <form id="modifyForm" onsubmit="event.preventDefault(); modifyProduct(this.dataset.productId)">
+                        <div class="mb-4">
+                            <label for="modifyName" class="block text-gray-700 font-bold mb-2">Nome prodotto</label>
+                            <input type="text" name="name" id="modifyName" required
+                                class="border rounded-md p-2 w-full">
+                        </div>
+                        <div class="mb-4">
+                            <label for="modifyPrice" class="block text-gray-700 font-bold mb-2">Prezzo</label>
+                            <input type="number" step="0.01" min="0" name="price" id="modifyPrice" required
+                                class="border rounded-md p-2 w-full">
+                        </div>
+                        <div class="mb-4">
+                            <label for="modifyDescription"
+                                class="block text-gray-700 font-bold mb-2">Descrizione</label>
+                            <textarea name="description" id="modifyDescription"
+                                class="border rounded-md p-2 w-full"></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label for="modifyFeatured" class="block text-gray-700 font-bold mb-2">In evidenza</label>
+                            <input type="checkbox" name="featured" id="modifyFeatured" class="mr-2">
+                            <span>Mostra in evidenza questo prodotto</span>
+                        </div>
+                        <div class="mb-4">
+                            <label for="modifyQta" class="block text-gray-700 font-bold mb-2">Quantità</label>
+                            <input type="number" name="qta" id="modifyQta" min="1" class="border rounded-md p-2 w-full">
+                        </div>
+                        <div class="mb-4">
+                            <label for="modifyCategory" class="block text-gray-700 font-bold mb-2">Categoria</label>
+                            <input type="text" name="category" id="modifyCategory"
+                                placeholder="Inserisci la categoria del prodotto" required
+                                class="border rounded-md p-2 w-full">
+                        </div>
+                        <div class="mb-4">
+                            <label for="modifySubcategory"
+                                class="block text-gray-700 font-bold mb-2">Sottocategorie</label>
+                            <input type="text" name="subcategory" id="modifySubcategory" required
+                                class="border rounded-md p-2 w-full">
+                        </div>
+                        <div class="mb-4">
+                            <label for="modifyimgName" class="block text-gray-700 font-bold mb-2">Immagine</label>
+                            <input type="file" name="imgName" class="border rounded-md p-2 w-full">
+                        </div>
+                        <div class="flex items-center justify-end py-2">
+                            <button type="submit"
+                                class="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600"
+                                data-bs-toggle="modal" data-bs-target="#modifyModal">Modifica
+                                prodotto</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Modal -->
     <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
         id="createModal">
         <div class="modal-dialog modal-dialog-scrollable relative w-auto pointer-events-none">
@@ -213,8 +340,8 @@
                         </div>
                         <div class="mb-4">
                             <label for="qta" class="block text-gray-700 font-bold mb-2">Quantità</label>
-                            <input type="number" name="qta" id="qta" placeholder="Inserisci la quantità disponibile"
-                                class="border rounded-md p-2 w-full">
+                            <input type="number" name="qta" id="qta" min="1"
+                                placeholder="Inserisci la quantità disponibile" class="border rounded-md p-2 w-full">
                         </div>
                         <div class="mb-4">
                             <label for="category" class="block text-gray-700 font-bold mb-2">Categoria</label>
