@@ -47,7 +47,7 @@ const getUser = async (req, res) => {
       StatusCodes.NOT_FOUND
     );
   }
-  res.status(StatusCodes.OK).json({ user });
+  res.status(StatusCodes.OK).json(user);
 };
 
 const updateUser = async (req, res) => {

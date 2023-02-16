@@ -42,7 +42,7 @@ const getAllPosts = async (req, res) => {
 
 const createPost = async (req, res) => {
   const post = await Post.create(req.body);
-  res.status(StatusCodes.CREATED).json({ post });
+  res.status(StatusCodes.CREATED).json(post);
 };
 
 const getPost = async (req, res) => {
@@ -54,7 +54,7 @@ const getPost = async (req, res) => {
       StatusCodes.NOT_FOUND
     );
   }
-  res.status(StatusCodes.OK).json({ post });
+  res.status(StatusCodes.OK).json(post);
 };
 
 const updatePost = async (req, res) => {
