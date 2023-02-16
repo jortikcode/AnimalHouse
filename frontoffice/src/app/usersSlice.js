@@ -7,7 +7,9 @@ const name = "user"
 const initialState = {
     user: JSON.parse(localStorage.getItem('user') || "{}"),
     isLogged: localStorage.getItem('user') ? true : false,
-    updatedAnimals: true
+    updatedAnimals: true,
+    userSearched: {},
+    loadUserByID: false
 }
 
 // Thunk per il login di un utente
@@ -56,6 +58,14 @@ const updateUser = createAsyncThunk(
     }   
 )
 
+const getUserByID = createAsyncThunk(
+    `${name}/getUserByID`,
+    async ({ id }) => {
+        const response = await fetch(`${baseApiUrl}/users/${id}`)
+        return await response.json()
+    }
+)
+
 const userSlice = createSlice({ 
     name, 
     initialState, 
@@ -67,7 +77,11 @@ const userSlice = createSlice({
         },
         loadAnimals: (state) => {
             state.updatedAnimals = false
+        },
+        waitingUserByID: (state) => {
+            state.loadUserByID = true
         }
+
     }, 
     extraReducers: (builder) => {
         // Reducers dei thunks di login e registrazione
@@ -92,10 +106,14 @@ const userSlice = createSlice({
             state.user = {}
             state.isLogged = false
         })
+        builder.addCase(getUserByID.fulfilled, (state, action) => {
+            state.userSearched = action.payload
+            state.loadUserByID = false
+        })
     }
 })
 
-export const { logout, loadAnimals } = { ...userSlice.actions }
-export { login, signup, updateUser }
+export const { logout, loadAnimals, waitingUserByID } = { ...userSlice.actions }
+export { login, signup, updateUser, getUserByID }
 
 export const auth = userSlice.reducer
