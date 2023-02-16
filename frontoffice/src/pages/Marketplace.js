@@ -63,7 +63,7 @@ const Marketplace = () => {
       dispatch(getAllProducts(getValues()));
       dispatch(getCart({}));
     }
-  }, [dispatch, getValues]);
+  }, [dispatch, getValues, pageLoaded]);
 
   return (
     <div className="flex flex-col items-center mt-12">

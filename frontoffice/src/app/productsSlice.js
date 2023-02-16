@@ -16,6 +16,7 @@ const initialState = {
   loadingCategories: false,
   loadingBills: false,
   pageLoaded: false,
+  updatedBills: false
 };
 
 // Thunk per ottenere la lista dei prodotti
@@ -188,6 +189,9 @@ const productSlice = createSlice({
     waitingBills: (state) => {
       state.loadingBills = true;
     },
+    loadBills: (state) => {
+      state.updatedBills = true
+    },
     waitingGetAllCategories: (state) => {
       state.loadingCategories = true;
     },
@@ -222,6 +226,7 @@ const productSlice = createSlice({
     });
     builder.addCase(createBill.fulfilled, (state, action) => {
       state.cart = {};
+      state.updatedBills = false;
       state.bills.push(action.payload);
     });
     builder.addCase(getAllBills.fulfilled, (state, action) => {
@@ -238,6 +243,7 @@ export const {
   waitingGetById,
   waitingGetAllCategories,
   waitingBills,
-  firstLoad
+  firstLoad,
+  loadBills
 } = productSlice.actions;
 export const marketplace = productSlice.reducer;
