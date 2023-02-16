@@ -24,6 +24,7 @@ const Bills = () => {
           </h2>
         )}
         {loadingBills && (
+          <div className="flex flex-col items-center justify-center mt-12">
           <FidgetSpinner
             visible={true}
             height="80"
@@ -34,6 +35,7 @@ const Bills = () => {
             ballColors={["#EFBB1A", "#EFBB1A", "#EFBB1A"]}
             backgroundColor="#0"
           />
+          </div>
         )}
         {}
       </>
