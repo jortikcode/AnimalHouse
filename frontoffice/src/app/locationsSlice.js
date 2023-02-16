@@ -21,7 +21,7 @@ export const getLocationsByCity = createAsyncThunk(
       city,
     });
     const response = await fetch(`${baseApiUrl}/locations?${params}`);
-    return response.json();
+    return await response.json();
   }
 );
 
@@ -30,7 +30,7 @@ export const getLocationByID = createAsyncThunk(
   `${name}/getLocationByID`,
   async ({ id = "" }) => {
     const response = await fetch(`${baseApiUrl}/locations/${id}`);
-    return response.json();
+    return await response.json();
   }
 );
 
@@ -39,7 +39,7 @@ export const getAllCities = createAsyncThunk(
   `${name}/getAllCities`,
   async () => {
     const response = await fetch(`${baseApiUrl}/locations/city`);
-    return response.json();
+    return await response.json();
   }
 );
 

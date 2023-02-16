@@ -5,7 +5,7 @@ import AddCart from "./AddCart";
 import Star from "./Star";
 
 
-const ProductCard = ({ _id, name, price, imgPath, rating, qta }) => {
+const ProductCard = ({ _id, name, price, imgName, rating, qta }) => {
   const { cart } = useSelector(state => state.marketplace)
   const { isLogged } = useSelector(state => state.auth)
   const [ inCart, setInCart ] = useState(false)
@@ -21,7 +21,7 @@ const ProductCard = ({ _id, name, price, imgPath, rating, qta }) => {
   return (
       <div className="rounded-lg max-w-sm hover:bg-yellow-100 border-4 border-black">
         <Link to={`/marketplace/${_id}`}>
-          <img className="rounded-t-lg p-8" src={imgPath} alt="product" />
+          <img className="rounded-t-lg p-8" src={imgName} alt="product" />
         </Link>
         <div className="px-5 pb-5">
           <Link to={`/marketplace/${_id}`}>

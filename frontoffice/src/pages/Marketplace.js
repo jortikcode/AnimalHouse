@@ -99,7 +99,7 @@ const Marketplace = () => {
               name="name"
             />
           </div>
-
+          
           <div className="mb-4">
             <label
               className="text-lg block text-gray-700 font-bold mb-2"

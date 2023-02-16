@@ -42,7 +42,7 @@ const ProductSchema = new mongoose.Schema(
         "Il prodotto deve appartenere ad una o più sottocategorie",
       ],
     },
-    imgPath: {
+    imgName: {
       type: String,
       default: path.join(__dirname, "..", "public", "media", "default.jpg"),
     },

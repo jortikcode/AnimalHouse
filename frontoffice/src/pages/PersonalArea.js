@@ -8,7 +8,7 @@ const PersonalArea = () => {
   const navigate = useNavigate();
   useEffect(() => {
     if (!isLogged) navigate("/login");
-  }, []);
+  }, [isLogged, navigate]);
   if (!isLogged) return <></>;
   else
     return (
@@ -33,7 +33,7 @@ const PersonalArea = () => {
             <li className={`grid grid-cols-8 gap-4 p-2`} key={index}>
               {" "}
               <Link
-                className={`text-center border-4 border-black col-span-4 text-xl p-3 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-lg`}
+                className={`text-center border-4 border-black col-span-3 text-xl p-3 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-lg`}
                 to={item.link}
                 style={{
                   gridColumnStart: index + 2,
@@ -45,10 +45,7 @@ const PersonalArea = () => {
             </li>
           ))}
         </ul>
-
-        <div className="flex flex-col items-center justify-center mt-12">
           <Outlet />
-        </div>
       </>
     );
 };

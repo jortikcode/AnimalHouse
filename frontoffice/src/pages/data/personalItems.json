@@ -6,5 +6,9 @@
     {
         "value": "Prenotazioni",
         "link": "/myarea/bookings"
+    },
+    {
+        "value": "I miei animali",
+        "link": "/myarea/pets"
     }
 ]

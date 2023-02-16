@@ -12,6 +12,7 @@ import PersonalArea from './pages/PersonalArea';
 import Bills from './components/PersonalArea/Bills';
 import Bookings from './components/PersonalArea/Bookings';
 import Footer from './components/Footer/Footer';
+import ManagePets from './pages/ManagePets';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path='/myarea' element={<PersonalArea />}>
           <Route path='/myarea/bills' element={<Bills />} />
           <Route path='/myarea/bookings' element={<Bookings />} />
+          <Route path='/myarea/pets' element={<ManagePets />} />
         </Route>
         <Route path='/login' element={<LoginRegisterPage login={true} />} />
         <Route path='/signup' element={<LoginRegisterPage signup={true} />} />

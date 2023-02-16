@@ -45,28 +45,28 @@ export const getAllProducts = createAsyncThunk(
     const response = await fetch(
       `${baseApiUrl}/products?${params}&numericFilters=${numericFilters}`
     );
-    return response.json();
+    return await response.json();
   }
 );
 
 // Thunk per ottenere la lista dei prodotti
 export const getAllBills = createAsyncThunk(
   `${name}/getAllBills`,
-  async ({}, thunkAPI) => {
+  async (args, thunkAPI) => {
     const { userInfo } = thunkAPI.getState().auth.user;
     const id = userInfo["_id"];
     const params = queryString.stringify({
       userID: id,
     });
     const response = await fetch(`${baseApiUrl}/bill?${params}`);
-    return response.json();
+    return await response.json();
   }
 );
 
 // Thunk per ottenere il carrello di un utente
 export const getCart = createAsyncThunk(
   `${name}/getCart`,
-  async ({}, thunkAPI) => {
+  async (args, thunkAPI) => {
     const { token, userInfo } = thunkAPI.getState().auth.user;
     const id = userInfo["_id"];
     const params = queryString.stringify({
@@ -76,7 +76,7 @@ export const getCart = createAsyncThunk(
     const response = await fetch(`${baseApiUrl}/cart?${params}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    return response.json();
+    return await response.json();
   }
 );
 
@@ -99,7 +99,7 @@ export const createBill = createAsyncThunk(
         paymentMethod,
       }),
     });
-    return response.json();
+    return await response.json();
   }
 );
 
@@ -121,7 +121,7 @@ export const addToCart = createAsyncThunk(
         productId: id,
       }),
     });
-    return response.json();
+    return await response.json();
   }
 );
 
@@ -144,7 +144,7 @@ export const updateCart = createAsyncThunk(
         quantity,
       }),
     });
-    return response.json();
+    return await response.json();
   }
 );
 
@@ -153,7 +153,7 @@ export const getAllCategories = createAsyncThunk(
   `${name}/getAllCategories`,
   async () => {
     const response = await fetch(`${baseApiUrl}/products?getCategories=true`);
-    return response.json();
+    return await response.json();
   }
 );
 
@@ -162,7 +162,7 @@ export const getProduct = createAsyncThunk(
   `${name}/getProduct`,
   async ({ id }) => {
     const response = await fetch(`${baseApiUrl}/products/${id}`);
-    return response.json();
+    return await response.json();
   }
 );
 

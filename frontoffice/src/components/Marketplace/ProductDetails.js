@@ -24,7 +24,7 @@ const ProductDetails = () => {
     subcategory,
     price,
     qta,
-    imgPath,
+    imgName,
     featured,
     location: locationID
   } = product
@@ -127,7 +127,7 @@ const ProductDetails = () => {
         </div>
         <div className="grid">
           <img
-            src={imgPath}
+            src={imgName}
             alt={`${name}`}
             className="rounded-lg bg-gray-100"
           />

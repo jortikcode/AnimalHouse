@@ -79,7 +79,7 @@ const createProduct = async (req, res) => {
     qta: Number(qta),
     category,
     subcategory: subcategory.split(",").map((sub) => sub.trim()),
-    imgPath: req.file.path,
+    imgName: req.file.path,
     location,
   });
   res.redirect(`/back-office/prodotti`);

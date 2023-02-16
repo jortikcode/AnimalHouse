@@ -18,7 +18,7 @@ const Bills = () => {
     return (
       <>
         {!loadingBills && (
-          <h2 className="font-bold text-3xl">
+          <h2 className="font-bold text-3xl text-center mt-8">
             {" "}
             Non ci sono ordini a tuo carico!{" "}
           </h2>
@@ -41,10 +41,10 @@ const Bills = () => {
   else
     return (
       <>
-        <h2 className="font-bold text-3xl tracking-tighter"> I tuoi ordini </h2>
+        <h2 className="font-bold text-3xl tracking-tighter mt-8 text-center"> I tuoi ordini </h2>
         <>
-          {bills.map((bill) => (
-            <>
+          {bills.map((bill, billID) => (
+            <div className="flex flex-col items-center justify-center mt-12" key={billID}>
               <div className="mt-8 grid md:grid-cols-3 grid-cols-1 gap-4 mx-8">
                 {bill.products.map((purchasedProduct, index) => (
                   <div
@@ -59,22 +59,22 @@ const Bills = () => {
                 ))}
               </div>
               <div className="flex flex-col col-start-2 ml-4 md:col-start-auto md:ml-0 md:justify-end space-y-3 mt-2 px-2">
-                <p className="text-gray-700">
+                <p className="text-gray-700 text-center">
                   Modalita' di pagamento:{" "}
                   <span className="text-black font-bold bg-yellow-400 p-1 rounded-lg">
                     {" "}
                     {bill.paymentMethod}{" "}
                   </span>
                 </p>
-                <p className="text-gray-700">
+                <p className="text-gray-700 text-center">
                   {" "}
                   {new Date(bill.createdAt).toLocaleString()}{" "}
                 </p>
-                <p className="rounded-lg text-black font-bold bg-yellow-400 py-1 text-lg w-fit h-fit">
+                <p className="text-center rounded-lg text-black font-bold bg-yellow-400 py-1 text-lg">
                   Totale: EURO {bill.total}
                 </p>
               </div>
-            </>
+            </div>
           ))}
         </>
       </>

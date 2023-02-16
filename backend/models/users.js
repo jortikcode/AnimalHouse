@@ -44,14 +44,14 @@ const UserSchema = new mongoose.Schema({
     required: [true, "Un utente deve avere un genere"],
   },
   animaliPreferiti: {
-    type: [String],
+    type: [Object],
     default: [],
   },
   punteggiDeiGiochi: {
     type: [Object],
     default: [],
   },
-  imgPath: {
+  imgName: {
     type: String,
     default: path.join(__dirname, "..", "public", "media", "favicon.jpg"),
   },
