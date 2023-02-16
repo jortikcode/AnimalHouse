@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  firstLoad,
   getAllCategories,
   getAllProducts,
   getCart,
@@ -12,12 +13,11 @@ import {
   getAllCities,
   getLocationsByCity,
   waitingGetCities,
-  waitingGetLocations
-} from "../app/locationsSlice"
+  waitingGetLocations,
+} from "../app/locationsSlice";
 import { FallingLines, MagnifyingGlass } from "react-loader-spinner";
 import ProductCard from "../components/Marketplace/ProductCard";
 import priceRanges from "./data/priceRanges.json";
-
 
 const defaultValues = {
   price: "price>=0",
@@ -26,7 +26,7 @@ const defaultValues = {
   featured: "true",
   location: "",
   city: "all",
-}
+};
 
 const Marketplace = () => {
   const dispatch = useDispatch();
@@ -39,18 +39,11 @@ const Marketplace = () => {
   } = useForm({
     defaultValues,
   });
-  const {
-    products,
-    loadingAll,
-    categories,
-    loadingLocations,
-  } = useSelector((state) => state.marketplace);
-  const {
-    locations,
-    cities,
-    loadingCities,
-    loadingCategories
-  } = useSelector(state => state.locations)
+  const { products, loadingAll, categories, loadingLocations, pageLoaded } =
+    useSelector((state) => state.marketplace);
+  const { locations, cities, loadingCities, loadingCategories } = useSelector(
+    (state) => state.locations
+  );
   // Flag della scritta "I prodotti del mese"
   // const [ showcase, setShowcase ] = useState(true)
 
@@ -61,7 +54,8 @@ const Marketplace = () => {
 
   useEffect(() => {
     // Presumibilmente, stiamo caricando per la prima volta i prodotti da mongo
-    if (products.length === 0){
+    if (!pageLoaded) {
+      dispatch(firstLoad());
       dispatch(waitingGetAll());
       dispatch(getAllCategories({}));
       dispatch(waitingGetCities());
@@ -69,7 +63,7 @@ const Marketplace = () => {
       dispatch(getAllProducts(getValues()));
       dispatch(getCart({}));
     }
-  }, [dispatch, getValues, products.length]);
+  }, [dispatch, getValues]);
 
   return (
     <div className="flex flex-col items-center mt-12">
@@ -165,12 +159,12 @@ const Marketplace = () => {
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   id="city"
                   {...register("city", {
-                    onChange: e => {
-                      if (watch("city") !== "all"){
-                        dispatch(waitingGetLocations())
-                        dispatch(getLocationsByCity({ city: watch("city") }))
+                    onChange: (e) => {
+                      if (watch("city") !== "all") {
+                        dispatch(waitingGetLocations());
+                        dispatch(getLocationsByCity({ city: watch("city") }));
                       }
-                    }
+                    },
                   })}
                 >
                   <option value="all"> Tutte le citta' </option>
@@ -214,7 +208,10 @@ const Marketplace = () => {
                     },
                   })}
                 >
-                  <option disabled value=""> Selezionare una sede </option>
+                  <option disabled value="">
+                    {" "}
+                    Selezionare una sede{" "}
+                  </option>
                   {locations.map((location, index) => (
                     <option value={location["_id"]} key={index}>
                       {" "}
@@ -294,10 +291,7 @@ const Marketplace = () => {
       </form>
       <h2 className="text-center tracking-tighter text-2xl">
         {" "}
-        Categoria:{" "}
-        {watch("featured") && watch("category") === "all"
-          ? "Prodotti del mese"
-          : watch("category")}{" "}
+        Categoria: {watch("category") === "all" ? "Tutte le categorie" : watch("category")}
       </h2>
       {loadingAll && (
         <div className="flex justify-center flex-col items-center">

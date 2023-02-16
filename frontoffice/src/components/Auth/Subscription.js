@@ -52,12 +52,6 @@ const Subscription = ({ isVip }) => {
             
           </p>
         </div>
-
-        <div className="mt-[25px]">
-          <button className="bg-black rounded-lg p-4 text-yellow-400 text-sm font-semibold">
-            Current Plan
-          </button>
-        </div>
       </div>
     </div>
   );

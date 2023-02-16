@@ -15,6 +15,7 @@ const initialState = {
   loadingOne: false,
   loadingCategories: false,
   loadingBills: false,
+  pageLoaded: false,
 };
 
 // Thunk per ottenere la lista dei prodotti
@@ -172,6 +173,9 @@ const productSlice = createSlice({
       state.products = [];
       state.cart = {};
     },
+    firstLoad: (state) => {
+      state.pageLoaded = true
+    },
     clearCart: (state) => {
       state.cart = {};
     },
@@ -234,5 +238,6 @@ export const {
   waitingGetById,
   waitingGetAllCategories,
   waitingBills,
+  firstLoad
 } = productSlice.actions;
 export const marketplace = productSlice.reducer;
