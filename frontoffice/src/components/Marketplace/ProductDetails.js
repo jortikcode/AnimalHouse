@@ -117,7 +117,7 @@ const ProductDetails = () => {
         </div>
         <div className="grid">
           <img
-            src={imgName}
+            src={`${process.env.REACT_APP_BASE_MEDIA_URL}/${imgName}`}
             alt={`${name}`}
             className="rounded-lg bg-gray-100"
           />
