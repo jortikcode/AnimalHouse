@@ -3,11 +3,14 @@ const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
 
 const getAllPosts = async (req, res) => {
-  const { title, text, sort, fields, getCategories } = req.query;
+  const { title, text, sort, category, fields, getCategories } = req.query;
   const queryObject = {};
 
   if (title) {
     queryObject.title = { $regex: title, $options: "i" };
+  }
+  if (category) {
+    queryObject.category = { $regex: category, $options: "i" };
   }
   if (getCategories) {
     const categories = await Post.distinct("category");
@@ -61,7 +64,7 @@ const updatePost = async (req, res) => {
   if (!post) {
     throw createCustomError(`Non esiste nessun post con id : ${postID}`, StatusCodes.NOT_FOUND);
   }
-  res.status(StatusCodes.OK).json({ id: postID, data: req.body });
+  res.status(StatusCodes.OK).json(post);
 };
 
 const deletePost = async (req, res) => {
