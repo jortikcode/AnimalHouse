@@ -14,12 +14,6 @@ import { getUserByID, waitingUserByID } from "../../app/usersSlice";
 import BackArrow from "../Marketplace/BackArrow";
 import postCategories from "./categories.json"
 
-const defaultValues = {
-  title: "Senza titolo",
-  text: "",
-  category: postCategories[0],
-}
-
 const PostDetails = () => {
   const {
     register,
@@ -64,7 +58,7 @@ const PostDetails = () => {
         text: post.text,
         category: post.category
       })
-  }, [ post ] )
+  }, [ post, reset ] )
 
   useEffect(() => {
     if (createdBy) {

@@ -1,7 +1,6 @@
 import { ErrorMessage } from "@hookform/error-message";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { FallingLines, MagnifyingGlass } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost, firstLoad, getAllPosts, waitingGetAllPosts } from "../app/postsSlice";
 import Post from "../components/Forum/Post";
