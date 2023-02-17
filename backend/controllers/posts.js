@@ -3,7 +3,7 @@ const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
 
 const getAllPosts = async (req, res) => {
-  const { title, text, sort, fields, getCategories } = req.query;
+  const { title, text, sort, fields, getCategories, category } = req.query;
   const queryObject = {};
 
   if (title) {
@@ -15,6 +15,9 @@ const getAllPosts = async (req, res) => {
   }
   if (text) {
     queryObject.text = { $regex: text, $options: "i" };
+  }
+  if (category) {
+    queryObject.category = { $regex: category, $options: "i" };
   }
 
   let result = Post.find(queryObject);

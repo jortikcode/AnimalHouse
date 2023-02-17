@@ -27,7 +27,6 @@ const getProducts = async (query) => {
     $("#error").html(filled);
   }
   const products = await response.json();
-  console.log(products);
   if (products.length > 0) {
     const productsTemplate = Handlebars.compile($("#productsTemplate").html());
     const filled = productsTemplate({ products: products });
