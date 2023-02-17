@@ -61,12 +61,6 @@ const getAllProducts = async (req, res) => {
     const fieldList = fields.split(",").join(" ");
     result = result.select(fieldList);
   }
-  const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 10;
-  // calcolo i risultati da saltare in base alla pagina che mi trovo
-  const skip = (page - 1) * limit;
-
-  result = result.skip(skip).limit(limit);
   const products = await result;
   res.status(StatusCodes.OK).json(products);
 };

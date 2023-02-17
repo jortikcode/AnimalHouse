@@ -21,10 +21,7 @@ const ServiceSchema = new mongoose.Schema(
     location: {
       type: mongoose.Types.ObjectId,
       ref: "Location",
-      required: [
-        true,
-        "Dove viene offerto questo servizio deve essere fornito",
-      ],
+      required: [true, "Dove viene offerto questo servizio deve essere fornito"],
     },
   },
   { timestamps: true }
