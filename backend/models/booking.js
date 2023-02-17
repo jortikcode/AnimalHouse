@@ -11,15 +11,10 @@ const BookingSchema = new mongoose.Schema({
     ref: "User",
     required: [true, "Serve l'ID dell'utente che prenota il servizio"],
   },
-  startDate: {
-    type: Date,
-    required: [true, "Serve la data di prenotazione"],
-  },
-  endDate: {
+  date: {
     type: Date,
     required: [true, "Serve la data di prenotazione"],
   },
 });
-
 
 module.exports = mongoose.model("Booking", BookingSchema);
