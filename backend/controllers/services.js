@@ -1,6 +1,8 @@
 const Service = require("../models/services");
 const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
+const fs = require("fs");
+const path = require("path");
 
 const getAllServices = async (req, res) => {
   const queryObject = {};
@@ -12,8 +14,19 @@ const getAllServices = async (req, res) => {
 };
 
 const createService = async (req, res) => {
-  const service = await Service.create(req.body);
-  res.status(StatusCodes.CREATED).json({ service });
+  const { serviceName, description, price, location } = req.body;
+  let imgName = "default_product_image.jpg";
+  if (req.file?.filename) {
+    imgName = req.file.filename;
+  }
+  const service = await Service.create({
+    serviceName,
+    description,
+    price: Number(price),
+    imgName,
+    location,
+  });
+  res.status(StatusCodes.CREATED).json(service);
 };
 
 const getService = async (req, res) => {
@@ -27,9 +40,35 @@ const getService = async (req, res) => {
 
 const updateService = async (req, res) => {
   const { id: serviceID } = req.params;
+  const { serviceName, description, price } = req.body;
+  const updateObj = {};
+  if (serviceName) {
+    updateObj.serviceName = serviceName;
+  }
+  if (description) {
+    updateObj.description = description;
+  }
+  if (price) {
+    updateObj.price = price;
+  }
+  if (req.file?.filename) {
+    updateObj.imgName = req.file.filename;
+    /* Cancello l'immagine precente */
+    const service = await Service.findOne({ _id: serviceID });
+    if (!service) {
+      throw createCustomError(`Non esiste nessun prodotto con id : ${serviceID}`, StatusCodes.NOT_FOUND);
+    }
+    if (service.imgName != "default_service_image.jpg") {
+      fs.unlink(path.join(global.baseDir, "public", "media", service.imgName), (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+    }
+  }
   const service = await Service.findOneAndUpdate(
     { _id: serviceID },
-    { $set: req.body },
+    { $set: updateObj },
     {
       new: true,
       runValidators: true,
@@ -43,10 +82,18 @@ const updateService = async (req, res) => {
 
 const deleteService = async (req, res) => {
   const { id: serviceID } = req.params;
-  const service = await Service.findOneAndDelete({ _id: serviceID });
+  const service = await Service.findOne({ _id: serviceID });
   if (!service) {
     throw createCustomError(`Non esiste nessun servizio con id : ${serviceID}`, StatusCodes.NOT_FOUND);
   }
+  if (service.imgName != "default_service_image.jpg") {
+    fs.unlink(path.join(global.baseDir, "public", "media", service.imgName), (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+  }
+  await Service.deleteOne({ _id: serviceID });
   res.status(StatusCodes.OK).json({
     msg: `Il servizio con id ${serviceID} è stato rimosso con successo`,
   });

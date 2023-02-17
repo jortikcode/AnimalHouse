@@ -71,7 +71,7 @@ const createProduct = async (req, res) => {
   if (req.file?.filename) {
     imgName = req.file.filename;
   }
-  await Product.create({
+  const product = await Product.create({
     name,
     price,
     description,
@@ -82,7 +82,7 @@ const createProduct = async (req, res) => {
     imgName,
     location,
   });
-  res.redirect(`/back-office/prodotti`);
+  res.status(StatusCodes.CREATED).json(product);
 };
 
 const getProduct = async (req, res) => {
@@ -129,7 +129,6 @@ const updateProduct = async (req, res) => {
     /* Cancello l'immagine precente */
     const product = await Product.findOne({ _id: productID });
     if (!product) {
-      console.log(productID);
       throw createCustomError(`Non esiste nessun prodotto con id : ${productID}`, StatusCodes.NOT_FOUND);
     }
     if (product.imgName != "default_product_image.jpg") {

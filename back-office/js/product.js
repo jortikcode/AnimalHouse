@@ -51,6 +51,26 @@ const getProduct = async (id) => {
   }
 };
 
+const createProduct = async () => {
+  const form = document.getElementById("createForm");
+  const formData = new FormData(form);
+  const response = await fetch(`http://localhost:8000/api/v1/products`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    const errorTemplate = Handlebars.compile($("#errorTemplate").html());
+    const filled = errorTemplate({ error: error.msg });
+    $("#error").html(filled);
+  } else {
+    const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
+    const query = {};
+    query.location = locationInfo._id;
+    getProducts(query);
+  }
+};
+
 const populateViewProduct = async (id) => {
   const product = await getProduct(id);
   document.getElementById("viewProductImg").src = `/img/${product.imgName}`;
