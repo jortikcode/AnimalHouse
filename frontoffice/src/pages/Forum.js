@@ -1,50 +1,58 @@
 import { ErrorMessage } from "@hookform/error-message";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { FallingLines, MagnifyingGlass } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { createPost, firstLoad, getAllCategories, getAllPosts, waitingGetAllCategories, waitingGetAllPosts } from "../app/postsSlice";
+import { createPost, firstLoad, getAllPosts, waitingGetAllPosts } from "../app/postsSlice";
 import Post from "../components/Forum/Post";
+import postCategories from "../components/Forum/categories.json"
+
+const defaultValues = {
+  title: "Senza titolo",
+  text: "",
+  category: postCategories[0],
+}
+
 
 const Forum = () => {
   const dispatch = useDispatch();
-  const { posts, loadingCategories, loadingPosts, categories, pageLoaded } = useSelector(state => state.posts)
+  const { posts, pageLoaded } = useSelector(state => state.posts)
   const { user } = useSelector(state => state.auth)
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm({
-    defaultValues: {
-      title: "Senza titolo",
-      text: "",
-      category: "",
-    },
+    defaultValues,
   })
 
   const onSubmit = (data) => {
-    console.log(data)
     dispatch(waitingGetAllPosts());
     dispatch(createPost({
       ...data,
       createdBy: user.userInfo["_id"]
     }))
+    reset(defaultValues)
   };
+
+  const onSearch = ({ category }) => {
+    dispatch(waitingGetAllPosts())
+    dispatch(getAllPosts({ category }));
+  }
 
   useEffect(() => {
     // Presumibilmente, stiamo caricando per la prima volta i prodotti da mongo
     if (!pageLoaded) {
       dispatch(firstLoad())
       dispatch(waitingGetAllPosts());
-      dispatch(waitingGetAllCategories());
-      dispatch(getAllCategories())
       dispatch(getAllPosts({}));
     }
   }, [dispatch, pageLoaded]);
 
   return (
     <div className="flex flex-col items-center mt-12">
-      <article className="prose">
+      <article className="prose tracking-tighter">
         <h1>Bacheca</h1>
       </article>
       <div className="flex justify-center">
@@ -109,52 +117,60 @@ const Forum = () => {
                 Categoria
               </label>
 
-              {loadingCategories && (
-                <FallingLines
-                  color="#FBBF24"
-                  width="50"
-                  visible={true}
-                  ariaLabel="falling-lines-loading"
-                />
-              )}
-
-              {!loadingCategories && (
-                <>
-                  <select
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    id="category"
-                    {...register("category", {
-                      required: "Selezionare una categoria in cui postare"
-                    })}
-                  >
-                    {categories.map((category, index) => (
-                      <option value={category} key={index}>
-                        {" "}
-                        {category}{" "}
-                      </option>
-                    ))}
-                  </select>
-                </>
-              )}
-              <ErrorMessage
-                as={<p className="text-red-600" />}
-                errors={errors}
-                name="category"
-              />
+              <select
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                id="category"
+                {...register("category", {
+                  required: "Selezionare una categoria in cui postare"
+                })}
+              >
+                {postCategories.map((category, index) => (
+                  <option value={category} key={index}>
+                    {" "}
+                    {category}{" "}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
           <div className="justify-center flex">
             <input
               value="Crea nuovo post"
-              className="bg-yellow-400 hover:bg-yellow-700 text-black font-bold py-2 px-4 rounded"
+              className="bg-yellow-400 hover:bg-yellow-700 text-black font-bold py-2 px-4 rounded hover:cursor-pointer"
               type="submit"
             />
           </div>
         </form>
       </div>
+      
+      <div className="mb-4">
+        <label
+          className="text-lg block text-gray-700 font-bold mb-2"
+          htmlFor="searchCategory"
+        >
+          Categoria da visualizzare
+        </label>
 
-      <div className="grid md:grid-cols-3 grid-cols-1 mb-8 mt-8 md:space-y-0 space-y-6 md:space-x-6">
+        <select
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          id="searchCategory"
+          onChange={e => {
+            onSearch( { category: e.target.value } )
+          }}
+        >
+          <option value="all"> Tutte le categorie </option>
+          {postCategories.map((category, index) => (
+            <option value={category} key={index}>
+              {" "}
+              {category}{" "}
+            </option>
+          ))}
+        </select>
+      </div>
+
+
+      <div className="grid md:grid-cols-3 grid-cols-1 mb-8 mt-8 mx-4 items-stretch">
         {posts.map((post, index) => {
           return <Post {...post} key={index} />;
         })}

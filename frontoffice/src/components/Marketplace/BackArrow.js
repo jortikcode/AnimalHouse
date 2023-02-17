@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
-const BackArrow = () => {
+const BackArrow = ({ path }) => {
   return (
     <Link 
-    to="/marketplace"
+    to={path}
     className="hover:bg-gray-100 rounded-full">
         <svg
         xmlns="http://www.w3.org/2000/svg"

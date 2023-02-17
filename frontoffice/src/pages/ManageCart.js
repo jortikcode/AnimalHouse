@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { getAllProducts, getCart, createBill } from "../app/productsSlice";
 import CartItem from "../components/Marketplace/CartItem";
 import paymentMethods from './data/paymentMethods.json'
@@ -24,11 +25,20 @@ const getInfoFromCart = (cart, productsInfo) => {
 const ManageCart = () => {
   const paymentMethod = useRef("contanti")
   const { cart, products } = useSelector((state) => state.marketplace);
+  const { isLogged } = useSelector(state => state.auth);
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   useEffect(() => {
     dispatch(getAllProducts({}))
     dispatch(getCart({}))
   }, [dispatch])
+
+  useEffect(() => {
+    if (!isLogged) navigate("/login");
+  }, [isLogged, navigate]);
+
+  if (!isLogged) return <></>;
 
   if (cart?.products?.length === 0 || !cart.products)
     return (<div className="flex flex-col justify-center items-center h-screen w-full">

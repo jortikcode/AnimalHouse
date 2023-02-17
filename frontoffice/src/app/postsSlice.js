@@ -47,25 +47,19 @@ export const createPost = createAsyncThunk(
 // Thunk per aggiornare un post
 export const updatePost = createAsyncThunk(
   `${name}/updatePost`,
-  async (data) => {
-    // data =
-    /* 
-      {
-        _id: ,
-        text: ,
-        category: ,
-        createdAt: ,
-        createdBy: ,
-      }
-       */
+  async (data, thunkAPI) => {
     if (data.category === "") data.category = "Eccolo Qua";
+    const user = thunkAPI.getState().auth.user;
     const response = await fetch(`${baseApiUrl}/posts/${data["_id"]}`, {
-      method: "POST",
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
       body: JSON.stringify({
+        title: data.title,
         text: data.text,
         category: data.category,
-        createdAt: data.createdAt,
-        createdBy: data.createdBy,
       }),
     });
     return await response.json();
@@ -75,10 +69,16 @@ export const updatePost = createAsyncThunk(
 // Thunk per cancellare un post
 export const deletePost = createAsyncThunk(
     `${name}/deletePost`,
-    async ({ id }) => {
+    async ({ id }, thunkAPI) => {
+      const user = thunkAPI.getState().auth.user
+      
       const response = await fetch(`${baseApiUrl}/posts/${id}`, {
-        method: "DELETE"
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
       });
+
       return await response.json();
     }
 )
@@ -137,9 +137,11 @@ const postsSlice = createSlice({
     });
     builder.addCase(updatePost.fulfilled, (state, action) => {
       state.post = action.payload;
+      state.pageLoaded = false
     });
     builder.addCase(deletePost.fulfilled, (state, action) => {
-      console.log("Post rimosso");
+      state.post = {}
+      state.pageLoaded = false
     });
   },
 });
