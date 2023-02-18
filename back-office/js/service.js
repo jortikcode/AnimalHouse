@@ -52,6 +52,26 @@ const getService = async (id) => {
   }
 };
 
+const createService = async () => {
+  const form = document.getElementById("createForm");
+  const formData = new FormData(form);
+  const response = await fetch(`http://localhost:8000/api/v1/services`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!response.ok) {
+    const error = await response.json();
+    const errorTemplate = Handlebars.compile($("#errorTemplate").html());
+    const filled = errorTemplate({ error: error.msg });
+    $("#error").html(filled);
+  } else {
+    const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
+    const query = {};
+    query.location = locationInfo._id;
+    getServices(query);
+  }
+};
+
 const populateViewService = async (id) => {
   const service = await getService(id);
   document.getElementById("viewServiceImg").src = `/img/${service.imgName}`;
