@@ -308,7 +308,7 @@ const Marketplace = () => {
           <small> Caricando i prodotti della vetrina... </small>
         </div>
       )}
-      <div className="grid md:grid-cols-3 grid-cols-1 mb-8 mt-8 md:space-y-0 space-y-6 md:space-x-6">
+      <div className="grid md:grid-cols-3 grid-cols-1 mb-8 mt-8 md:gap-y-0 gap-y-6 md:gap-x-6 px-2">
         {products.map((product, index) => {
           return <ProductCard {...product} key={index} />;
         })}
