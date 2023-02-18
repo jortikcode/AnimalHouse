@@ -1,12 +1,15 @@
 const Booking = require("../models/booking");
+const Service = require("../models/services");
+const User = require("../models/users");
 const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
 
-const prepareQuery = (query) => {
+const prepareQuery = async (query) => {
   const { service, startDate, endDate } = query;
   const queryObject = {};
   if (service) {
-    queryObject.service = service;
+    const serviceID = await Service.findOne({ serviceName: service });
+    queryObject.service = serviceID._id;
   }
   if (startDate && !endDate) {
     queryObject.date = { $gte: startDate };
@@ -22,8 +25,8 @@ const prepareQuery = (query) => {
 
 const getAllBookings = async (req, res) => {
   const { sort } = req.query;
-  const queryObject = prepareQuery(req.query);
-  let result = Booking.find(queryObject).populate("service", "user");
+  const queryObject = await prepareQuery(req.query);
+  let result = Booking.find(queryObject).populate("user").populate("service");
   // sort
   if (sort) {
     const sortList = sort.split(",").join(" ");
