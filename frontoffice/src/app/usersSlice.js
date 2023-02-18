@@ -7,7 +7,7 @@ const name = "user"
 const initialState = {
     user: JSON.parse(localStorage.getItem('user') || "{}"),
     isLogged: localStorage.getItem('user') ? true : false,
-    updatedAnimals: true,
+    updatingUser: false,
     userSearched: {},
     loadUserByID: false
 }
@@ -38,20 +38,26 @@ const signup = createAsyncThunk(
     }   
 )
 
-// Thunk per la registrazione di un utente
+// Thunk per aggiornare un utente
 const updateUser = createAsyncThunk(
     `${name}/update`,
-    async ({ userInfo }) => {
+    async ({ userInfo, petInsert = false }, thunkAPI) => {
+        const user = thunkAPI.getState().auth.user;
         const formData = new FormData()
-
-        for (const key in userInfo)
-            if (key === "imageName")
-                formData.append(userInfo["imageName"][0])
-            else
-                formData.append(userInfo[key])
-
-        const response = await fetch(`${baseApiUrl}/auth/register`, { 
+        if (petInsert){
+            formData.append("petName", userInfo.animaliPreferiti[0].name)
+            formData.append("petBirthYear", userInfo.animaliPreferiti[0].birthYear)
+            formData.append("petParticularSigns", userInfo.animaliPreferiti[0].particularSigns)
+            if (userInfo.animaliPreferiti[0].imageName){
+                formData.append("imgName", userInfo.animaliPreferiti[0].imageName[0])
+            }
+            formData.append("petImage", true)
+        }
+        const response = await fetch(`${baseApiUrl}/users/${ user.userInfo._id }`, { 
             method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${user.token}`,
+            },
             body: formData
         })
         return await response.json();
@@ -75,8 +81,8 @@ const userSlice = createSlice({
             state.isLogged = false;
             localStorage.removeItem('user');
         },
-        loadAnimals: (state) => {
-            state.updatedAnimals = false
+        waitingUpdateUser: (state) => {
+            state.updatingUser = true
         },
         waitingUserByID: (state) => {
             state.loadUserByID = true
@@ -109,6 +115,12 @@ const userSlice = createSlice({
         builder.addCase(getUserByID.fulfilled, (state, action) => {
             state.userSearched = action.payload
             state.loadUserByID = false
+        })
+        builder.addCase(updateUser.fulfilled, (state, action) => {
+            state.user.userInfo = action.payload
+            const oldUser = JSON.parse(localStorage.getItem('user'))
+            localStorage.setItem('user', JSON.stringify({ token: oldUser.token , userInfo: action.payload }))
+            state.updatingUser = false
         })
     }
 })

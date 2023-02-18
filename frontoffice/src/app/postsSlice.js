@@ -18,10 +18,11 @@ const initialState = {
 // Thunk per ottenere la lista dei post
 export const getAllPosts = createAsyncThunk(
   `${name}/getAllPosts`,
-  async ({ category = "" }) => {
+  async ({ category = "", createdBy = "" }) => {
     if (category === "all") category = "";
     const params = queryString.stringify({
       category,
+      createdBy
     });
     const response = await fetch(`${baseApiUrl}/posts?${params}`);
     return await response.json();
@@ -125,7 +126,7 @@ const postsSlice = createSlice({
     });
     builder.addCase(createPost.fulfilled, (state, action) => {
         state.loadingPost = false
-        state.posts.push(action.payload)
+        state.posts.unshift(action.payload)
     })
     builder.addCase(getPostByID.fulfilled, (state, action) => {
       state.loadingPost = false;

@@ -1,12 +1,12 @@
 import { FidgetSpinner } from "react-loader-spinner";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PetCard from "../components/PersonalArea/PetCard";
 import PetForm from "../components/PersonalArea/PetForm";
 
 const ManagePets = () => {
-  const { user, updatedAnimals } = useSelector((state) => state.auth);
+  const { user, updatingUser } = useSelector((state) => state.auth);
   const { animaliPreferiti } = user.userInfo;
-  if (!updatedAnimals)
+  if (updatingUser)
     return (
       <div className="flex mt-8 justify-center">
         <FidgetSpinner
@@ -21,27 +21,30 @@ const ManagePets = () => {
         />
       </div>
     );
-  if (animaliPreferiti.length === 0)
-    return (
-      <>
-        {animaliPreferiti.length === 0 && (
-          <h2 className="font-bold text-3xl text-center mt-8">
-            {" "}
-            Non ci sono animali a tuo carico!
-          </h2>
-        )}
-        {animaliPreferiti.length > 0 && (
-            <>
+  return (
+    <>
+      {animaliPreferiti.length === 0 && (
+        <h2 className="font-bold text-3xl text-center mt-8">
+          {" "}
+          Non ci sono animali a tuo carico!
+        </h2>
+      )}
+      {animaliPreferiti.length > 0 && (
+        <>
           <h2 className="font-bold text-3xl text-center mt-8">
             {" "}
             I tuoi animali
           </h2>
-          { animaliPreferiti.map((animale, index) => <PetCard key={index} {...animale} />) }
-          </>
-        )}
-        <PetForm />
-      </>
-    );
+          <div className="mt-4 flex flex-col items-center gap-y-5">
+          {animaliPreferiti.map((animale, index) => (
+            <PetCard key={index} {...animale} />
+          ))}
+          </div>
+        </>
+      )}
+      <PetForm />
+    </>
+  );
 };
 
 export default ManagePets;

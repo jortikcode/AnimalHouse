@@ -2,12 +2,16 @@ const Post = require("../models/posts");
 const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
 
+
 const getAllPosts = async (req, res) => {
-  const { title, text, sort, fields, getCategories, category } = req.query;
+  const { title, text, sort, fields, getCategories, category, createdBy } = req.query;
   const queryObject = {};
 
   if (title) {
     queryObject.title = { $regex: title, $options: "i" };
+  }
+  if (createdBy) {
+    queryObject.createdBy = createdBy
   }
   if (category) {
     queryObject.category = { $regex: category, $options: "i" };
@@ -29,7 +33,7 @@ const getAllPosts = async (req, res) => {
     const sortList = sort.split(",").join(" ");
     result = result.sort(sortList);
   } else {
-    result = result.sort("date");
+    result = result.sort({ createdAt: "desc" });
   }
 
   if (fields) {
@@ -41,7 +45,8 @@ const getAllPosts = async (req, res) => {
 };
 
 const createPost = async (req, res) => {
-  const post = await Post.create(req.body);
+  const result = await Post.create(req.body);
+  const post = await Post.findById(result._id).populate("createdBy")
   res.status(StatusCodes.CREATED).json(post);
 };
 

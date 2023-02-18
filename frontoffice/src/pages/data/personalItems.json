@@ -10,5 +10,9 @@
     {
         "value": "I miei animali",
         "link": "/myarea/pets"
+    },
+    {
+        "value": "I miei post",
+        "link": "/myarea/forum"
     }
 ]

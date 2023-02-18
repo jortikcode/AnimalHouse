@@ -4,7 +4,7 @@ const Post = ({ _id, title, text, createdAt, createdBy, category }) => {
   return (
     <div className={`flex items-center justify-center ${createdBy.isVip ? "bg-black text-yellow-400 border-red-700" : "bg-yellow-400 text-black border-black" } border-4  rounded-xl my-4 mx-4`}>
       <div className="p-8 w-[23rem] max-w-full">
-        <p className={`flex text-sm rounded-xl w-fit p-2 bg-yellow-400 text-black`}>
+        <p className="flex text-sm rounded-xl w-fit p-2 bg-yellow-400 text-black">
           {category}
         </p>
 

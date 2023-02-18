@@ -8,7 +8,7 @@ import InfoTooltip from "../Auth/InfoTooltip";
 const defaultValues = {
     name: "",
     birthYear: "2023",
-    imageName: "",
+    imageName: "default_pet_image.jpg",
     particularSigns: "",  
 }
 
@@ -27,15 +27,14 @@ const PetForm = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data)
-    /* dispatch(updateUser({ userInfo: {
+    dispatch(updateUser({ userInfo: {
         animaliPreferiti: [
-            ...user.userInfo.animaliPreferiti,
-            {
-                data
-            }
+          {
+            ...data
+          }
         ]
-    } })) */
+    }, petInsert: true }))
+    
     reset(defaultValues)
   };
 

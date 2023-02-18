@@ -50,11 +50,52 @@ const getUser = async (req, res) => {
   res.status(StatusCodes.OK).json(user);
 };
 
+const prepareUpdate = (body) => {
+  const updateObj = {};
+  const { name, surname, petName, petParticularSigns, petBirthYear, imgName, punteggiDeiGiochi} = body;
+  if (name) {
+    updateObj.name = name;
+  }
+  if (surname) {
+    updateObj.surname = surname;
+  }
+  // Inserimento dati animale
+  if (petName || petParticularSigns || petBirthYear) {
+    updateObj.animaliPreferiti = [{
+      name: petName,
+      birthYear: petBirthYear,
+      particularSigns: petParticularSigns
+    }];
+  }
+  if (imgName) {
+    updateObj.imgName = imgName;
+  }
+  if (punteggiDeiGiochi) {
+    updateObj.punteggiDeiGiochi = punteggiDeiGiochi
+  }
+  return updateObj;
+};
+
 const updateUser = async (req, res) => {
   const { id: userID } = req.params;
+  const updateObj = prepareUpdate(req.body);
+  
+  // Inserimento di un nuovo pet
+  if (req.body.petImage){
+    if (req.file?.filename)
+      updateObj.animaliPreferiti[0].imgName = req.file.filename
+    else
+      updateObj.animaliPreferiti[0].imgName = "default_pet_image.jpg"
+    const user = await User.findOne({ _id: userID })
+    updateObj.animaliPreferiti = [ updateObj.animaliPreferiti[0] , ...user.animaliPreferiti ]
+  }else if (req.file?.filename){
+    // Inserimento nuova immagine del profilo di un utente
+    updateObj.imgName = req.file.filename
+  }
+
   const user = await User.findOneAndUpdate(
     { _id: userID },
-    { $set: req.body },
+    { $set: updateObj },
     {
       new: true,
       runValidators: true,
@@ -66,7 +107,7 @@ const updateUser = async (req, res) => {
       StatusCodes.NOT_FOUND
     );
   }
-  res.status(StatusCodes.OK).json({ id: userID, data: req.body });
+  res.status(StatusCodes.OK).json(user);
 };
 
 const deleteUser = async (req, res) => {

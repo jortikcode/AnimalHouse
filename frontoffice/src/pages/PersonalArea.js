@@ -33,7 +33,7 @@ const PersonalArea = () => {
             <li className={`grid grid-cols-8 gap-4 p-2`} key={index}>
               {" "}
               <Link
-                className={`text-center border-4 border-black col-span-3 text-xl p-3 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-lg`}
+                className={`text-center border-4 border-black col-span-3 text-xl p-3 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-lg break-words`}
                 to={item.link}
                 style={{
                   gridColumnStart: index + 2,
