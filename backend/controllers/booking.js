@@ -24,7 +24,7 @@ const prepareQuery = async (query) => {
 };
 
 const getAllBookings = async (req, res) => {
-  const { sort } = req.query;
+  const { sort, location } = req.query;
   const queryObject = await prepareQuery(req.query);
   let result = Booking.find(queryObject).populate("user").populate("service");
   // sort
@@ -34,8 +34,12 @@ const getAllBookings = async (req, res) => {
   } else {
     result = result.sort("date");
   }
-  const posts = await result;
-  res.status(StatusCodes.OK).json(posts);
+  let bookings = await result;
+  /* Vado a prendere le prenotazioni di un servizio di una determinata sede */
+  if (location) {
+    bookings = bookings.filter((booking) => booking.service.location.toString() === location.toString());
+  }
+  res.status(StatusCodes.OK).json(bookings);
 };
 
 const createBooking = async (req, res) => {
