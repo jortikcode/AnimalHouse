@@ -3,7 +3,7 @@ import { MagnifyingGlass } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { getServiceByID, waitingGetService } from "../../app/servicesSlice";
 import { Controller, useForm } from "react-hook-form";
-import DatePicker from "react-datepicker"
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 const { useParams } = require("react-router-dom");
 
@@ -25,8 +25,8 @@ const ServiceDetails = () => {
   }, [dispatch, id]);
 
   const onSubmit = (data) => {
-    console.log(data)
-  }
+    console.log(data);
+  };
 
   if (loadingOneService || JSON.stringify({}) === JSON.stringify(service))
     return (
@@ -58,39 +58,33 @@ const ServiceDetails = () => {
               <p className="text-md title-font text-gray-800">
                 {service.location.address}, {service.location.city}
               </p>
-              <p className="text-gray-900 text-3xl title-font font-medium mb-1">
-                {service.serviceName}
-              </p>
+              <p className="text-gray-900 text-3xl title-font font-medium mb-1">{service.serviceName}</p>
               <p className="leading-relaxed">{service.description}</p>
               <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="mb-4">
-              <label
-              className="text-lg block text-gray-700 font-bold mb-2"
-              htmlFor="date"
-            >
-              Cosa cerchi?
-            </label>
+                <div className="mb-4">
+                  <label
+                    className="text-lg block text-gray-700 font-bold mb-2"
+                    htmlFor="date">
+                    Cosa cerchi?
+                  </label>
                   <Controller
                     name="date"
                     control={control}
                     render={({ field }) => (
                       <DatePicker
                         showIcon
-                        placeholderText='Seleziona una data'
+                        placeholderText="Seleziona una data"
                         onChange={(date) => field.onChange(date)}
                         selected={field.value}
                         showTimeSelect
-                        id = "date"
+                        id="date"
                         isClearable
                       />
-                      
                     )}
-                />
+                  />
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="title-font font-medium text-2xl text-gray-900">
-                    €{service.price}
-                  </span>
+                  <span className="title-font font-medium text-2xl text-gray-900">€{service.price}</span>
                   <input
                     type="submit"
                     value="Prenota"
