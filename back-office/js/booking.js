@@ -20,9 +20,8 @@ jQuery(function () {
 });
 
 const getDateTime = (dateString) => {
-  const date = new Date(dateString);
-  const formattedDate = date.toISOString().slice(0, 10);
-  const formattedTime = date.toTimeString().slice(0, 5);
+  const formattedDate = dateString.slice(0, 10);
+  const formattedTime = dateString.slice(11, 16);
   return `${formattedDate} ${formattedTime}`;
 };
 
@@ -94,60 +93,84 @@ const populateServices = async (selectField, booking) => {
   const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
   const query = {};
   query.location = locationInfo._id;
-  query.getServices = true;
+  const userResponse = await fetch(`http://localhost:8000/api/v1/users/${booking.user._id}`);
+  if (!userResponse.ok) {
+    const error = await userResponse.json();
+    const errorTemplate = Handlebars.compile($("#errorTemplate").html());
+    const filled = errorTemplate({ error: error.msg });
+    $("#error").html(filled);
+    return;
+  }
+  const user = await userResponse.json();
+  if (!user.isVip) {
+    query.isVip = user.isVip;
+  }
   const response = await fetch(`http://localhost:8000/api/v1/services?` + new URLSearchParams(query));
   if (!response.ok) {
     const error = await response.json();
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
     const filled = errorTemplate({ error: error.msg });
     $("#error").html(filled);
-  } else {
-    const services = await response.json();
-    for (let i = 0; i < services.length; i += 1) {
-      const option = document.createElement("option");
-      option.value = services[i];
-      option.text = services[i];
-      if (services[i] == booking.service.serviceName) option.selected = true;
-      selectField.appendChild(option);
+    return;
+  }
+  const services = await response.json();
+  for (let i = 0; i < services.length; i += 1) {
+    if (services[i]._id == booking.service._id) {
+      services[i].selected = true;
     }
   }
+  const selectServiceTemplate = Handlebars.compile($("#selectServiceTemplate").html());
+  const filled = selectServiceTemplate({ services: services });
+  $("#modifyService").html(filled);
 };
 
 const populateModifyHour = async (selectField, date) => {
   const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
   const query = {};
   query.location = locationInfo._id;
-  query.getServices = true;
-  const response = await fetch(`http://localhost:8000/api/v1/services?` + new URLSearchParams(query));
+  query.serviceID = document.getElementById("modifyService").value;
+  query.startDate = date.slice(0, 10);
+  const endDate = new Date(date);
+  endDate.setDate(endDate.getDate() + 1);
+  query.endDate = endDate.toISOString().slice(0, 10);
+  const response = await fetch(`http://localhost:8000/api/v1/booking?` + new URLSearchParams(query));
   if (!response.ok) {
     const error = await response.json();
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
     const filled = errorTemplate({ error: error.msg });
     $("#error").html(filled);
-  } else {
-    /* mi prendo tutte le prenotazioni di quel giorno */
-    const bookedHours = [];
-    if (bookedHours.indexOf(date) != -1) {
-      bookedHours.splice(indexOf(date), 1);
-    }
-    for (let i = 9; i <= 17; i += 1) {
-      if (!bookedHours.includes(i)) {
-        const option = document.createElement("option");
-        option.value = services[i];
-        option.text = services[i];
-        selectField.appendChild(option);
-      }
+    return;
+  }
+  /* mi prendo tutte le prenotazioni di quel giorno */
+  const bookings = await response.json();
+  const bookedHours = Array();
+  for (let i = 0; i < bookings.length; i += 1) {
+    bookedHours.push(Number(bookings[i].date.slice(11, 13)));
+  }
+  /* vado a prendere solo l'ora della prenotazione */
+  date = Number(date.slice(11, 13));
+  if (bookedHours.indexOf(date) != -1) {
+    bookedHours.splice(bookedHours.indexOf(date), 1);
+  }
+  $("#modifyHour").empty();
+  for (let i = 9; i <= 17; i += 1) {
+    if (!bookedHours.includes(i)) {
+      const option = document.createElement("option");
+      option.value = `${i}:00`;
+      option.text = `${i}:00`;
+      if (i == date) option.selected = true;
+      selectField.appendChild(option);
     }
   }
 };
 
 const populateModifyBooking = async (id) => {
   const booking = await getBooking(id);
-  const date = new Date(booking.date).toISOString().slice(0, 10);
+  const date = new Date(booking.date);
   document.getElementById("modifyUser").textContent = booking.user.email;
   await populateServices(document.getElementById("modifyService"), booking);
-  document.getElementById("modifyDate").value = date;
-  await populateModifyHour(document.getElementById("modifyHour"), date);
+  document.getElementById("modifyDate").value = date.toISOString().slice(0, 10);
+  await populateModifyHour(document.getElementById("modifyHour"), booking.date);
   document.getElementById("modifyForm").dataset.bookingId = id;
 };
 

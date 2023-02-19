@@ -5,8 +5,11 @@ const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
 
 const prepareQuery = async (query) => {
-  const { startDate, endDate } = query;
+  const { startDate, endDate, serviceID } = query;
   const queryObject = {};
+  if (serviceID) {
+    queryObject.service = serviceID;
+  }
   if (startDate && !endDate) {
     queryObject.date = { $gte: startDate };
   }

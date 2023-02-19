@@ -79,6 +79,7 @@ const populateViewService = async (id) => {
   document.getElementById("viewServiceName").textContent = service.serviceName;
   document.getElementById("viewServiceDescription").textContent = service.description;
   document.getElementById("viewServicePrice").textContent = service.price;
+  document.getElementById("viewServiceVip").textContent = service.isVip ? "Si" : "No";
 };
 
 const populateModifyService = async (id) => {
@@ -86,6 +87,11 @@ const populateModifyService = async (id) => {
   document.getElementById("modifyName").value = service.serviceName;
   document.getElementById("modifyDescription").value = service.description;
   document.getElementById("modifyPrice").value = service.price;
+  if (service.isVip) {
+    document.getElementById("modifyRadioSi").checked = true;
+  } else {
+    document.getElementById("modifyRadioNo").checked = true;
+  }
   document.getElementById("modifyForm").dataset.serviceId = id;
 };
 
