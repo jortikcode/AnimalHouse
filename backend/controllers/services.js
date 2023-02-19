@@ -15,9 +15,6 @@ const getAllServices = async (req, res) => {
   }
 
   let services = Service.find(queryObject).populate("location");
-  if (getServices) {
-    services = services.distinct("serviceName");
-  }
   services = await services.exec();
   res.status(StatusCodes.OK).json(services);
 };
