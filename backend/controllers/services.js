@@ -6,10 +6,11 @@ const path = require("path");
 
 const getAllServices = async (req, res) => {
   const queryObject = {};
-  if (req.location) {
-    queryObject["location"] = req.location;
+  if (req.query.location) {
+    queryObject["location"] = req.query.location;
   }
-  const services = await Service.find(queryObject);
+  const result = Service.find(queryObject).populate("location");
+  const services = await result
   res.status(StatusCodes.OK).json(services);
 };
 
@@ -35,7 +36,7 @@ const getService = async (req, res) => {
   if (!service) {
     throw createCustomError(`Non esiste nessun servizio con id : ${serviceID}`, StatusCodes.NOT_FOUND);
   }
-  res.status(StatusCodes.OK).json({ service });
+  res.status(StatusCodes.OK).json(service);
 };
 
 const updateService = async (req, res) => {
