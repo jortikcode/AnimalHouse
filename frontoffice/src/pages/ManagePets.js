@@ -1,5 +1,5 @@
 import { FidgetSpinner } from "react-loader-spinner";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import PetCard from "../components/PersonalArea/PetCard";
 import PetForm from "../components/PersonalArea/PetForm";
 

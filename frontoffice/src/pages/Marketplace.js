@@ -36,6 +36,7 @@ const Marketplace = () => {
     formState: { errors },
     watch,
     getValues,
+    setValue
   } = useForm({
     defaultValues,
   });
@@ -163,7 +164,9 @@ const Marketplace = () => {
                       if (watch("city") !== "all") {
                         dispatch(waitingGetLocations());
                         dispatch(getLocationsByCity({ city: watch("city") }));
-                      }
+                      } else
+                        setValue("location", "")
+
                     },
                   })}
                 >

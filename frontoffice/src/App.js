@@ -3,6 +3,7 @@ import Homepage from './pages/Homepage';
 import Forum from './pages/Forum';
 import Marketplace from './pages/Marketplace';
 import Services from './pages/Services';
+import ServiceDetails from './components/Service/ServiceDetails';
 import Navbar from './components/Navbar/Navbar'
 import LoginRegisterPage from './pages/LoginRegisterPage';
 import PostDetails from './components/Forum/PostDetails';
@@ -27,6 +28,7 @@ function App() {
         <Route path='/marketplace' element={<Marketplace />} />
         <Route path='/marketplace/:id' element={<ProductDetails />} />
         <Route path='/services' element={<Services />} />
+        <Route path='/services/:id' element={<ServiceDetails />} />
         <Route path='/marketplace/cart' element={<ManageCart />} />
         <Route path='/myarea' element={<PersonalArea />}>
           <Route path='/myarea/bills' element={<Bills />} />

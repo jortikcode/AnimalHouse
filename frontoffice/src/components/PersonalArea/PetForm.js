@@ -1,7 +1,7 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updateUser } from "../../app/usersSlice";
 import InfoTooltip from "../Auth/InfoTooltip";
 
@@ -14,7 +14,6 @@ const defaultValues = {
 
 const PetForm = () => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
   const [showForm, setShowForm] = useState(false);
 
   const {

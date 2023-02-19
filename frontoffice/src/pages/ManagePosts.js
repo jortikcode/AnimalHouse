@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import { FidgetSpinner } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllPosts, waitingGetAllPosts } from "../app/postsSlice";
