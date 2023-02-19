@@ -98,9 +98,7 @@ const ServiceDetails = () => {
               <p className="text-md title-font text-gray-800">
                 {service.location.address}, {service.location.city}
               </p>
-              <p className="text-gray-900 text-3xl title-font font-medium mb-1">
-                {service.serviceName}
-              </p>
+              <p className="text-gray-900 text-3xl title-font font-medium mb-1">{service.serviceName}</p>
               <p className="leading-relaxed">{service.description}</p>
               <form
                 onSubmit={handleSubmit(onSubmit)}
@@ -151,9 +149,7 @@ const ServiceDetails = () => {
                   />
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="title-font font-medium text-2xl text-gray-900">
-                    €{service.price}
-                  </span>
+                  <span className="title-font font-medium text-2xl text-gray-900">€{service.price}</span>
                   <input
                     type="submit"
                     value="Prenota"
