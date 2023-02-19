@@ -31,6 +31,30 @@ export const getAllServices = createAsyncThunk(
   }
 );
 
+// Thunk per creare una prenotazione
+export const createBooking = createAsyncThunk(
+  `${name}/createBooking`,
+  async (data, thunkAPI) => {
+    const user = thunkAPI.getState().auth.user
+    const response = await fetch(
+      `${baseApiUrl}/booking`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authentication": `Bearer ${user.token}`
+        },
+        body: JSON.stringify({
+          ...data,
+          user: user.userInfo._id
+        })
+      }
+    );
+    return await response.json();
+  }
+);
+
+
+
 // Thunk per ottenere la lista dei prodotti
 export const getServiceByID = createAsyncThunk(
     `${name}/getServiceByID`,
@@ -67,6 +91,9 @@ const serviceSlice = createSlice({
     builder.addCase(getServiceByID.fulfilled, (state, action) => {
         state.loadingService = false
         state.service = action.payload
+    })
+    builder.addCase(createBooking.fulfilled, (state, action) => {
+      state.bookings.unshift(action.payload)
     })
   },
 });
