@@ -47,11 +47,11 @@ const ServiceDetails = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    /* dispatch(createBooking({
+    dispatch(createBooking({
       date: data.date,
       service: id
     }));
-    reset(defaultValues) */
+    reset(defaultValues)
   };
 
   if (loadingOneService || JSON.stringify({}) === JSON.stringify(service))
