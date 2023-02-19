@@ -73,8 +73,8 @@
                                 Ricerca per:
                                 <div class="flex items-center justify-start">
                                     <select id="searchParam" class="border border-gray-400 rounded-lg px-2 py-1">
-                                        <option value="serviceName">Nome</option>
-                                        <option value="description">Descrizione</option>
+                                        <option value="user">Utente</option>
+                                        <option value="service">Servizio</option>
                                     </select>
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
                                     <div class="flex items-center justify-start ">
                                         <form>
                                             <input id="search" class="bg-white rounded-lg p-2" type="text"
-                                                placeholder="Cerca servizio" />
+                                                placeholder="Cerca prenotazione" />
                                         </form>
                                     </div>
                                 </div>
@@ -91,16 +91,16 @@
                         </div>
                         <div class="flex items-end">
                             <button class="bg-yellow-500 text-black rounded-lg px-2 py-2" data-bs-toggle="modal"
-                                data-bs-target="#createModal">Nuovo servizio</button>
+                                data-bs-target="#createModal">Nuova prenotazione</button>
                         </div>
                     </div>
                     <table class="sortable table-auto w-full border-2 border-black rounded-lg border-spacing-0"
                         aria-label="tabella per la gestione dei prodotti">
                         <thead>
                             <tr class="bg-yellow-500">
-                                <th class="cursor-pointer px-4 py-2">Nome</th>
-                                <th class="cursor-pointer px-4 py-2">Descrizione</th>
-                                <th class="cursor-pointer px-4 py-2">Prezzo</th>
+                                <th class="cursor-pointer px-4 py-2">Utente</th>
+                                <th class="cursor-pointer px-4 py-2">Servizio</th>
+                                <th class="cursor-pointer px-4 py-2">Data</th>
                                 <th class="px-4 py-2">Azioni</th>
                             </tr>
                         </thead>
@@ -140,28 +140,23 @@
                     <!-- Modal header -->
                     <div
                         class="modal-header bg-yellow-500 flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                        <h5 class="text-xl font-medium leading-normal text-gray-800">Dettaglio servizio</h5>
+                        <h5 class="text-xl font-medium leading-normal text-gray-800">Dettaglio prenotazione</h5>
                     </div>
                 </div>
                 <!-- Modal body -->
                 <div class="modal-body relative p-4">
                     <div class="bg-white p-4 rounded-md shadow-md">
-                        <div class="mb-4 flex justify-center">
-                            <img id="viewServiceImg" class="w-1/2 mx-auto" src="" alt="Immagine del servizio">
+                        <div class="mb-4">
+                            <label for="viewBookingUser" class="block text-gray-700 font-bold mb-1">Utente</label>
+                            <span id="viewBookingUser" class="p-2 w-full"></span>
                         </div>
                         <div class="mb-4">
-                            <label for="viewServiceName" class="block text-gray-700 font-bold mb-1">Nome
-                                servizio</label>
-                            <span id="viewServiceName" class="p-2 w-full"></span>
+                            <label for="viewBookingService" class="block text-gray-700 font-bold mb-1">Servizio</label>
+                            <span id="viewBookingService" class="p-2 w-full"></span>
                         </div>
                         <div class="mb-4">
-                            <label for="viewServiceDescription"
-                                class="block text-gray-700 font-bold mb-1">Descrizione</label>
-                            <span id="viewServiceDescription" class="p-2 w-full"></span>
-                        </div>
-                        <div class="mb-4">
-                            <label for="viewServicePrice" class="block text-gray-700 font-bold mb-1">Prezzo</label>
-                            <span id="viewServicePrice" class="p-2 w-full"></span>
+                            <label for="viewBookingDate" class="block text-gray-700 font-bold mb-1">Data</label>
+                            <span id="viewBookingDate" class="p-2 w-full"></span>
                         </div>
                     </div>
                 </div>
@@ -179,37 +174,35 @@
                     <!-- Modal header -->
                     <div
                         class="modal-header bg-yellow-500 flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                        <h5 class="text-xl font-medium leading-normal text-gray-800">Modifica servizio</h5>
+                        <h5 class="text-xl font-medium leading-normal text-gray-800">Modifica prenotazione</h5>
                     </div>
                 </div>
                 <!-- Modal body -->
                 <div class="modal-body relative p-4">
-                    <form id="modifyForm" onsubmit="event.preventDefault(); modifyService(this.dataset.serviceId)">
+                    <form id="modifyForm" onsubmit="event.preventDefault(); modifyBooking(this.dataset.bookingId)">
                         <div class="mb-4">
-                            <label for="modifyName" class="block text-gray-700 font-bold mb-2">Nome servizio</label>
-                            <input type="text" name="serviceName" id="modifyName" required
-                                class="border rounded-md p-2 w-full">
+                            <label for="modifyUser" class="block text-gray-700 font-bold mb-1">Utente</label>
+                            <span id="modifyUser" class="p-2 w-full"></span>
                         </div>
                         <div class="mb-4">
-                            <label for="modifyDescription"
-                                class="block text-gray-700 font-bold mb-2">Descrizione</label>
-                            <textarea name="description" id="modifyDescription"
-                                class="border rounded-md p-2 w-full"></textarea>
+                            <label for="modifyService" class="block text-gray-700 font-bold mb-2">Servizio</label>
+                            <select name="service" id="modifyService" class="border rounded-md p-2 w-full">
+                                <!-- Mostrare tutti i servizi della location -->
+                            </select>
                         </div>
                         <div class="mb-4">
-                            <label for="modifyPrice" class="block text-gray-700 font-bold mb-2">Prezzo</label>
-                            <input type="number" step="0.01" min="0" name="price" id="modifyPrice" required
-                                class="border rounded-md p-2 w-full">
+                            <label for="modifyData" class="block text-gray-700 font-bold mb-2">Data</label>
+                            <input type="date" name="date" id="modifyDate" class="border rounded-md p-2 w-full">
                         </div>
                         <div class="mb-4">
-                            <label for="modifyimgName" class="block text-gray-700 font-bold mb-2">Immagine</label>
-                            <input type="file" name="imgName" class="border rounded-md p-2 w-full">
+                            <label for="modifyHour" class="block text-gray-700 font-bold mb-2">Ora</label>
+                            <select name="Hour" id="modifyHour" class="border rounded-md p-2 w-full">
                         </div>
                         <div class="flex items-center justify-end py-2">
                             <button type="submit"
                                 class="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600"
                                 data-bs-toggle="modal" data-bs-target="#modifyModal">Modifica
-                                servizio</button>
+                                prenotazione</button>
                         </div>
                     </form>
                 </div>
@@ -227,39 +220,35 @@
                     <!-- Modal header -->
                     <div
                         class="modal-header bg-yellow-500 flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                        <h5 class="text-xl font-medium leading-normal text-gray-800">Nuovo servizio</h5>
+                        <h5 class="text-xl font-medium leading-normal text-gray-800">Nuova prenotazione</h5>
                     </div>
                 </div>
                 <!-- Modal body -->
                 <div class="modal-body relative p-4">
-                    <form id="createForm" onsubmit="event.preventDefault(); createProduct()"
+                    <form id="createForm" onsubmit="event.preventDefault(); createBooking()"
                         class="bg-white p-4 rounded-md shadow-md">
                         <div class="mb-4">
-                            <label for="name" class="block text-gray-700 font-bold mb-2">Nome servizio</label>
-                            <input type="text" name="serviceName" id="name" placeholder="Inserisci il nome del servizio"
-                                required class="border rounded-md p-2 w-full">
+                            <label for="user" class="block text-gray-700 font-bold mb-2">Utente</label>
+                            <select name="user" id="selectUser">
+                                <!-- mostrare tutti gli utenti (email) -->
+                            </select>
                         </div>
                         <div class="mb-4">
-                            <label for="price" class="block text-gray-700 font-bold mb-2">Prezzo</label>
-                            <input type="number" step="0.01" min="0" name="price" id="price"
-                                placeholder="Inserisci il prezzo del servizio" required
-                                class="border rounded-md p-2 w-full">
+                            <label for="service" class="block text-gray-700 font-bold mb-2">Servizio</label>
+                            <select name="service" id="selectService">
+                                <!-- mostrare tutti i servizi della sede -->
+                            </select>
                         </div>
                         <div class="mb-4">
-                            <label for="description" class="block text-gray-700 font-bold mb-2">Descrizione</label>
-                            <textarea name="description" id="description"
-                                placeholder="Inserisci la descrizione del servizio"
-                                class="border rounded-md p-2 w-full"></textarea>
-                        </div>
-                        <div class="mb-4">
-                            <label for="imgName" class="block text-gray-700 font-bold mb-2">Immagine</label>
-                            <input type="file" name="imgName" class="border rounded-md p-2 w-full">
+                            <label for="date" class="block text-gray-700 font-bold mb-2">Data</label>
+                            <input type="date" name="date" id="date">
+                            </input>
                         </div>
                         <input type="hidden" name="location" id="formLocation" value="" />
                         <div class="flex items-center justify-end py-2">
                             <button type="submit" data-bs-toggle="modal" data-bs-target="#createModal"
                                 class="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Aggiungi
-                                servizio</button>
+                                prenotazione</button>
                         </div>
                     </form>
                 </div>
@@ -271,7 +260,7 @@
     <script src="/elements/index.min.js"></script>
 
     <!-- Compile -->
-    <script src="/js/service.js"></script>
+    <script src="/js/booking.js"></script>
 
     <!-- Logout -->
     <script src="/js/logout.js"></script>
@@ -286,20 +275,20 @@
         {{/if}}
     </script>
 
-    <script id="servicesTemplate" type="text/x-handlebars-template">
-        {{#if services}}
-        {{#each services}}
+    <script id="bookingsTemplate" type="text/x-handlebars-template">
+        {{#if bookings}}
+        {{#each bookings}}
         <tr>
-            <td class="border border-black px-4 py-2 text-center">{{this.serviceName}}</td>
-            <td class="border border-black px-4 py-2 text-center">{{this.description}}</td>
-            <td class="border border-black px-4 py-2 text-center">{{this.price}}€</td>
+            <td class="border border-black px-4 py-2 text-center">{{this.user.email}}</td>
+            <td class="border border-black px-4 py-2 text-center">{{this.service.serviceName}}</td>
+            <td class="border border-black px-4 py-2 text-center">{{this.date}}</td>
             <td class="border border-black px-4 py-2">
                 <div class="flex items-center gap-2 justify-center">
-                    <button data-serviceid="{{this._id}}" onclick="populateViewService(this.dataset.serviceid)" data-bs-toggle="modal" data-bs-target="#viewModal" class="bg-yellow-500  items-center px-2 py-2 mx-2 rounded-lg"><img
+                    <button data-bookingid="{{this._id}}" onclick="populateViewBooking(this.dataset.bookingid)" data-bs-toggle="modal" data-bs-target="#viewModal" class="bg-yellow-500  items-center px-2 py-2 mx-2 rounded-lg"><img
                         style="max-height: 2em; min-height: 1em; max-width: 3em; min-width: 1em;" src="/img/view.png" alt="Visualizza"/></button>
-                    <button data-serviceid="{{this._id}}" onclick="populateModifyService(this.dataset.serviceid)" data-bs-toggle="modal" data-bs-target="#modifyModal" class="bg-yellow-500  items-center px-2 py-2 mx-2 rounded-lg "><img
+                    <button data-bookingid="{{this._id}}" onclick="populateModifyBooking(this.dataset.bookingid)" data-bs-toggle="modal" data-bs-target="#modifyModal" class="bg-yellow-500  items-center px-2 py-2 mx-2 rounded-lg "><img
                         style="max-height: 2em; min-height: 1em; max-width: 3em; min-width: 1em;" src="/img/edit.png" alt="Modifica"/></button>
-                    <button data-serviceid="{{this._id}}" onclick="confirmDelete(this.dataset.serviceid)" class="bg-yellow-500 items-center px-2 py-2 rounded-lg mx-2 removeButton"><img
+                    <button data-bookingid="{{this._id}}" onclick="confirmDelete(this.dataset.bookingid)" class="bg-yellow-500 items-center px-2 py-2 rounded-lg mx-2 removeButton"><img
                         style="max-height: 2em; min-height: 1em; max-width: 3em; min-width: 1em;" src="/img/remove.png" alt="Elimina" /></button>
                 </div>
             </td>

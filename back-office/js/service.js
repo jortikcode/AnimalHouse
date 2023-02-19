@@ -15,6 +15,7 @@ jQuery(function () {
     const param = searchParam.value;
     query[param] = search.value;
     getServices(query);
+    delete query[param];
   });
 });
 

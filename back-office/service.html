@@ -101,6 +101,7 @@
                                 <th class="cursor-pointer px-4 py-2">Nome</th>
                                 <th class="cursor-pointer px-4 py-2">Descrizione</th>
                                 <th class="cursor-pointer px-4 py-2">Prezzo</th>
+                                <th class="cursor-pointer px-4 py-2">Disponibilità</th>
                                 <th class="px-4 py-2">Azioni</th>
                             </tr>
                         </thead>
@@ -158,6 +159,10 @@
                             <label for="viewServiceDescription"
                                 class="block text-gray-700 font-bold mb-1">Descrizione</label>
                             <span id="viewServiceDescription" class="p-2 w-full"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label for="viewServicePrice" class="block text-gray-700 font-bold mb-1">Prezzo</label>
+                            <span id="viewServicePrice" class="p-2 w-full"></span>
                         </div>
                         <div class="mb-4">
                             <label for="viewServicePrice" class="block text-gray-700 font-bold mb-1">Prezzo</label>
@@ -293,6 +298,11 @@
             <td class="border border-black px-4 py-2 text-center">{{this.serviceName}}</td>
             <td class="border border-black px-4 py-2 text-center">{{this.description}}</td>
             <td class="border border-black px-4 py-2 text-center">{{this.price}}€</td>
+            {{#if this.isVip}}
+            <td class="border border-black px-4 py-2 text-center">Solo per Vip</td>
+            {{else}}
+            <td class="border border-black px-4 py-2 text-center">Per tutti</td>
+            {{/if}}
             <td class="border border-black px-4 py-2">
                 <div class="flex items-center gap-2 justify-center">
                     <button data-serviceid="{{this._id}}" onclick="populateViewService(this.dataset.serviceid)" data-bs-toggle="modal" data-bs-target="#viewModal" class="bg-yellow-500  items-center px-2 py-2 mx-2 rounded-lg"><img
