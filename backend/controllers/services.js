@@ -11,7 +11,7 @@ const getAllServices = async (req, res) => {
     queryObject.location = location;
   }
 
-  let services = Service.find(queryObject);
+  let services = Service.find(queryObject).populate("location");
   if (getServices) {
     services = services.distinct("serviceName");
   }
