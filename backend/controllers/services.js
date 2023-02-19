@@ -5,10 +5,13 @@ const fs = require("fs");
 const path = require("path");
 
 const getAllServices = async (req, res) => {
-  const { location, getServices } = req.query;
+  const { location, isVip } = req.query;
   const queryObject = {};
   if (location) {
     queryObject.location = location;
+  }
+  if (isVip == "false") {
+    queryObject.isVip = false;
   }
 
   let services = Service.find(queryObject).populate("location");
@@ -20,7 +23,7 @@ const getAllServices = async (req, res) => {
 };
 
 const createService = async (req, res) => {
-  const { serviceName, description, price, location } = req.body;
+  const { serviceName, description, price, location, isVip } = req.body;
   let imgName = "default_product_image.jpg";
   if (req.file?.filename) {
     imgName = req.file.filename;
@@ -29,6 +32,7 @@ const createService = async (req, res) => {
     serviceName,
     description,
     price: Number(price),
+    isVip: Boolean(isVip == "true"),
     imgName,
     location,
   });
@@ -46,7 +50,7 @@ const getService = async (req, res) => {
 
 const updateService = async (req, res) => {
   const { id: serviceID } = req.params;
-  const { serviceName, description, price } = req.body;
+  const { serviceName, description, price, isVip } = req.body;
   const updateObj = {};
   if (serviceName) {
     updateObj.serviceName = serviceName;
@@ -56,6 +60,9 @@ const updateService = async (req, res) => {
   }
   if (price) {
     updateObj.price = price;
+  }
+  if (isVip) {
+    updateObj.isVip = Boolean(isVip == "true");
   }
   if (req.file?.filename) {
     updateObj.imgName = req.file.filename;

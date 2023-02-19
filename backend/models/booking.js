@@ -20,4 +20,6 @@ const BookingSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+BookingSchema.index({ service: 1, date: 1 }, { unique: [true, "Prenotazione non più disponibile"] });
+
 module.exports = mongoose.model("Booking", BookingSchema);
