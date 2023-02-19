@@ -5,6 +5,7 @@ import {
   createBooking,
   getServiceByID,
   waitingGetService,
+  getAllBookings
 } from "../../app/servicesSlice";
 import { Controller, useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
@@ -37,6 +38,7 @@ const ServiceDetails = () => {
   useLayoutEffect(() => {
     dispatch(waitingGetService());
     dispatch(getServiceByID({ id }));
+    dispatch(getAllBookings({ serviceID: id }))
   }, [dispatch, id]);
 
   useEffect(() => {
@@ -65,7 +67,7 @@ const ServiceDetails = () => {
           glassColor="#c0efff"
           color="#FBBF24"
         />
-        <small> Aspettando info sul servizio dalle nostre sedi... </small>
+        <small> Aspettando info sul servizio e sulle disponibilita' dalle nostre sedi... </small>
       </div>
     );
   else {
@@ -129,7 +131,6 @@ const ServiceDetails = () => {
                         maxTime={setHours(setMinutes(new Date(), 0), END_TIME)}
                         placeholderText="Seleziona una data"
                         onChange={(date) => {
-                          const currentDate = new Date(Date.now());
                           if (date.getTime() > Date.now())
                             return field.onChange(date);
                           return field.onChange("");

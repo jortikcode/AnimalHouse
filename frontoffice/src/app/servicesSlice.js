@@ -31,6 +31,22 @@ export const getAllServices = createAsyncThunk(
   }
 );
 
+// Thunk per ottenere la lista dei prodotti
+export const getAllBookings = createAsyncThunk(
+  `${name}/getAllBookings`,
+  async ({
+    location = ""
+  }) => {
+    const params = queryString.stringify({
+      location,
+    });
+    const response = await fetch(
+      `${baseApiUrl}/services?${params}`
+    );
+    return await response.json();
+  }
+);
+
 // Thunk per creare una prenotazione
 export const createBooking = createAsyncThunk(
   `${name}/createBooking`,
