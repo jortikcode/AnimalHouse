@@ -5,12 +5,8 @@ const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
 
 const prepareQuery = async (query) => {
-  const { service, startDate, endDate } = query;
+  const { startDate, endDate } = query;
   const queryObject = {};
-  if (service) {
-    const serviceID = await Service.findOne({ serviceName: service });
-    queryObject.service = serviceID._id;
-  }
   if (startDate && !endDate) {
     queryObject.date = { $gte: startDate };
   }
@@ -24,9 +20,21 @@ const prepareQuery = async (query) => {
 };
 
 const getAllBookings = async (req, res) => {
-  const { sort, location } = req.query;
+  const { sort, location, user, service } = req.query;
   const queryObject = await prepareQuery(req.query);
-  let result = Booking.find(queryObject).populate("user").populate("service");
+  let populateUser = "user";
+  if (user) {
+    const regex = new RegExp(user, "i");
+    const filter = { email: { $regex: regex } };
+    populateUser = { path: "user", match: filter };
+  }
+  let populateService = "service";
+  if (service) {
+    const regex = new RegExp(service, "i");
+    const filter = { serviceName: { $regex: regex } };
+    populateService = { path: "service", match: filter };
+  }
+  let result = Booking.find(queryObject).populate(populateUser).populate(populateService);
   // sort
   if (sort) {
     const sortList = sort.split(",").join(" ");
@@ -37,7 +45,13 @@ const getAllBookings = async (req, res) => {
   let bookings = await result;
   /* Vado a prendere le prenotazioni di un servizio di una determinata sede */
   if (location) {
-    bookings = bookings.filter((booking) => booking.service.location.toString() === location.toString());
+    bookings = bookings.filter((booking) => booking.service?.location.toString() === location.toString());
+  }
+  if (user) {
+    bookings = bookings.filter((booking) => booking.user !== null);
+  }
+  if (service) {
+    bookings = bookings.filter((booking) => booking.service !== null);
   }
   res.status(StatusCodes.OK).json(bookings);
 };
@@ -49,11 +63,11 @@ const createBooking = async (req, res) => {
 
 const getBooking = async (req, res) => {
   const { id: bookingID } = req.params;
-  const booking = await Booking.findOne({ _id: bookingID });
+  const booking = await Booking.findOne({ _id: bookingID }).populate("user").populate("service");
   if (!booking) {
     throw createCustomError(`Non esiste nessuna prenotazione con id : ${bookingID}`, StatusCodes.NOT_FOUND);
   }
-  res.status(StatusCodes.OK).json({ booking });
+  res.status(StatusCodes.OK).json(booking);
 };
 
 const updateBooking = async (req, res) => {

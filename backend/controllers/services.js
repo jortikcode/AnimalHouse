@@ -5,12 +5,17 @@ const fs = require("fs");
 const path = require("path");
 
 const getAllServices = async (req, res) => {
+  const { location, getServices } = req.query;
   const queryObject = {};
-  if (req.query.location) {
-    queryObject["location"] = req.query.location;
+  if (location) {
+    queryObject.location = location;
   }
-  const result = Service.find(queryObject).populate("location");
-  const services = await result
+
+  let services = Service.find(queryObject);
+  if (getServices) {
+    services = services.distinct("serviceName");
+  }
+  services = await services.exec();
   res.status(StatusCodes.OK).json(services);
 };
 

@@ -18,6 +18,10 @@ const ServiceSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Il prezzo del servizio deve essere fornito"],
     },
+    isVip: {
+      type: Boolean,
+      default: false,
+    },
     location: {
       type: mongoose.Types.ObjectId,
       ref: "Location",
