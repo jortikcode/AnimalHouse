@@ -6,11 +6,13 @@ import Bill from "./Bill";
 
 const Bills = () => {
   const dispatch = useDispatch();
-  const { bills, loadingBills, billsUpdated } = useSelector((state) => state.marketplace);
+  const { bills, loadingBills, billsUpdated } = useSelector(
+    (state) => state.marketplace
+  );
   useEffect(() => {
     if (!billsUpdated) {
       dispatch(waitingBills());
-      dispatch(loadBills())
+      dispatch(loadBills());
       dispatch(getAllBills({}));
     }
   }, [dispatch, billsUpdated]);
@@ -25,16 +27,16 @@ const Bills = () => {
         )}
         {loadingBills && (
           <div className="flex flex-col items-center justify-center mt-12">
-          <FidgetSpinner
-            visible={true}
-            height="80"
-            width="80"
-            ariaLabel="dna-loading"
-            wrapperStyle={{}}
-            wrapperClass="dna-wrapper"
-            ballColors={["#EFBB1A", "#EFBB1A", "#EFBB1A"]}
-            backgroundColor="#0"
-          />
+            <FidgetSpinner
+              visible={true}
+              height="80"
+              width="80"
+              ariaLabel="dna-loading"
+              wrapperStyle={{}}
+              wrapperClass="dna-wrapper"
+              ballColors={["#EFBB1A", "#EFBB1A", "#EFBB1A"]}
+              backgroundColor="#0"
+            />
           </div>
         )}
         {}
@@ -43,37 +45,40 @@ const Bills = () => {
   else
     return (
       <>
-        <h2 className="font-bold text-3xl tracking-tighter mt-8 text-center"> I tuoi ordini </h2>
+        <h2 className="font-bold text-3xl tracking-tighter mt-8 text-center">
+          {" "}
+          I tuoi ordini{" "}
+        </h2>
         <>
           {bills.map((bill, billID) => (
-            <div className="flex flex-col items-center justify-center mt-12" key={billID}>
+            <div
+              className="flex flex-col items-center justify-center mt-12"
+              key={billID}
+            >
               <div className="mt-8 grid md:grid-cols-3 grid-cols-1 gap-4 mx-8">
                 {bill.products.map((purchasedProduct, index) => (
-                  <div
+                  <Bill
                     key={index}
-                    className="border-4 border-black rounded-3xl bg-yellow-400"
-                  >
-                    <Bill
-                      productID={purchasedProduct.product}
-                      quantity={purchasedProduct.quantity}
-                    />
-                  </div>
+                    productID={purchasedProduct.product._id}
+                    purchasedQuantity={purchasedProduct.quantity}
+                    {...purchasedProduct.product}
+                  />
                 ))}
               </div>
-              <div className="flex flex-col col-start-2 ml-4 md:col-start-auto md:ml-0 md:justify-end space-y-3 mt-2 px-2">
-                <p className="text-gray-700 text-center">
+              <div className="flex flex-col col-start-2 ml-4 md:col-start-auto md:ml-0 md:justify-end space-y-3 mt-8 px-2">
+                <p className="text-black text-xl text-center">
                   Modalita' di pagamento:{" "}
-                  <span className="text-black font-bold bg-yellow-400 p-1 rounded-lg">
+                  <span className="text-black font-bold bg-yellow-400 p-2 rounded-lg">
                     {" "}
                     {bill.paymentMethod}{" "}
                   </span>
                 </p>
-                <p className="text-gray-700 text-center">
+                <p className="text-black text-center">
                   {" "}
                   {new Date(bill.createdAt).toLocaleString()}{" "}
                 </p>
                 <p className="text-center rounded-lg text-black font-bold bg-yellow-400 py-1 text-lg">
-                  Totale: EURO {bill.total}
+                  Totale: € {bill.total.toFixed(2)}
                 </p>
               </div>
             </div>

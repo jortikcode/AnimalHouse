@@ -58,7 +58,7 @@ const getAllBills = async (req, res) => {
   if (userID) {
     queryObject.user = userID;
   }
-  let result = Bill.find(queryObject).populate("user", "products");
+  let result = Bill.find(queryObject).populate("user").populate("products.product");
   // sort
   if (sort) {
     const sortList = sort.split(",").join(" ");

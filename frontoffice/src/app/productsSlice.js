@@ -52,7 +52,7 @@ export const getAllProducts = createAsyncThunk(
 // Thunk per ottenere la lista dei prodotti
 export const getAllBills = createAsyncThunk(
   `${name}/getAllBills`,
-  async (args, thunkAPI) => {
+  async (_, thunkAPI) => {
     const { userInfo } = thunkAPI.getState().auth.user;
     const id = userInfo["_id"];
     const params = queryString.stringify({
@@ -66,7 +66,7 @@ export const getAllBills = createAsyncThunk(
 // Thunk per ottenere il carrello di un utente
 export const getCart = createAsyncThunk(
   `${name}/getCart`,
-  async (args, thunkAPI) => {
+  async (_, thunkAPI) => {
     const { token, userInfo } = thunkAPI.getState().auth.user;
     const id = userInfo["_id"];
     const params = queryString.stringify({
