@@ -26,7 +26,6 @@ const PetForm = () => {
   });
 
   const onSubmit = (data) => {
-    console.log(data)
     dispatch(updateUser({ userInfo: {
         animaliPreferiti: [
           {

@@ -149,9 +149,7 @@ const serviceSlice = createSlice({
       state.bookings = action.payload
     })
     builder.addCase(deleteBooking.fulfilled, (state, action) => {
-      console.log(state.bookings)
       state.bookings = state.bookings.filter((booking) => booking._id !== action.payload.bookingID)
-      console.log(state.bookings)
     })
   },
 });
