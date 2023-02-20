@@ -11,7 +11,6 @@ import {
   waitingGetPostById,
 } from "../../app/postsSlice";
 import { getUserByID, waitingUserByID } from "../../app/usersSlice";
-import BackArrow from "../Marketplace/BackArrow";
 import postCategories from "./categories.json"
 
 const PostDetails = () => {
@@ -73,7 +72,8 @@ const PostDetails = () => {
   if (
     loadingPost ||
     loadUserByID ||
-    JSON.stringify({}) === JSON.stringify(userSearched)
+    JSON.stringify({}) === JSON.stringify(userSearched) ||
+    JSON.stringify({}) === JSON.stringify(post)
   )
     return (
       <div className="flex mt-9 justify-center flex-col items-center">
@@ -92,7 +92,6 @@ const PostDetails = () => {
     );
   return (
     <div className="flex mt-20 justify-center flex-col items-center gap-y-8">
-      <BackArrow path="/forum" />
       <div className="rounded-xl p-5 flex flex-col w-fit max-w-[40rem] bg-yellow-400 border-4 border-black">
         <div className="flex md:flex-row flex-col items-center justify-between border-b-4 border-white md:space-x-8 md:space-y-0 space-y-4 pb-3">
           <div className="flex flex-col md:items-baseline items-center">

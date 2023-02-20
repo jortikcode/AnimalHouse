@@ -1,10 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { MagnifyingGlass } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { getLocationByID, waitingGetLocation } from "../../app/locationsSlice";
 import { getProduct, waitingGetById } from "../../app/productsSlice";
 import AddCart from "./AddCart";
-import BackArrow from "./BackArrow";
 import Star from "./Star";
 
 const { useParams } = require("react-router-dom");
@@ -29,7 +28,7 @@ const ProductDetails = () => {
     location: locationID
   } = product
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     dispatch(waitingGetById());
     dispatch(getProduct({ id }));
   }, [dispatch, id]);
@@ -41,7 +40,7 @@ const ProductDetails = () => {
     }
   }, [dispatch, locationID])
 
-  if (loadingOne || loadingLocation)
+  if (loadingOne || loadingLocation ||  JSON.stringify({}) === JSON.stringify(product))
     return (
       <div className="flex mt-9 justify-center flex-col items-center">
         <MagnifyingGlass
@@ -59,7 +58,6 @@ const ProductDetails = () => {
     );
   return (
     <div className="bg-white flex flex-col items-center pb-24 sm:pb-32 gap-y-8 pt-8">
-      <BackArrow path="/marketplace" />
       <div className="mx-auto grid max-w-2xl grid-cols-1 items-center gap-y-16 gap-x-8 px-4 sm:px-6 lg:max-w-7xl lg:grid-cols-2 lg:px-8">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{name}</h1>

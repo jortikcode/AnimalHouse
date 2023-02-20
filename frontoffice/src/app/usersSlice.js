@@ -48,6 +48,7 @@ const updateUser = createAsyncThunk(
             formData.append("petName", userInfo.animaliPreferiti[0].name)
             formData.append("petBirthYear", userInfo.animaliPreferiti[0].birthYear)
             formData.append("petParticularSigns", userInfo.animaliPreferiti[0].particularSigns)
+            formData.append("petAnimalType", userInfo.animaliPreferiti[0].animalType)
             if (userInfo.animaliPreferiti[0].imageName){
                 formData.append("imgName", userInfo.animaliPreferiti[0].imageName[0])
             }
@@ -62,6 +63,24 @@ const updateUser = createAsyncThunk(
         })
         return await response.json();
     }   
+)
+
+const removePets = createAsyncThunk(
+    `${name}/update`,
+    async (_, thunkAPI) => {
+        const user = thunkAPI.getState().auth.user;
+        const response = await fetch(`${baseApiUrl}/users/${ user.userInfo._id }`, { 
+            method: 'PATCH',
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${user.token}`,
+            },
+            body: JSON.stringify({
+                clearPets: true
+            })
+        })
+        return await response.json();
+    }
 )
 
 const getUserByID = createAsyncThunk(
@@ -126,6 +145,6 @@ const userSlice = createSlice({
 })
 
 export const { logout, loadAnimals, waitingUserByID } = { ...userSlice.actions }
-export { login, signup, updateUser, getUserByID }
+export { login, signup, updateUser, getUserByID, removePets }
 
 export const auth = userSlice.reducer

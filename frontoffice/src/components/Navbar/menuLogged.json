@@ -8,10 +8,6 @@
         "link": "/myarea"
     },
     {
-        "value": "Home",
-        "link": "/"
-    },
-    {
         "value": "Negozio",
         "link": "/marketplace"
     },

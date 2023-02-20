@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Homepage from './pages/Homepage';
 import Forum from './pages/Forum';
 import Marketplace from './pages/Marketplace';
 import Services from './pages/Services';
@@ -22,7 +21,7 @@ function App() {
       <div className="w-full min-h-screen">
       <Navbar />
       <Routes>
-        <Route path='/' element={<Homepage />} />
+        <Route path='/' element={<Marketplace />} />
         <Route path='/forum' element={<Forum />} />
         <Route path='/forum/:id' element={<PostDetails />} />
         <Route path='/marketplace' element={<Marketplace />} />
