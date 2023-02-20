@@ -11,7 +11,7 @@ import ProductDetails from './components/Marketplace/ProductDetails';
 import ManageCart from './pages/ManageCart';
 import PersonalArea from './pages/PersonalArea';
 import Bills from './components/PersonalArea/Bills';
-import Bookings from './components/PersonalArea/Bookings';
+import ManageBookings from './pages/ManageBookings';
 import Footer from './components/Footer/Footer';
 import ManagePets from './pages/ManagePets';
 import ManagePosts from './pages/ManagePosts';
@@ -32,7 +32,7 @@ function App() {
         <Route path='/marketplace/cart' element={<ManageCart />} />
         <Route path='/myarea' element={<PersonalArea />}>
           <Route path='/myarea/bills' element={<Bills />} />
-          <Route path='/myarea/bookings' element={<Bookings />} />
+          <Route path='/myarea/bookings' element={<ManageBookings />} />
           <Route path='/myarea/pets' element={<ManagePets />} />
           <Route path='/myarea/forum' element={<ManagePosts />} />
         </Route>

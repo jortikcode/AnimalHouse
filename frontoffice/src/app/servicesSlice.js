@@ -37,11 +37,13 @@ export const getAllBookings = createAsyncThunk(
   `${name}/getAllBookings`,
   async ({
     serviceID = "",
-    startDate = ""
+    startDate = "",
+    userID = ""
   }) => {
     const params = queryString.stringify({
       serviceID,
-      startDate
+      startDate,
+      userID
     });
     const response = await fetch(
       `${baseApiUrl}/booking?${params}`
@@ -75,7 +77,26 @@ export const createBooking = createAsyncThunk(
   }
 );
 
-
+// Thunk per creare una prenotazione
+export const deleteBooking = createAsyncThunk(
+  `${name}/deleteBooking`,
+  async ({ bookingID }, thunkAPI) => {
+    const user = thunkAPI.getState().auth.user
+    const rejectWithValue = thunkAPI.rejectWithValue
+    const response = await fetch(
+      `${baseApiUrl}/booking/${bookingID}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authentication": `Bearer ${user.token}`
+        },
+      }
+    );
+    if (!response.ok)
+      return rejectWithValue("Errore generico");
+    return await response.json();
+  }
+);
 
 // Thunk per ottenere un servizio specifico
 export const getServiceByID = createAsyncThunk(
@@ -126,6 +147,11 @@ const serviceSlice = createSlice({
     builder.addCase(getAllBookings.fulfilled, (state, action) => {
       state.loadingBookings = false
       state.bookings = action.payload
+    })
+    builder.addCase(deleteBooking.fulfilled, (state, action) => {
+      console.log(state.bookings)
+      state.bookings = state.bookings.filter((booking) => booking._id !== action.payload.bookingID)
+      console.log(state.bookings)
     })
   },
 });

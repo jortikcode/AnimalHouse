@@ -5,8 +5,11 @@ const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
 
 const prepareQuery = async (query) => {
-  const { startDate, endDate, serviceID } = query;
+  const { startDate, endDate, serviceID, userID } = query;
   const queryObject = {};
+  if (userID) {
+    queryObject.user = userID
+  }
   if (serviceID) {
     queryObject.service = serviceID;
   }
@@ -43,7 +46,7 @@ const getAllBookings = async (req, res) => {
     const sortList = sort.split(",").join(" ");
     result = result.sort(sortList);
   } else {
-    result = result.sort("date");
+    result = result.sort({ date: "desc" });
   }
   let bookings = await result;
   /* Vado a prendere le prenotazioni di un servizio di una determinata sede */
@@ -95,7 +98,7 @@ const deleteBooking = async (req, res) => {
   if (!booking) {
     throw createCustomError(`Non esiste nessuna prenotazione con id : ${bookingID}`, StatusCodes.NOT_FOUND);
   }
-  res.status(StatusCodes.OK).json({ msg: `La prenotazione con id ${bookingID} è stato rimossa con successo` });
+  res.status(StatusCodes.OK).json({ msg: `La prenotazione con id ${bookingID} è stato rimossa con successo`, bookingID });
 };
 
 module.exports = {
