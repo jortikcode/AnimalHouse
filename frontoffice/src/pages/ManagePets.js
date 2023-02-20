@@ -1,10 +1,12 @@
 import { FidgetSpinner } from "react-loader-spinner";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { removePets } from "../app/usersSlice";
 import PetCard from "../components/PersonalArea/PetCard";
 import PetForm from "../components/PersonalArea/PetForm";
 
 const ManagePets = () => {
   const { user, updatingUser } = useSelector((state) => state.auth);
+  const dispatch = useDispatch()
   const { animaliPreferiti } = user.userInfo;
   if (updatingUser)
     return (
@@ -35,6 +37,11 @@ const ManagePets = () => {
             {" "}
             I tuoi animali
           </h2>
+          <div className="flex justify-center my-3">
+            <button type="button" onClick={e => dispatch(removePets())} className="w-fit rounded-xl p-3 bg-yellow-400 text-black"> 
+            Cancella tutti gli animali 
+            </button>
+          </div>
           <div className="mt-4 flex flex-col items-center gap-y-5">
           {animaliPreferiti.map((animale, index) => (
             <PetCard key={index} {...animale} />

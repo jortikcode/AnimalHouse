@@ -1,6 +1,8 @@
 const User = require("../models/users");
 const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
+const fs = require("fs");
+const path = require("path");
 
 const getAllUsers = async (req, res) => {
   const { name, surname, email, sort, fields } = req.query;
@@ -50,9 +52,19 @@ const getUser = async (req, res) => {
   res.status(StatusCodes.OK).json(user);
 };
 
-const prepareUpdate = (body) => {
+const prepareUpdate = async (body, userID) => {
   const updateObj = {};
-  const { name, surname, petName, petParticularSigns, petBirthYear, imgName, punteggiDeiGiochi} = body;
+  const {
+    name,
+    surname,
+    petName,
+    petParticularSigns,
+    petBirthYear,
+    petAnimalType,
+    imgName,
+    punteggiDeiGiochi,
+    clearPets,
+  } = body;
   if (name) {
     updateObj.name = name;
   }
@@ -60,26 +72,48 @@ const prepareUpdate = (body) => {
     updateObj.surname = surname;
   }
   // Inserimento dati animale
-  if (petName || petParticularSigns || petBirthYear) {
-    updateObj.animaliPreferiti = [{
-      name: petName,
-      birthYear: petBirthYear,
-      particularSigns: petParticularSigns
-    }];
+  if (petName || petParticularSigns || petBirthYear || petAnimalType) {
+    updateObj.animaliPreferiti = [
+      {
+        name: petName,
+        birthYear: petBirthYear,
+        particularSigns: petParticularSigns,
+        animalType: petAnimalType,
+      },
+    ];
   }
   if (imgName) {
     updateObj.imgName = imgName;
   }
   if (punteggiDeiGiochi) {
-    updateObj.punteggiDeiGiochi = punteggiDeiGiochi
+    updateObj.punteggiDeiGiochi = punteggiDeiGiochi;
+  }
+
+  if (clearPets) {
+    const user = await User.findOne({ _id: userID });
+    for (const animal of user.animaliPreferiti) {
+      try {
+        fs.unlink(
+          path.join(global.baseDir, "public", "media", animal.imgName),
+          (err) => {
+            if (err) {
+              console.log(err);
+            }
+          }
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    updateObj.animaliPreferiti = [];
   }
   return updateObj;
 };
 
 const updateUser = async (req, res) => {
   const { id: userID } = req.params;
-  const updateObj = prepareUpdate(req.body);
-  
+  const updateObj = await prepareUpdate(req.body, userID);
+
   // Inserimento di un nuovo pet
   if (req.body.petImage){
     if (req.file?.filename)

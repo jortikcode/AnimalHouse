@@ -26,6 +26,7 @@ const PetForm = () => {
   });
 
   const onSubmit = (data) => {
+    console.log(data)
     dispatch(updateUser({ userInfo: {
         animaliPreferiti: [
           {
@@ -86,6 +87,27 @@ const PetForm = () => {
               as={<p className="text-red-600" />}
               errors={errors}
               name="name"
+            />
+          </div>
+          <div className="flex flex-col items-center">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="animalType"
+            >
+              Di che animale si tratta?
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="animalType"
+              type="text"
+              {...register("animalType", {
+                required: "Inserire un animale",
+              })}
+            />
+            <ErrorMessage
+              as={<p className="text-red-600" />}
+              errors={errors}
+              name="animalType"
             />
           </div>
           <div className="flex flex-col items-center">
