@@ -61,7 +61,7 @@ const getAllBookings = async (req, res) => {
 
 const createBooking = async (req, res) => {
   const booking = await Booking.create(req.body);
-  res.status(StatusCodes.CREATED).json({ booking });
+  res.status(StatusCodes.CREATED).json(booking);
 };
 
 const getBooking = async (req, res) => {

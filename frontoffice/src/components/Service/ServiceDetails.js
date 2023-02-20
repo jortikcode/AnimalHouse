@@ -27,7 +27,7 @@ const ServiceDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLogged } = useSelector((state) => state.auth);
-  const { loadingOneService, service, loadingBookings, bookings, toUpdateBookings } = useSelector((state) => state.bookings);
+  const { loadingOneService, service, loadingBookings, bookings } = useSelector((state) => state.bookings);
   const [ excludedTimes, setExcludedTimes ] = useState([])
 
   const {
@@ -69,14 +69,7 @@ const ServiceDetails = () => {
     reset(defaultValues)
   };
 
-  useEffect(() => {
-    if (toUpdateBookings){
-      dispatch(waitingGetAllBookings())
-      dispatch(getAllBookings({ serviceID: id, startDate: new Date(Date.now()) }))  
-    }
-  }, [toUpdateBookings, dispatch, id])
-
-  if (loadingOneService || JSON.stringify({}) === JSON.stringify(service) || loadingBookings || toUpdateBookings)
+  if (loadingOneService || JSON.stringify({}) === JSON.stringify(service) || loadingBookings )
     return (
       <div className="flex mt-9 justify-center flex-col items-center">
         <MagnifyingGlass

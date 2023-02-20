@@ -4,18 +4,19 @@ import { baseApiUrl } from "../index";
 
 const name = "services";
 
-// Stato iniziale dei prodotti
+// Stato iniziale delle prenotazioni
 const initialState = {
   services: [],
   service: {},
   bookings: [],
-  loadingBookings: [],
+  loadingBookings: false,
   loadingService: false,
   loadingAllServices: false,
-  loadingBills: false
+  loadingBills: false,
+  error: ""
 };
 
-// Thunk per ottenere la lista dei prodotti
+// Thunk per ottenere la lista dei servizi
 export const getAllServices = createAsyncThunk(
   `${name}/getAllServices`,
   async ({
@@ -31,17 +32,19 @@ export const getAllServices = createAsyncThunk(
   }
 );
 
-// Thunk per ottenere la lista dei prodotti
+// Thunk per ottenere la lista delle prenotazioni
 export const getAllBookings = createAsyncThunk(
   `${name}/getAllBookings`,
   async ({
-    location = ""
+    serviceID = "",
+    startDate = ""
   }) => {
     const params = queryString.stringify({
-      location,
+      serviceID,
+      startDate
     });
     const response = await fetch(
-      `${baseApiUrl}/services?${params}`
+      `${baseApiUrl}/booking?${params}`
     );
     return await response.json();
   }
@@ -52,6 +55,7 @@ export const createBooking = createAsyncThunk(
   `${name}/createBooking`,
   async (data, thunkAPI) => {
     const user = thunkAPI.getState().auth.user
+    const rejectWithValue = thunkAPI.rejectWithValue
     const response = await fetch(
       `${baseApiUrl}/booking`, {
         method: "POST",
@@ -65,13 +69,15 @@ export const createBooking = createAsyncThunk(
         })
       }
     );
+    if (!response.ok)
+      return rejectWithValue("Errore generico");
     return await response.json();
   }
 );
 
 
 
-// Thunk per ottenere la lista dei prodotti
+// Thunk per ottenere un servizio specifico
 export const getServiceByID = createAsyncThunk(
     `${name}/getServiceByID`,
     async ({
@@ -98,6 +104,9 @@ const serviceSlice = createSlice({
     waitingGetByServiceByID: (state) => {
       state.loadingService = true;
     },
+    waitingGetAllBookings: (state) => {
+      state.loadingBookings = true
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getAllServices.fulfilled, (state, action) => {
@@ -111,12 +120,20 @@ const serviceSlice = createSlice({
     builder.addCase(createBooking.fulfilled, (state, action) => {
       state.bookings.unshift(action.payload)
     })
+    builder.addCase(createBooking.rejected, (state, action) => {
+      state.error = action.payload
+    })
+    builder.addCase(getAllBookings.fulfilled, (state, action) => {
+      state.loadingBookings = false
+      state.bookings = action.payload
+    })
   },
 });
 
 export const {
     waitingGetAllServices,
     waitingGetByServiceByID,
-    waitingGetService
+    waitingGetService,
+    waitingGetAllBookings
 } = serviceSlice.actions;
 export const bookings = serviceSlice.reducer;
