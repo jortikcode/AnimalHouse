@@ -1,11 +1,12 @@
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { MagnifyingGlass } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createBooking,
   getServiceByID,
   waitingGetService,
-  getAllBookings
+  getAllBookings,
+  waitingGetAllBookings
 } from "../../app/servicesSlice";
 import { Controller, useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
@@ -18,6 +19,7 @@ import getDay from "date-fns/getDay";
 
 const defaultValues = {
   date: "",
+  time: ""
 };
 
 const ServiceDetails = () => {
@@ -25,11 +27,15 @@ const ServiceDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLogged } = useSelector((state) => state.auth);
-  const { loadingOneService, service } = useSelector((state) => state.bookings);
+  const { loadingOneService, service, loadingBookings, bookings, toUpdateBookings } = useSelector((state) => state.bookings);
+  const [ excludedTimes, setExcludedTimes ] = useState([])
+
   const {
     handleSubmit,
     control,
     reset,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm({
     defaultValues,
@@ -38,7 +44,8 @@ const ServiceDetails = () => {
   useLayoutEffect(() => {
     dispatch(waitingGetService());
     dispatch(getServiceByID({ id }));
-    dispatch(getAllBookings({ serviceID: id }))
+    dispatch(waitingGetAllBookings())
+    dispatch(getAllBookings({ serviceID: id, startDate: new Date(Date.now()) }))
   }, [dispatch, id]);
 
   useEffect(() => {
@@ -46,15 +53,30 @@ const ServiceDetails = () => {
   }, [navigate, isLogged]);
 
   const onSubmit = (data) => {
-    console.log(data);
+    const bookingDate = new Date(
+      data.date.getFullYear(),
+      data.date.getMonth(),
+      data.date.getDate(),
+      data.time.getHours(),
+      data.time.getMinutes(),
+      0)
+    dispatch(waitingGetAllBookings())
+    dispatch(getAllBookings({ serviceID: id, startDate: new Date(Date.now()) }))
     dispatch(createBooking({
-      date: data.date,
+      date: bookingDate,
       service: id
     }));
     reset(defaultValues)
   };
 
-  if (loadingOneService || JSON.stringify({}) === JSON.stringify(service))
+  useEffect(() => {
+    if (toUpdateBookings){
+      dispatch(waitingGetAllBookings())
+      dispatch(getAllBookings({ serviceID: id, startDate: new Date(Date.now()) }))  
+    }
+  }, [toUpdateBookings, dispatch, id])
+
+  if (loadingOneService || JSON.stringify({}) === JSON.stringify(service) || loadingBookings || toUpdateBookings)
     return (
       <div className="flex mt-9 justify-center flex-col items-center">
         <MagnifyingGlass
@@ -75,16 +97,40 @@ const ServiceDetails = () => {
     const START_TIME = 9;
     // Fine orario lavorativo
     const END_TIME = 17;
+    // Funzione che data una data, ritorna true sse la data non e' un weekend
     const isWeekday = (date) => {
       const day = getDay(date);
       return day !== 0 && day !== 6;
     };
+    // Funzione che filtra le ore in modo tale da ritornare solo le ore restanti
     const filterPassedTime = (time) => {
       const currentDate = new Date();
-      const selectedDate = new Date(time);
-
+      const selectedDate = new Date((new Date(watch("date"))).setHours(time.getHours(), 0, 0))
       return currentDate.getTime() < selectedDate.getTime();
     };
+    const getExcludedTimes = (selectedDate) => {
+      let arrSpecificDates = [];
+      const toExcludeTime = bookings.map(booking => booking.date)
+      for (const isoString of toExcludeTime){
+        const date = new Date(isoString)
+        if (date.getFullYear() === selectedDate.getFullYear()
+          && date.getMonth() === selectedDate.getMonth()
+          && date.getDay() === selectedDate.getDay())
+          arrSpecificDates.push(date);
+      }
+      let arrExcludedTimes = [];
+      for (const date of arrSpecificDates){
+        // Se l'ora selezionata non e' disponibile, viene azzerata
+        if (watch("time"))
+          if (watch("time").getHours() === date.getHours() 
+          && watch("time").getMinutes() === date.getMinutes())
+            setValue("time", "")
+        arrExcludedTimes.push(
+          setHours(setMinutes(date, date.getMinutes()), date.getHours())
+        )
+      }
+      setExcludedTimes(arrExcludedTimes)
+    }
     return (
       <section className="text-black overflow-hidden bg-white">
         <div className="container px-5 py-24 mx-auto">
@@ -109,7 +155,7 @@ const ServiceDetails = () => {
                     className="text-lg block text-gray-700 font-bold mb-2"
                     htmlFor="date"
                   >
-                    Per quando vuoi prenotare?
+                    Seleziona la data da prenotare
                   </label>
                   <Controller
                     name="date"
@@ -117,29 +163,18 @@ const ServiceDetails = () => {
                     rules={{
                       required: "Inserire una data",
                     }}
-                    render={({ field }) => (
+                    render={({ field}) => (
                       <DatePicker
                         filterDate={isWeekday}
-                        timeIntervals={60}
-                        minDate={new Date(Date.now())}
-                        minTime={setHours(
-                          setMinutes(new Date(), 0),
-                          START_TIME
-                        )}
-                        maxTime={setHours(setMinutes(new Date(), 0), END_TIME)}
+                        minDate={new Date()}
                         placeholderText="Seleziona una data"
-                        onChange={(date) => {
-                          if (date.getTime() > Date.now())
-                            return field.onChange(date);
-                          return field.onChange("");
-                        }}
-                        selected={field.value}
-                        showTimeSelect
-                        filterTime={filterPassedTime}
+                        onSelect={getExcludedTimes}
+                        onChange={(date) => field.onChange(date)}  
+                        selected={field.value}                      
                         id="date"
                         isClearable
-                        dateFormat="MMMM d, yyyy h:mm aa"
-                      />
+                        dateFormat="MMMM d, yyyy"
+                        />
                     )}
                   />
                   <ErrorMessage
@@ -148,6 +183,47 @@ const ServiceDetails = () => {
                     name="date"
                   />
                 </div>
+                { watch("date") &&
+                <div className="mb-4">
+                  <label
+                    className="text-lg block text-gray-700 font-bold mb-2"
+                    htmlFor="time"
+                  >
+                    Per che ora vuoi prenotare?
+                  </label>
+                  <Controller
+                    name="time"
+                    control={control}
+                    rules={{
+                      required: "Inserire un orario",
+                    }}
+                    render={({ field }) => (
+                      <DatePicker
+                        showTimeSelect
+                        showTimeSelectOnly
+                        onSelect={getExcludedTimes}
+                        excludeTimes={excludedTimes}
+                        timeIntervals={60}
+                        minTime={setHours(setMinutes(new Date(), 0), START_TIME)}
+                        maxTime={setHours(setMinutes(new Date(), 0), END_TIME)}
+                        placeholderText="Seleziona un orario"
+                        onChange={(date) => field.onChange(date)}
+                        selected={field.value}                      
+                        filterTime={filterPassedTime}
+                        id="time"
+                        dateFormat="h:mm aa"
+                        timeFormat="HH:mm"
+                        isClearable
+                      />
+                    )}
+                  />
+                  <ErrorMessage
+                    as={<p className="text-red-600" />}
+                    errors={errors}
+                    name="time"
+                  />
+                </div>
+                }
                 <div className="flex justify-between items-center">
                   <span className="title-font font-medium text-2xl text-gray-900">€{service.price}</span>
                   <input
