@@ -63,7 +63,8 @@ const getAllBookings = async (req, res) => {
 };
 
 const createBooking = async (req, res) => {
-  const booking = await Booking.create(req.body);
+  const { user, service, date } = req.body;
+  const booking = await Booking.create({ user, service, date });
   res.status(StatusCodes.CREATED).json(booking);
 };
 
@@ -78,9 +79,10 @@ const getBooking = async (req, res) => {
 
 const updateBooking = async (req, res) => {
   const { id: bookingID } = req.params;
+  const { service, date } = req.body;
   const booking = await Booking.findOneAndUpdate(
     { _id: bookingID },
-    { $set: req.body },
+    { $set: { service, date } },
     {
       new: true,
       runValidators: true,

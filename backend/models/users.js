@@ -43,17 +43,24 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "Un utente deve avere un genere"],
   },
-  animaliPreferiti: {
-    type: [Object],
-    default: [],
-  },
-  punteggiDeiGiochi: {
-    type: [Object],
-    default: [],
-  },
+  animaliPreferiti: [
+    {
+      name: String,
+      imgName: String,
+      birthYear: String,
+      particularSigns: String,
+      animalType: String,
+    },
+  ],
+  punteggiDeiGiochi: [
+    {
+      game: String,
+      score: Number,
+    },
+  ],
   imgName: {
     type: String,
-    default: path.join(__dirname, "..", "public", "media", "favicon.jpg"),
+    default: "favicon.jpg",
   },
   isVip: {
     type: Boolean,

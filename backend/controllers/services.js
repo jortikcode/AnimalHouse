@@ -4,24 +4,33 @@ const { StatusCodes } = require("http-status-codes");
 const fs = require("fs");
 const path = require("path");
 
-const getAllServices = async (req, res) => {
-  const { location, isVip } = req.query;
+const prepareQuery = (query) => {
+  const { isVip, serviceName, description, location } = query;
   const queryObject = {};
-  if (location) {
-    queryObject.location = location;
-  }
   if (isVip == "false") {
     queryObject.isVip = false;
   }
+  if (serviceName) {
+    queryObject.serviceName = { $regex: serviceName, $options: "i" };
+  }
+  if (description) {
+    queryObject.description = { $regex: description, $options: "i" };
+  }
+  if (location) {
+    queryObject.location = location;
+  }
+  return queryObject;
+};
 
-  let services = Service.find(queryObject).populate("location");
-  services = await services.exec();
+const getAllServices = async (req, res) => {
+  const queryObject = prepareQuery(req.query);
+  const services = await Service.find(queryObject).populate("location");
   res.status(StatusCodes.OK).json(services);
 };
 
 const createService = async (req, res) => {
   const { serviceName, description, price, location, isVip } = req.body;
-  let imgName = "default_product_image.jpg";
+  let imgName = "default_service_image.jpg";
   if (req.file?.filename) {
     imgName = req.file.filename;
   }

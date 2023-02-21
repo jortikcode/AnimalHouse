@@ -91,7 +91,8 @@
                         </div>
                         <div class="flex items-end">
                             <button class="bg-yellow-500 text-black rounded-lg px-2 py-2" data-bs-toggle="modal"
-                                data-bs-target="#createModal">Nuova prenotazione</button>
+                                data-bs-target="#createModal">Nuova
+                                prenotazione</button>
                         </div>
                     </div>
                     <table class="sortable table-auto w-full border-2 border-black rounded-lg border-spacing-0"
@@ -186,22 +187,22 @@
                         </div>
                         <div class="mb-4">
                             <label for="modifyService" class="block text-gray-700 font-bold mb-2">Servizio</label>
-                            <select name="service" id="modifyService" class="border rounded-md p-2 w-full">
+                            <select name="service" id="modifyService" class="border rounded-md p-2 w-full" required>
                                 <!-- Mostrare tutti i servizi della location -->
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="modifyData" class="block text-gray-700 font-bold mb-2">Data</label>
-                            <input type="date" name="date" id="modifyDate" class="border rounded-md p-2 w-full">
+                            <input type="date" name="date" id="modifyDate" class="border rounded-md p-2 w-full"
+                                required>
                         </div>
                         <div class="mb-4">
                             <label for="modifyHour" class="block text-gray-700 font-bold mb-2">Ora</label>
-                            <select name="Hour" id="modifyHour" class="border rounded-md p-2 w-full"></select>
+                            <select name="Hour" id="modifyHour" class="border rounded-md p-2 w-full" required></select>
                         </div>
                         <div class="flex items-center justify-end py-2">
                             <button type="submit"
-                                class="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600"
-                                data-bs-toggle="modal" data-bs-target="#modifyModal">Modifica
+                                class="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Modifica
                                 prenotazione</button>
                         </div>
                     </form>
@@ -229,24 +230,29 @@
                         class="bg-white p-4 rounded-md shadow-md">
                         <div class="mb-4">
                             <label for="user" class="block text-gray-700 font-bold mb-2">Utente</label>
-                            <select name="user" id="selectUser">
+                            <select name="user" id="selectUser" class="border rounded-md p-2 w-full" required>
                                 <!-- mostrare tutti gli utenti (email) -->
                             </select>
                         </div>
                         <div class="mb-4">
                             <label for="service" class="block text-gray-700 font-bold mb-2">Servizio</label>
-                            <select name="service" id="selectService">
+                            <select name="service" id="selectService" class="border rounded-md p-2 w-full" required>
                                 <!-- mostrare tutti i servizi della sede -->
                             </select>
                         </div>
                         <div class="mb-4">
-                            <label for="date" class="block text-gray-700 font-bold mb-2">Data</label>
-                            <input type="date" name="date" id="date">
+                            <label for="selectDate" class="block text-gray-700 font-bold mb-2">Data</label>
+                            <input type="date" name="date" id="selectDate" class="border rounded-md p-2 w-full"
+                                required>
                             </input>
+                        </div>
+                        <div class="mb-4">
+                            <label for="modifyHour" class="block text-gray-700 font-bold mb-2">Ora</label>
+                            <select name="Hour" id="selectHour" class="border rounded-md p-2 w-full" required></select>
                         </div>
                         <input type="hidden" name="location" id="formLocation" value="" />
                         <div class="flex items-center justify-end py-2">
-                            <button type="submit" data-bs-toggle="modal" data-bs-target="#createModal"
+                            <button type="submit"
                                 class="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Aggiungi
                                 prenotazione</button>
                         </div>
@@ -309,6 +315,16 @@
         {{/each}}
         {{else}}
         <option disabled>Non ci sono servizi disponibili</option>
+        {{/if}}
+    </script>
+
+    <script id="selectUserTemplate" type="text/x-handlebars-template">
+        {{#if users}}
+        {{#each users}}
+        <option value="{{this._id}}">{{this.email}}</option>
+        {{/each}}
+        {{else}}
+        <option disabled>Non ci sono utenti registrati</option>
         {{/if}}
     </script>
 </body>

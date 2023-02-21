@@ -17,6 +17,25 @@ jQuery(function () {
     getBookings(query);
     delete query[param];
   });
+  populateCreateBooking();
+  $("#selectUser").change(function () {
+    populateServices("selectService", $("#selectUser").val());
+    $("#selectDate").val("");
+    $("#selectHour").empty();
+  });
+  $("#selectService").change(function () {
+    $("#selectDate").val("");
+  });
+  $("#selectDate").change(function () {
+    populateHour("selectHour", $("#selectService").val(), $("#selectDate").val());
+  });
+  /* Quando modifico il servizio prendo i suoi orari disponibili */
+  $("#modifyService").change(function () {
+    populateHour("modifyHour", $("#modifyService").val(), $("#modifyDate").val());
+  });
+  $("#modifyDate").change(function () {
+    populateHour("modifyHour", $("#modifyService").val(), $("#modifyDate").val());
+  });
 });
 
 const getDateTime = (dateString) => {
@@ -62,12 +81,33 @@ const getBooking = async (id) => {
   }
 };
 
-const createService = async () => {
-  const form = document.getElementById("createForm");
-  const formData = new FormData(form);
-  const response = await fetch(`http://localhost:8000/api/v1/services`, {
+const populateCreateBooking = async () => {
+  await populateUsers("selectUser");
+  await populateServices("selectService", $(`#selectUser`).val());
+};
+
+const createBooking = async () => {
+  const form = document.querySelector("#createForm");
+  const user = form.user.value;
+  const service = form.service.value;
+  let date = form.date.value;
+  const hour = form.Hour.value;
+  /* preparo la data */
+  date = `${date}T${hour}:00`;
+  date = new Date(date);
+  const utcMilliseconds = date.getTime(); // Ottiene il tempo in millisecondi UTC
+  date.setTime(utcMilliseconds + 3600000); // Aggiunge un'ora per passare da GMT+0100 a GMT+0000
+  const data = {
+    user,
+    service,
+    date,
+  };
+  const response = await fetch(`http://localhost:8000/api/v1/booking`, {
     method: "POST",
-    body: formData,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
   });
   if (!response.ok) {
     const error = await response.json();
@@ -78,7 +118,7 @@ const createService = async () => {
     const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
     const query = {};
     query.location = locationInfo._id;
-    getServices(query);
+    getBookings(query);
   }
 };
 
@@ -89,11 +129,26 @@ const populateViewBooking = async (id) => {
   document.getElementById("viewBookingDate").textContent = getDateTime(booking.date);
 };
 
-const populateServices = async (selectField, booking) => {
+const populateUsers = async (toPopulateField) => {
+  const usersResponse = await fetch(`http://localhost:8000/api/v1/users`);
+  if (!usersResponse.ok) {
+    const error = await usersResponse.json();
+    const errorTemplate = Handlebars.compile($("#errorTemplate").html());
+    const filled = errorTemplate({ error: error.msg });
+    $("#error").html(filled);
+    return;
+  }
+  const users = await usersResponse.json();
+  const selectUserTemplate = Handlebars.compile($("#selectUserTemplate").html());
+  const filled = selectUserTemplate({ users: users });
+  $(`#${toPopulateField}`).html(filled);
+};
+
+const populateServices = async (toPopulateField, userID, booking) => {
   const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
   const query = {};
   query.location = locationInfo._id;
-  const userResponse = await fetch(`http://localhost:8000/api/v1/users/${booking.user._id}`);
+  const userResponse = await fetch(`http://localhost:8000/api/v1/users/${userID}`);
   if (!userResponse.ok) {
     const error = await userResponse.json();
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -114,21 +169,35 @@ const populateServices = async (selectField, booking) => {
     return;
   }
   const services = await response.json();
-  for (let i = 0; i < services.length; i += 1) {
-    if (services[i]._id == booking.service._id) {
-      services[i].selected = true;
+  if (booking) {
+    for (let i = 0; i < services.length; i += 1) {
+      if (services[i]._id == booking.service._id) {
+        services[i].selected = true;
+      }
     }
   }
   const selectServiceTemplate = Handlebars.compile($("#selectServiceTemplate").html());
   const filled = selectServiceTemplate({ services: services });
-  $("#modifyService").html(filled);
+  $(`#${toPopulateField}`).html(filled);
 };
 
-const populateModifyHour = async (selectField, date) => {
+/* Per riempire dinamicamente l'ora della prenotazione */
+const populateHour = async (toPopulateField, serviceID, date) => {
+  /* controllo se è un sabato o una domenica */
+  const selectedDate = new Date(date);
+  const day = selectedDate.getDay();
+  if (day == 0 || day == 6) {
+    $(`#${toPopulateField}`).empty();
+    const option = document.createElement("option");
+    option.text = "Non ci sono orari disponibili per questa data";
+    option.disabled = true;
+    $(`#${toPopulateField}`).append(option);
+    return;
+  }
   const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
   const query = {};
   query.location = locationInfo._id;
-  query.serviceID = document.getElementById("modifyService").value;
+  query.serviceID = serviceID;
   query.startDate = date.slice(0, 10);
   const endDate = new Date(date);
   endDate.setDate(endDate.getDate() + 1);
@@ -143,23 +212,31 @@ const populateModifyHour = async (selectField, date) => {
   }
   /* mi prendo tutte le prenotazioni di quel giorno */
   const bookings = await response.json();
-  const bookedHours = Array();
+  const bookedHours = [];
   for (let i = 0; i < bookings.length; i += 1) {
     bookedHours.push(Number(bookings[i].date.slice(11, 13)));
   }
-  /* vado a prendere solo l'ora della prenotazione */
-  date = Number(date.slice(11, 13));
-  if (bookedHours.indexOf(date) != -1) {
-    bookedHours.splice(bookedHours.indexOf(date), 1);
+  /* nel caso vado a modificare la prenotazione */
+  if (date.length > 10) {
+    /* vado a prendere solo l'ora della prenotazione */
+    date = Number(date.slice(11, 13));
+    if (bookedHours.indexOf(date) != -1) {
+      bookedHours.splice(bookedHours.indexOf(date), 1);
+    }
   }
-  $("#modifyHour").empty();
+  $(`#${toPopulateField}`).empty();
   for (let i = 9; i <= 17; i += 1) {
     if (!bookedHours.includes(i)) {
       const option = document.createElement("option");
-      option.value = `${i}:00`;
-      option.text = `${i}:00`;
+      if (i == 9) {
+        option.value = `0${i}:00`;
+        option.text = `0${i}:00`;
+      } else {
+        option.value = `${i}:00`;
+        option.text = `${i}:00`;
+      }
       if (i == date) option.selected = true;
-      selectField.appendChild(option);
+      $(`#${toPopulateField}`).append(option);
     }
   }
 };
@@ -168,18 +245,36 @@ const populateModifyBooking = async (id) => {
   const booking = await getBooking(id);
   const date = new Date(booking.date);
   document.getElementById("modifyUser").textContent = booking.user.email;
-  await populateServices(document.getElementById("modifyService"), booking);
+  await populateServices("modifyService", booking.user._id, booking);
   document.getElementById("modifyDate").value = date.toISOString().slice(0, 10);
-  await populateModifyHour(document.getElementById("modifyHour"), booking.date);
+  await populateHour("modifyHour", $("#modifyService").val(), booking.date);
   document.getElementById("modifyForm").dataset.bookingId = id;
 };
 
-const modifyService = async (id) => {
-  const form = document.getElementById("modifyForm");
-  const formData = new FormData(form);
-  const response = await fetch(`http://localhost:8000/api/v1/services/${id}`, {
+const modifyBooking = async (id) => {
+  const form = document.querySelector("#modifyForm");
+
+  const service = form.service.value;
+  let date = form.date.value;
+  const hour = form.Hour.value;
+
+  /* preparo la data */
+
+  date = `${date}T${hour}:00`;
+
+  date = new Date(date);
+  const utcMilliseconds = date.getTime(); // Ottiene il tempo in millisecondi UTC
+  date.setTime(utcMilliseconds + 3600000); // Aggiunge un'ora per passare da GMT+0100 a GMT+0000
+  const data = {
+    service,
+    date,
+  };
+  const response = await fetch(`http://localhost:8000/api/v1/booking/${id}`, {
     method: "PATCH",
-    body: formData,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
   });
   if (!response.ok) {
     const error = await response.json();
@@ -190,13 +285,13 @@ const modifyService = async (id) => {
     const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
     const query = {};
     query.location = locationInfo._id;
-    getServices(query);
+    getBookings(query);
   }
 };
 
-const deleteService = async (id) => {
+const deleteBooking = async (id) => {
   if (id) {
-    const response = await fetch(`http://localhost:8000/api/v1/services/${id}`, {
+    const response = await fetch(`http://localhost:8000/api/v1/booking/${id}`, {
       method: "DELETE",
     });
     if (!response.ok) {
@@ -208,7 +303,7 @@ const deleteService = async (id) => {
       const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
       const query = {};
       query.location = locationInfo._id;
-      getServices(query);
+      getBookings(query);
     }
   }
 };
@@ -232,13 +327,13 @@ function confirmDelete(id) {
 
   // Crea il testo di conferma della card
   const testoConferma = document.createElement("p");
-  testoConferma.textContent = "Sei sicuro di voler eliminare questo servizio?";
+  testoConferma.textContent = "Sei sicuro di voler eliminare questa prenotazione?";
   testoConferma.classList.add("text-sm", "mb-6");
 
   const buttonDiv = document.createElement("div");
   buttonDiv.classList.add("flex", "justify-around");
 
-  // Crea i pulsanti per confermare o annullare l'eliminazione del prodotto
+  // Crea i pulsanti per confermare o annullare l'eliminazione
   const pulsanteConferma = document.createElement("button");
   pulsanteConferma.textContent = "Conferma";
   pulsanteConferma.classList.add(
@@ -271,7 +366,7 @@ function confirmDelete(id) {
   );
 
   pulsanteConferma.addEventListener("click", () => {
-    deleteService(id);
+    deleteBooking(id);
     document.body.removeChild(cardDiv);
     document.getElementsByClassName("removeButton").disabled = false;
   });

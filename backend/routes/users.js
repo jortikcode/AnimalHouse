@@ -14,12 +14,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-const {
-  getAllUsers,
-  getUser,
-  updateUser,
-  deleteUser,
-} = require("../controllers/users");
+const { getAllUsers, getUser, updateUser, deleteUser } = require("../controllers/users");
 
 router.route("/").get(getAllUsers);
 
