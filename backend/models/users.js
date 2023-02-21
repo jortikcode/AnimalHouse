@@ -47,13 +47,15 @@ const UserSchema = new mongoose.Schema({
     type: [Object],
     default: [],
   },
-  punteggiDeiGiochi: {
-    type: [Object],
-    default: [],
-  },
+  punteggiDeiGiochi: [
+    {
+      game: String,
+      score: Number,
+    },
+  ],
   imgName: {
     type: String,
-    default: path.join(__dirname, "..", "public", "media", "favicon.jpg"),
+    default: "favicon.jpg",
   },
   isVip: {
     type: Boolean,

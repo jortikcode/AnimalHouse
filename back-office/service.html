@@ -231,8 +231,7 @@
                         </div>
                         <div class="flex items-center justify-end py-2">
                             <button type="submit"
-                                class="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600"
-                                data-bs-toggle="modal" data-bs-target="#modifyModal">Modifica
+                                class="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Modifica
                                 servizio</button>
                         </div>
                     </form>
@@ -242,7 +241,7 @@
     </div>
 
     <!-- Create Modal -->
-    <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+    <div class=" modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
         id="createModal">
         <div class="modal-dialog modal-dialog-scrollable relative w-auto pointer-events-none">
             <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current"
@@ -251,7 +250,8 @@
                     <!-- Modal header -->
                     <div
                         class="modal-header bg-yellow-500 flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                        <h5 class="text-xl font-medium leading-normal text-gray-800">Nuovo servizio</h5>
+                        <h5 class="text-xl font-medium leading-normal text-gray-800">Nuovo
+                            servizio</h5>
                     </div>
                 </div>
                 <!-- Modal body -->
@@ -259,7 +259,8 @@
                     <form id="createForm" onsubmit="event.preventDefault(); createService()"
                         class="bg-white p-4 rounded-md shadow-md">
                         <div class="mb-4">
-                            <label for="name" class="block text-gray-700 font-bold mb-2">Nome servizio</label>
+                            <label for="name" class="block text-gray-700 font-bold mb-2">Nome
+                                servizio</label>
                             <input type="text" name="serviceName" id="name" placeholder="Inserisci il nome del servizio"
                                 required class="border rounded-md p-2 w-full">
                         </div>
@@ -276,7 +277,8 @@
                                 class="border rounded-md p-2 w-full">
                         </div>
                         <div class="mb-4">
-                            <label for="isVip" class="block text-gray-700 font-bold mb-2">Solo per Vip</label>
+                            <label for="isVip" class="block text-gray-700 font-bold mb-2">Solo
+                                per Vip</label>
                             <div class="form-check">
                                 <input
                                     class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
@@ -300,7 +302,7 @@
                         </div>
                         <input type="hidden" name="location" id="formLocation" value="" />
                         <div class="flex items-center justify-end py-2">
-                            <button type="submit" data-bs-toggle="modal" data-bs-target="#createModal"
+                            <button type="submit"
                                 class="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Aggiungi
                                 servizio</button>
                         </div>

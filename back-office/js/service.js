@@ -26,15 +26,15 @@ const getServices = async (query) => {
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
     const filled = errorTemplate({ error: error.msg });
     $("#error").html(filled);
+    return;
+  }
+  const services = await response.json();
+  if (services.length > 0) {
+    const servicesTemplate = Handlebars.compile($("#servicesTemplate").html());
+    const filled = servicesTemplate({ services: services });
+    $("#tableRows").html(filled);
   } else {
-    const services = await response.json();
-    if (services.length > 0) {
-      const servicesTemplate = Handlebars.compile($("#servicesTemplate").html());
-      const filled = servicesTemplate({ services: services });
-      $("#tableRows").html(filled);
-    } else {
-      $("#tableRows").html("");
-    }
+    $("#tableRows").html("");
   }
 };
 
@@ -47,8 +47,8 @@ const getService = async (id) => {
       const filled = errorTemplate({ error: error.msg });
       $("#error").html(filled);
     } else {
-      const productObj = await response.json();
-      return productObj.service;
+      const service = await response.json();
+      return service;
     }
   }
 };
