@@ -259,6 +259,29 @@
                             </select>
                         </div>
                         <div class="mb-4">
+                            <label class="block text-gray-700 font-bold mb-2" for="animaliPreferiti">
+                                Animali preferiti
+                            </label>
+                            {{#each user.animaliPreferiti}}
+                            <input
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                name="animaliPreferiti[]" type="text" value="{{this.animalType}}">
+                            {{/each}}
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-gray-700 font-bold mb-2" for="punteggiDeiGiochi">
+                                Punteggi dei giochi
+                            </label>
+                            {{#each user.punteggiDeiGiochi}}
+                            <input
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                name="punteggiDeiGiochi[].game" type="text" value="{{this.game}}">
+                            <input
+                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                name="punteggiDeiGiochi[].game" type="text" value="{{this.game}}">
+                            {{/each}}
+                        </div>
+                        <div class="mb-4">
                             <label for="isVip" class="block text-gray-700 font-bold mb-2">Solo per Vip</label>
                             <div class="form-check">
                                 <input
