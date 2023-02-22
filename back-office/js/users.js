@@ -103,13 +103,13 @@ const populateViewUser = async (id) => {
     }
   }
   document.getElementById("viewUserAnimals").textContent = animals.join(", ");
-  let scores = "";
+  let scores = [];
   if (user.punteggiDeiGiochi) {
     for (let i = 0; i < user.punteggiDeiGiochi.length; i += 1) {
-      scores += `${user.punteggiDeiGiochi[i].game} - ${user.punteggiDeiGiochi[i].score} \n` | "";
+      scores.push(`${user.punteggiDeiGiochi[i].game} - ${user.punteggiDeiGiochi[i].score}`);
     }
   }
-  document.getElementById("viewUserGameScore").textContent = scores;
+  document.getElementById("viewUserGameScore").textContent = scores.join(", ");
 };
 
 const populateModifyUser = async (id) => {
@@ -135,6 +135,20 @@ const populateModifyUser = async (id) => {
     class="rimuovi bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Rimuovi</button>
     `;
       animali.appendChild(animale);
+    }
+  }
+  if (user.punteggiDeiGiochi) {
+    const punteggi = document.querySelector("#punteggi");
+    punteggi.innerHTML = "";
+    for (let i = 0; i < user.punteggiDeiGiochi.length; i += 1) {
+      const punteggio = document.createElement("div");
+      punteggio.classList.add("punteggio", "flex");
+      punteggio.innerHTML = `
+      <input class="border rounded-md p-2 w-1/2" type="text" name="game" placeholder="Nome del gioco" value="${user.punteggiDeiGiochi[i].game}">
+      <input class="border rounded-md p-2 w-1/3" type="number" name="score" placeholder="Punteggio" value="${user.punteggiDeiGiochi[i].score}">
+      <button type="button" class="rimuovi bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Rimuovi</button>
+    `;
+      punteggi.appendChild(punteggio);
     }
   }
   if (user.isVip) {

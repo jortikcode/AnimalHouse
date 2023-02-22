@@ -101,8 +101,7 @@ const prepareUpdate = async (body, userID) => {
       }
       updateObj.punteggiDeiGiochi = punteggiDeiGiochi;
     } else {
-      const points = Number(score) || 0;
-      const punteggiDeiGiochi = { game: game, score: points };
+      const punteggiDeiGiochi = { game: game, score: Number(score) };
       updateObj.punteggiDeiGiochi = punteggiDeiGiochi;
     }
   }

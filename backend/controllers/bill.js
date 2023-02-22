@@ -12,11 +12,7 @@ const createBill = async (req, res) => {
   for (const product of req.body.products) {
     const { qta: quantity } = await Product.findById(product.product);
     quantities.push(quantity);
-    if (quantity < parseInt(product.quantity))
-      throw createCustomError(
-        `Impossibile ordinare, svuotare il carrello e riprovare`,
-        StatusCodes.CONFLICT
-      );
+    if (quantity < parseInt(product.quantity)) throw createCustomError(`Impossibile ordinare, svuotare il carrello e riprovare`, StatusCodes.CONFLICT);
   }
 
   const session = await mongoose.startSession();
@@ -46,9 +42,7 @@ const createBill = async (req, res) => {
   // Fine della transazione
   await session.commitTransaction();
 
-  res
-    .status(StatusCodes.CREATED)
-    .json({ bill: bill, products: updatedProducts, cart: cart });
+  res.status(StatusCodes.CREATED).json({ bill: bill, products: updatedProducts, cart: cart });
 };
 
 /* Ottiene tutte le fatture */
@@ -66,13 +60,6 @@ const getAllBills = async (req, res) => {
   } else {
     result = result.sort("paidAt");
   }
-
-  const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 10;
-  // calcolo i risultati da saltare in base alla pagina che mi trovo
-  const skip = (page - 1) * limit;
-
-  result = result.skip(skip).limit(limit);
   const bills = await result;
   res.status(StatusCodes.OK).json(bills);
 };
@@ -82,10 +69,7 @@ const getBill = async (req, res) => {
   const { id: billID } = req.params;
   const bill = await Bill.findOne({ _id: billID }).populate("user", "products");
   if (!bill) {
-    throw createCustomError(
-      `Non esiste nessuna fattura con id : ${billID}`,
-      StatusCodes.NOT_FOUND
-    );
+    throw createCustomError(`Non esiste nessuna fattura con id : ${billID}`, StatusCodes.NOT_FOUND);
   }
   res.status(StatusCodes.OK).json({ bill });
 };
@@ -102,10 +86,7 @@ const updateBill = async (req, res) => {
     }
   );
   if (!bill) {
-    throw createCustomError(
-      `Non esiste nessuna fattura con id : ${billID}`,
-      StatusCodes.NOT_FOUND
-    );
+    throw createCustomError(`Non esiste nessuna fattura con id : ${billID}`, StatusCodes.NOT_FOUND);
   }
   res.status(StatusCodes.OK).json({ id: billID, data: req.body });
 };
@@ -115,14 +96,9 @@ const deleteBill = async (req, res) => {
   const { id: billID } = req.params;
   const bill = await Bill.findOneAndDelete({ _id: billID });
   if (!bill) {
-    throw createCustomError(
-      `Non esiste nessuna fattura con id : ${billID}`,
-      StatusCodes.NOT_FOUND
-    );
+    throw createCustomError(`Non esiste nessuna fattura con id : ${billID}`, StatusCodes.NOT_FOUND);
   }
-  res
-    .status(StatusCodes.OK)
-    .json({ msg: `La fattura con id ${billID} è stato rimosso con successo` });
+  res.status(StatusCodes.OK).json({ msg: `La fattura con id ${billID} è stato rimosso con successo` });
 };
 
 module.exports = {
