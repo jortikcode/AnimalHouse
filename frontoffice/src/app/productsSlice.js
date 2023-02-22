@@ -82,7 +82,7 @@ export const getCart = createAsyncThunk(
 
 export const createBill = createAsyncThunk(
   `${name}/createBill`,
-  async ({ cart, total, paymentMethod }, thunkAPI) => {
+  async (data, thunkAPI) => {
     const { token, userInfo } = thunkAPI.getState().auth.user;
     const id = userInfo["_id"];
 
@@ -94,9 +94,11 @@ export const createBill = createAsyncThunk(
       },
       body: JSON.stringify({
         user: id,
-        products: cart.products,
-        total,
-        paymentMethod,
+        products: data?.cart?.products,
+        total: data?.total,
+        paymentMethod: data?.paymentMethod,
+        type: data.type,
+        service: data?.service,
       }),
     });
     return await response.json();
@@ -192,6 +194,7 @@ const productSlice = createSlice({
     loadBills: (state) => {
       state.updatedBills = true
     },
+
     waitingGetAllCategories: (state) => {
       state.loadingCategories = true;
     },
@@ -226,11 +229,11 @@ const productSlice = createSlice({
     });
     builder.addCase(createBill.fulfilled, (state, action) => {
       state.cart = {};
-      state.updatedBills = false;
-      state.bills.push(action.payload);
+      state.updatedBills = false
     });
     builder.addCase(getAllBills.fulfilled, (state, action) => {
       state.loadingBills = false;
+      state.updatedBills = true
       state.bills = action.payload;
     });
   },

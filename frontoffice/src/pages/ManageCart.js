@@ -47,7 +47,7 @@ const ManageCart = () => {
   else{
     const { productsWithInfo, total } = getInfoFromCart(cart.products, products)
     const checkout = () => {
-      dispatch(createBill({ cart, total, paymentMethod: paymentMethod.current.value }))
+      dispatch(createBill({ type: "products", cart, total, paymentMethod: paymentMethod.current.value }))
     }
 
     return (

@@ -97,7 +97,7 @@ const getAllBills = async (req, res) => {
 /* Ottiene una singola fattura in base all'ID */
 const getBill = async (req, res) => {
   const { id: billID } = req.params;
-  const bill = await Bill.findOne({ _id: billID }).populate("user", "products");
+  const bill = await Bill.findOne({ _id: billID }).populate("service","user", "products");
   if (!bill) {
     throw createCustomError(`Non esiste nessuna fattura con id : ${billID}`, StatusCodes.NOT_FOUND);
   }

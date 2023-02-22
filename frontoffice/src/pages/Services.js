@@ -1,8 +1,9 @@
 import { ErrorMessage } from "@hookform/error-message";
-import { useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FallingLines } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { getAllCities, getLocationsByCity, waitingGetCities, waitingGetLocations } from "../app/locationsSlice";
 import { getAllServices, waitingGetAllServices } from "../app/servicesSlice";
 import ServiceCard from "../components/Service/ServiceCard";
@@ -15,7 +16,9 @@ const defaultValues = {
 const Services = () => {
   const dispatch = useDispatch();
   const { cities, locations, loadingCities, loadingLocations } = useSelector((state) => state.locations);
+  const { isLogged } = useSelector((state) => state.auth);
   const { services } = useSelector(state => state.bookings)
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -38,7 +41,12 @@ const Services = () => {
     dispatch(waitingGetAllServices());
     dispatch(getAllServices({ location: data.location }));
   }
-
+  
+  useEffect(() => {
+    if (!isLogged) navigate("/login");
+  }, [isLogged, navigate]);
+  if (!isLogged) return <></>;
+  else
   if (loadingCities)
     return (
       <div className="flex mt-8 justify-center items-center">
