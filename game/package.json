@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "vue": "^3.2.45",
+    "vue-basic-alert": "^1.1.0",
     "vue-router": "^4.1.6",
     "vue-spinner": "^1.0.4"
   },
