@@ -52,6 +52,7 @@ const prepareUpdate = async (body, userID) => {
     petParticularSigns,
     petBirthYear,
     petAnimalType,
+    punteggiDeiGiochi,
     game,
     score,
     isVip,
@@ -92,7 +93,7 @@ const prepareUpdate = async (body, userID) => {
       updateObj.animaliPreferiti = animaliPreferiti;
     }
   }
-  if (game != "" && score != "") {
+  if (game && score) {
     if (Array.isArray(game)) {
       const punteggiDeiGiochi = [];
       for (let i = 0; i < game.length; i += 1) {
@@ -104,6 +105,8 @@ const prepareUpdate = async (body, userID) => {
       const punteggiDeiGiochi = { game: game, score: Number(score) };
       updateObj.punteggiDeiGiochi = punteggiDeiGiochi;
     }
+  } else if (punteggiDeiGiochi.length > 0) {
+    updateObj.punteggiDeiGiochi = punteggiDeiGiochi
   }
   if (petName || petParticularSigns || petBirthYear || petAnimalType) {
     // Inserimento dati animale
@@ -142,7 +145,6 @@ const updateUser = async (req, res) => {
   const { id: userID } = req.params;
   console.log(req.body);
   const updateObj = await prepareUpdate(req.body, userID);
-  console.log(updateObj);
   // Inserimento di un nuovo pet
   if (req.body.petImage) {
     if (req.file?.filename) updateObj.animaliPreferiti[0].imgName = req.file.filename;
