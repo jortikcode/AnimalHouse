@@ -14,7 +14,58 @@
     >
       Nuovo quiz
     </button>
-    <div class="grid grid-cols-1 md:grid-cols-3">
+    <div class="flex flex-col items-center">
+      <p
+        class="p-4 bg-pink-400 font-bold text-lg rounded-lg text-white w-[500px] max-w-full"
+      >
+        <span class="text-amber-200">Domanda:</span>
+        {{ questions[currentQuestionIndex].question }}
+      </p>
+      <ul
+        class="grid grid-cols-1 sm:grid-cols-2 w-[500px] max-w-full py-3 gap-3"
+      >
+        <li
+          class=""
+          v-for="(answer, index) in questions[currentQuestionIndex].answers"
+          :key="index"
+        >
+          <button
+            :class="`text-center py-5 font-bold border-4 w-full h-full ${this.answerColors(
+              currentQuestionIndex,
+              index
+            )}`"
+            type="button"
+            @click="(e) => this.answer(currentQuestionIndex, index)"
+          >
+            {{ answer }}
+          </button>
+        </li>
+      </ul>
+      <button
+        v-if="currentQuestionIndex < (maxQuestions - 1)"
+        @click="(e) => nextQuestion()"
+        type="button"
+        class="w-32 mt-7 p-3 bg-heliotrope-500 text-white font-bold tracking-tighter rounded-lg"
+      >
+        Prossima
+      </button>
+
+      <div v-if="currentQuestionIndex === maxQuestions">
+        <h2 class="text-bold text-black text-3xl">Results</h2>
+        <div class="flex justify-start space-x-4 mt-6">
+          <p>
+            Ne hai azzeccate:
+            <span class="text-2xl text-lime-500 font-bold">{{
+              correctGuesses
+            }}</span>
+          </p>
+          <p>
+            Ne hai sbagliate:
+            <span class="text-2xl text-red-500 font-bold">
+              {{ maxQuestions - correctGuesses }}</span>
+          </p>
+        </div>
+      </div>
     </div>
   </div>
   <div class="flex flex-col mt-9 items-center gap-y-2" v-else>
@@ -63,7 +114,7 @@ const prepareQuestions = (questions) => {
 
 const getQuestions = async () => {
   const response = await fetch(
-    "https://opentdb.com/api.php?amount=5&category=27&difficulty=medium&type=multiple"
+    `https://opentdb.com/api.php?amount=5&category=27&difficulty=medium&type=multiple`
   );
   let questions = await response.json();
   questions = prepareQuestions(questions.results);
@@ -81,24 +132,12 @@ export default {
       questions: [],
       currentQuestionIndex: 0,
       correctGuesses: 0,
+      maxQuestions: 5,
     };
   },
   async mounted() {
     await this.loadQuiz();
-    console.log(this.questions.length)
-  },
-  // getter per espressioni complesse, cache-based
-  computed: {
-    answerColors() {
-      if (this.questions[questionIndex].answered)
-        if (
-          this.questions[questionIndex].correctAnswer ===
-          this.questions[questionIndex].answer[answerIndex]
-        )
-          return "bg-green-500 text-white";
-        else return "bg-pink-500 text white";
-      else return "bg-white text-black";
-    },
+    console.log(this.questions.length);
   },
   // metodi accessibili
   methods: {
@@ -106,7 +145,28 @@ export default {
       this.clear();
       this.questions = await getQuestions();
     },
+    answerColors(questionIndex, answerIndex) {
+      if (this.questions[questionIndex].answered)
+        if (
+          this.questions[questionIndex].correctAnswer ===
+          this.questions[questionIndex].answers[answerIndex]
+        )
+          return "bg-green-500 text-black";
+        else return "bg-pink-500 text-white";
+      else return "bg-white text-black";
+    },
     nextQuestion() {
+      if (!this.questions[this.currentQuestionIndex].answered)
+        this.$refs.alert.showAlert(
+          "info", // There are 4 types of alert: success, info, warning, error
+          "Hai saltato una domanda, peccato!", // Message of the alert
+          "Domanda quiz", // Header of the alert
+          {
+            iconSize: 35, // Size of the icon (px)
+            iconType: "solid", // Icon styles: now only 2 styles 'solid' and 'regular'
+            position: "top right",
+          } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
+        );
       this.currentQuestionIndex++;
     },
     clear() {
