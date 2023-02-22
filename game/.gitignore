@@ -15,6 +15,9 @@ gameBuild
 coverage
 *.local
 
+.env.development
+.env.production
+
 /cypress/videos/
 /cypress/screenshots/
 
