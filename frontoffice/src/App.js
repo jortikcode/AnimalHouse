@@ -21,7 +21,8 @@ function App() {
       <div className="w-full min-h-screen">
       <Navbar />
       <Routes>
-        <Route path='/' element={<Marketplace />} />
+        <Route path='' exact element={<Marketplace />} />
+        <Route path='/' exact element={<Marketplace />} />
         <Route path='/forum' element={<Forum />} />
         <Route path='/forum/:id' element={<PostDetails />} />
         <Route path='/marketplace' element={<Marketplace />} />
