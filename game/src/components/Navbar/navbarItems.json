@@ -8,6 +8,10 @@
         "link": "/game/games/hangman"         
     },
     {
+        "value": "Quiz",
+        "link": "/game/games/quiz"         
+    },
+    {
         "value": "Video",
         "link": "/game/games/videos"         
     },
