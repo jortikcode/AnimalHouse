@@ -6,7 +6,6 @@ import "./assets/main.css";
 import MemoryGame from './components/Memory/MemoryGame.vue'
 import QuizGame from './components/Quiz/QuizGame.vue'
 import HangmanGame from './components/Hangman/HangmanGame.vue'
-import DifferencesGame from './components/Differences/DifferencesGame.vue'
 import VideosPage from './components/Videos/VideosPage.vue'
 import ShowcasePage from './components/Showcase/ShowcasePage.vue'
 
@@ -15,7 +14,6 @@ const prefix = "/game"
 export const MemoryGameRoute = prefix + '/games/memory'
 export const QuizGameRoute = prefix + '/games/quiz'
 export const HagmanRoute = prefix + '/games/hangman'
-export const DifferencesGameRoute = prefix + '/games/differences'
 export const VideosRoute = prefix + '/games/videos'
 export const ShowcaseRoute = prefix + '/showcase'
 
@@ -33,10 +31,6 @@ const router = createRouter({
     {
       path: HagmanRoute,
       component: HangmanGame
-    },
-    {
-      path: DifferencesGameRoute,
-      component: DifferencesGame
     },
     {
       path: VideosRoute,
