@@ -1,22 +1,22 @@
 [
     {
         "value": "Memoria",
-        "link": "/games/memory" 
+        "link": "/game/games/memory" 
     },
     {
         "value": "Impiccato",
-        "link": "/games/hangman"         
+        "link": "/game/games/hangman"         
     },
     {
         "value": "Differenze",
-        "link": "/games/differences"         
+        "link": "/game/games/differences"         
     },
     {
         "value": "Video",
-        "link": "/games/videos"         
+        "link": "/game/games/videos"         
     },
     {
         "value": "Vetrina Prodotti",
-        "link": "/showcase"    
+        "link": "/game/showcase"    
     }
 ]

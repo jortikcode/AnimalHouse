@@ -10,13 +10,14 @@ import DifferencesGame from './components/Differences/DifferencesGame.vue'
 import VideosPage from './components/Videos/VideosPage.vue'
 import ShowcasePage from './components/Showcase/ShowcasePage.vue'
 
+const prefix = "/game"
 
-export const MemoryGameRoute = '/games/memory'
-export const QuizGameRoute = '/games/quiz'
-export const HagmanRoute = '/games/hangman'
-export const DifferencesGameRoute = '/games/differences'
-export const VideosRoute = '/games/videos'
-export const ShowcaseRoute = '/showcase'
+export const MemoryGameRoute = prefix + '/games/memory'
+export const QuizGameRoute = prefix + '/games/quiz'
+export const HagmanRoute = prefix + '/games/hangman'
+export const DifferencesGameRoute = prefix + '/games/differences'
+export const VideosRoute = prefix + '/games/videos'
+export const ShowcaseRoute = prefix + '/showcase'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -44,7 +45,7 @@ const router = createRouter({
     {
       path: ShowcaseRoute,
       component: ShowcasePage,
-      alias: "/"
+      alias: prefix
     },
   ]
 });
