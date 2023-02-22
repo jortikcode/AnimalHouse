@@ -43,3 +43,28 @@ const getBill = async (id) => {
     return bill;
   }
 };
+
+const populateViewBill = async (id) => {
+  const bill = await getBill(id);
+  console.log(bill);
+  document.getElementById("viewBillUser").textContent = bill.user.email;
+  const container = document.getElementById("content");
+  container.innerHTML = "";
+  if (bill.type == "service") {
+    const content = document.createElement("span");
+    content.classList.add("p-2", "w-full");
+    content.textContent = `${bill.service.serviceName} ${bill.service.price.toFixed(2)}€`;
+    container.appendChild(content);
+  } else {
+    for (let i = 0; i < bill.products.length; i += 1) {
+      const content = document.createElement("p");
+      content.classList.add("p-2", "w-full");
+      content.textContent = `${bill.products[i].product.name} x${bill.products[i].quantity} ${bill.products[i].product.price.toFixed(2)}€`;
+      container.appendChild(content);
+    }
+  }
+  const iva = Number(bill.total) * 0.22;
+  document.getElementById("viewBillTotal").textContent = `${bill.total.toFixed(2)}€ (di cui IVA ${iva.toFixed(2)}€)`;
+  document.getElementById("viewBillPaymantMethod").textContent = bill.paymentMethod;
+  document.getElementById("viewBillPaidAt").textContent = getDateTime(bill.paidAt);
+};
