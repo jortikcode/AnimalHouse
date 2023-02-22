@@ -60,7 +60,7 @@ const UserSchema = new mongoose.Schema({
   ],
   imgName: {
     type: String,
-    default: "favicon.jpg",
+    default: "favicon.png",
   },
   isVip: {
     type: Boolean,

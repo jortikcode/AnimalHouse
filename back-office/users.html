@@ -210,76 +210,63 @@
                     <form id="modifyForm" onsubmit="event.preventDefault(); modifyUser(this.dataset.userId)">
                         <div class="mb-4">
                             <label for="modifyName" class="block text-gray-700 font-bold mb-2">Nome</label>
-                            <input type="text" name="name" id="modifyName" value="{{this.name}}" required
+                            <input type="text" name="name" id="modifyName" required
                                 class="border rounded-md p-2 w-full">
                         </div>
                         <div class="mb-4">
                             <label for="modifySurname" class="block text-gray-700 font-bold mb-2">Cognome</label>
-                            <input type="text" name="surname" id="modifySurname" value="{{this.surname}}" required
+                            <input type="text" name="surname" id="modifySurname" required
                                 class="border rounded-md p-2 w-full">
                         </div>
                         <div class="mb-4">
                             <label for="modifyEmail" class="block text-gray-700 font-bold mb-2">Email</label>
-                            <input type="text" name="email" id="modifyEmail" value="{{this.email}}" required
+                            <input type="text" name="email" id="modifyEmail" required
                                 class="border rounded-md p-2 w-full">
                         </div>
                         <div class="mb-4">
                             <label for="modifyPassword" class="block text-gray-700 font-bold mb-2">Password</label>
-                            <input type="text" name="password" id="modifyPassword" required
-                                class="border rounded-md p-2 w-full">
+                            <input type="text" name="password" id="modifyPassword" class="border rounded-md p-2 w-full">
                         </div>
                         <div class="mb-4">
                             <label for="address" class="block text-gray-700 font-bold mb-2">Indirizzo:</label>
-                            <input type="text" name="address.city" id="city" value="{{this.address.city}}"
-                                placeholder="Città"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                            <input type="text" name="address.via" id="via" value="{{this.address.via}}"
-                                placeholder="Via"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                            <input type="number" name="address.postal_code" id="postal_code"
-                                value="{{user.address.postal_code}}" placeholder="CAP"
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                        </div>
-                        <div class="mb-4">
-                            <label for="modifyBirth" class="block text-gray-700 font-bold mb-2">Data di nascita</label>
-                            <input type="date" name="birth" id="modifyBirth" value="user.birth" required
+                            <input type="text" name="city" id="modifyCity" placeholder="Città"
+                                class="border rounded-md p-2 w-full">
+                            <input type="text" name="via" id="modifyVia" placeholder="Via"
+                                class="border rounded-md p-2 w-full">
+                            <input type="number" name="postal_code" id="modifyPostal_code" placeholder="CAP"
                                 class="border rounded-md p-2 w-full">
                         </div>
                         <div class="mb-4">
-                            <label class="block text-gray-700 font-bold mb-2" for="gender">
-                                Genere
-                            </label>
-                            <select
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                id="gender" name="gender">
-                                <option value="M" {{#ifEqual user.gender "M" }}selected{{/ifEqual}}>Maschio</option>
-                                <option value="F" {{#ifEqual user.gender "F" }}selected{{/ifEqual}}>Femmina</option>
-                                <option value="N" {{#ifEqual user.gender "N" }}selected{{/ifEqual}}>Non specificato
-                                </option>
-                            </select>
+                            <label for="modifyBirth" class="block text-gray-700 font-bold mb-2">Data di
+                                nascita</label>
+                            <input type="date" name="birth" id="modifyBirth" required
+                                class="border rounded-md p-2 w-full">
                         </div>
                         <div class="mb-4">
                             <label class="block text-gray-700 font-bold mb-2" for="animaliPreferiti">
                                 Animali preferiti
                             </label>
-                            {{#each user.animaliPreferiti}}
-                            <input
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                name="animaliPreferiti[]" type="text" value="{{this.animalType}}">
-                            {{/each}}
+                            <div class="flex-col" id="animali">
+                            </div>
+                            <button type="button" id="aggiungiAnimali"
+                                class="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Aggiungi</button>
                         </div>
                         <div class="mb-4">
                             <label class="block text-gray-700 font-bold mb-2" for="punteggiDeiGiochi">
                                 Punteggi dei giochi
                             </label>
-                            {{#each user.punteggiDeiGiochi}}
-                            <input
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                name="punteggiDeiGiochi[].game" type="text" value="{{this.game}}">
-                            <input
-                                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                name="punteggiDeiGiochi[].game" type="text" value="{{this.game}}">
-                            {{/each}}
+                            <div class="flex-col" id="punteggi">
+                                <div class="flex">
+                                    <input class="border rounded-md p-2 w-1/2" name="game" type="text"
+                                        placeholder="Nome del gioco" aria-placeholder="Nome del gioco">
+                                    <input class="border rounded-md p-2 w-1/3" name="score" type="text"
+                                        placeholder="Punteggio" aria-placeholder="Punteggio">
+                                    <button type="button"
+                                        class="rimuovi bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Rimuovi</button>
+                                </div>
+                            </div>
+                            <button type="button" id="aggiungiPunteggi"
+                                class="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Aggiungi</button>
                         </div>
                         <div class="mb-4">
                             <label for="isVip" class="block text-gray-700 font-bold mb-2">Solo per Vip</label>
@@ -308,78 +295,6 @@
                             <button type="submit"
                                 class="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Modifica
                                 utente</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Create Modal -->
-    <div class=" modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
-        id="createModal">
-        <div class="modal-dialog modal-dialog-scrollable relative w-auto pointer-events-none">
-            <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current"
-                style="max-height: 100%;">
-                <div>
-                    <!-- Modal header -->
-                    <div
-                        class="modal-header bg-yellow-500 flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                        <h5 class="text-xl font-medium leading-normal text-gray-800">Nuovo
-                            servizio</h5>
-                    </div>
-                </div>
-                <!-- Modal body -->
-                <div class="modal-body relative p-4">
-                    <form id="createForm" onsubmit="event.preventDefault(); createUser()"
-                        class="bg-white p-4 rounded-md shadow-md">
-                        <div class="mb-4">
-                            <label for="name" class="block text-gray-700 font-bold mb-2">Nome
-                                servizio</label>
-                            <input type="text" name="serviceName" id="name" placeholder="Inserisci il nome del servizio"
-                                required class="border rounded-md p-2 w-full">
-                        </div>
-                        <div class="mb-4">
-                            <label for="description" class="block text-gray-700 font-bold mb-2">Descrizione</label>
-                            <textarea name="description" id="description"
-                                placeholder="Inserisci la descrizione del servizio"
-                                class="border rounded-md p-2 w-full"></textarea>
-                        </div>
-                        <div class="mb-4">
-                            <label for="price" class="block text-gray-700 font-bold mb-2">Prezzo</label>
-                            <input type="number" step="0.01" min="0" name="price" id="price"
-                                placeholder="Inserisci il prezzo del servizio" required
-                                class="border rounded-md p-2 w-full">
-                        </div>
-                        <div class="mb-4">
-                            <label for="isVip" class="block text-gray-700 font-bold mb-2">Solo
-                                per Vip</label>
-                            <div class="form-check">
-                                <input
-                                    class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                    type="radio" name="isVip" id="radioSi" value="true">
-                                <label class="form-check-label inline-block text-gray-800" for="radioSi">
-                                    Si
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input
-                                    class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                                    type="radio" name="isVip" id="radioNo" value="false">
-                                <label class="form-check-label inline-block text-gray-800" for="radioNo">
-                                    No
-                                </label>
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <label for="imgName" class="block text-gray-700 font-bold mb-2">Immagine</label>
-                            <input type="file" name="imgName" class="border rounded-md p-2 w-full">
-                        </div>
-                        <input type="hidden" name="location" id="formLocation" value="" />
-                        <div class="flex items-center justify-end py-2">
-                            <button type="submit"
-                                class="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Aggiungi
-                                servizio</button>
                         </div>
                     </form>
                 </div>

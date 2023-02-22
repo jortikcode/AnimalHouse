@@ -6,6 +6,10 @@ const BillSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: "User",
       required: [true, "Il cliente deve essere specificato"],
+    }, 
+    type: {
+      type: String,
+      required: [true, "La fattura riguarda prodotti o servizi?"],
     },
     products: [
       {
@@ -20,6 +24,10 @@ const BillSchema = new mongoose.Schema(
         },
       },
     ],
+    service: {
+      type: mongoose.Types.ObjectId,
+      ref: "Service",
+    },
     total: {
       type: Number,
       required: [true, "Il totale deve essere fornito"],

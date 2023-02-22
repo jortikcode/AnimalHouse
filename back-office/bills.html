@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnimalHouse</title>
+    <!-- Tailwind css -->
+    <link href="/css/main.css" rel="stylesheet">
+    <!-- Handlebars -->
+    <script src="/js/handlebars-v4.7.7.js"></script>
+    <!-- JQuery -->
+    <script src="/js/jquery.js"></script>
+</head>
+
+<body class="flex flex-col min-h-screen">
+    <!-- Navbar -->
+    <nav class="flex items-center justify-between flex-wrap bg-yellow-500 p-6">
+        <div class="flex items-center flex-shrink-0 text-white mr-6">
+            <a class="navbar-brand" href="/back-office">
+                <img class="mx-auto responsive-img" src="/img/black-logo.png" alt="Animal House logo"
+                    style="max-height: 30PX" /></a>
+        </div>
+        <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+            <div class="text-lg lg:flex-grow">
+                <a href="/back-office" class="block mt-4 lg:inline-block lg:mt-0 text-black mx-2">
+                    Home
+                </a>
+                <a href="/back-office/sedi" class="block mt-4 lg:inline-block lg:mt-0 text-black  mx-2">
+                    Sedi
+                </a>
+                <a href="/back-office/utenti" class="block mt-4 lg:inline-block lg:mt-0 text-black mx-2">
+                    Utenti
+                </a>
+                <a href="/back-office/prodotti" class="block mt-4 lg:inline-block lg:mt-0 text-black mx-2">
+                    Prodotti
+                </a>
+                <a href="/back-office/servizi" class="block mt-4 lg:inline-block lg:mt-0 text-black mx-2">
+                    Servizi
+                </a>
+                <a href="/back-office/bacheca" class="block mt-4 lg:inline-block lg:mt-0 text-black mx-2">
+                    Bacheca
+                </a>
+                <a href="/back-office/prenotazioni" class="block mt-4 lg:inline-block lg:mt-0 text-black mx-2">
+                    Prenotazioni
+                </a>
+                <a href="/back-office/fatture" class="block mt-4 lg:inline-block lg:mt-0 text-black mx-2">
+                    Fatture
+                </a>
+            </div>
+            <div>
+                <button id="logout" class="flex items-center px-3 text-white rounded">
+                    <img class="mx-auto responsive-img" src="/img/power-off.png" alt="Logout"
+                        style="max-height: 30PX" />
+                </button>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main -->
+    <main class="flex-1">
+        <div class="bg-gray-200 min-h-screen p-10">
+            <h1 class="text-center text-3xl font-bold">Fatture</h1>
+            <div class="flex flex-wrap justify-center">
+                <div class="container mx-auto mt-6">
+                    <div class="flex flex-wrap justify-between">
+                        <div class="flex items-end justify-start">
+                            <div class="text-gray-700">
+                                Ricerca per:
+                                <div class="flex items-center justify-start">
+                                    <select class="border border-gray-400 rounded-lg px-2 py-1">
+                                        <option value="__id">ID</option>
+                                        <option value="user">Utente</option>
+                                        <option value="total">Totale</option>
+                                        <option value="paymentMethod">Metodo di pagamento</option>
+                                        <option value="paidAt">Data</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="px-2">
+                                <div class="container mx-auto ">
+                                    <div class="flex items-center justify-start ">
+                                        <form>
+                                            <input class="bg-white rounded-lg p-2" type="text"
+                                                placeholder="Cerca fattura" />
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-end">
+                            <button class="bg-yellow-500 text-black rounded-lg px-2 py-2" data-bs-toggle="modal"
+                                data-bs-target="#createModal">Nuova
+                                fattura</button>
+                        </div>
+                    </div>
+                    <table class=" table-auto w-full border-2 border-black rounded-lg"
+                        aria-label="tabella per la gestione delle fatture">
+                        <thead>
+                            <tr class="bg-yellow-500">
+                                <th class="cursor-pointer px-4 py-2" data-order-by="__id">ID</th>
+                                <th class="cursor-pointer px-4 py-2" data-order-by="user">Utente</th>
+                                <th class="cursor-pointer px-4 py-2" data-order-by="total">Totale</th>
+                                <th class="cursor-pointer px-4 py-2" data-order-by="paymentMethod">Metodo di
+                                    pagamento</th>
+                                <th class="cursor-pointer px-4 py-2" data-order-by="paidAt">Data</th>
+                                <th class="px-4 py-2">Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="border border-black px-4 py-2">1</td>
+                                <td class="border border-black px-4 py-2">Gianni</td>
+                                <td class="border border-black px-4 py-2">5$</td>
+                                <td class="border border-black px-4 py-2">cash</td>
+                                <td class="border border-black px-4 py-2">11/09/2001</td>
+                                <td class="border border-black px-1 py-2 flex justify-center">
+                                    <button class="bg-yellow-500 text-black rounded-lg px-2 py-1 mx-1"><img
+                                            class="mx-auto responsive-img" src="/img/view.png" alt="Visualizza"
+                                            style="max-height: 30PX; min-width: 1em;" /></button>
+                                    <button class="bg-yellow-500 text-black rounded-lg px-2 py-1 mx-1"><img
+                                            class="mx-auto responsive-img" src="/img/edit.png" alt="Modifica"
+                                            style="max-height: 30PX; min-width: 1em;" /></button>
+                                    <button class="bg-yellow-500 text-black rounded-lg px-2 py-1 mx-1"><img
+                                            class="mx-auto responsive-img" src="/img/remove.png" alt="Elimina"
+                                            style="max-height: 30PX; min-width: 1em;" /></button>
+                                </td>
+                            </tr>
+                            <!-- Aggiungi altre righe per altri prodotti -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="container mx-auto mt-6">
+                    <div class="flex justify-center">
+                        <button class="bg-yellow-500 text-black rounded px-4 py-2 mx-2">Precedente</button>
+                        <button class="bg-yellow-500 text-black rounded px-4 py-2 mx-2">Successivo</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center py-10">
+        <div class="container mx-auto">
+            <div class="flex flex-wrap justify-between">
+                <div class="w-1/3">
+                    <p class="text-sm font-medium mb-5">&copy; 2023 Animal House</p>
+                </div>
+                <div class="w-1/3">
+                    <a href="#" class="text-lg font-medium mb-5">Front-office</a>
+                </div>
+                <div class="w-1/3">
+                    <a href="https://github.com/AlexandruNicolescu00/AnimalHouse"
+                        class="text-lg font-medium mb-5">Github</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
+        id="createModal">
+        <div class="modal-dialog modal-dialog-scrollable relative w-auto pointer-events-none">
+            <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current"
+                style="max-height: 100%;">
+                <div>
+                    <!-- Modal header -->
+                    <div
+                        class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+                        <h5 class="text-xl font-medium leading-normal text-gray-800"> Nuova fattura</h5>
+                    </div>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body relative p-4">
+                    <form class="bg-white p-8 rounded-lg">
+                        <div class="mb-6">
+                            <label class="block text-gray-700 font-bold mb-2" for="user">
+                                Utente
+                            </label>
+                            <select class="border border-gray-400 p-2 w-full" id="user" required>
+                                <option value="">Seleziona un utente</option>
+                                <!-- Popolare dinamicamente con gli utenti disponibili -->
+                            </select>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 font-bold mb-2" for="products">
+                                Prodotto
+                            </label>
+                            <div id="productsContainer">
+                                <div id="productTemplate" class="flex">
+                                    <select class="border border-gray-400 p-2 w-1/2 mr-2" id="product" required>
+                                        <option value="">Seleziona un prodotto</option>
+                                        <!-- Popolare dinamicamente con i prodotti disponibili -->
+                                    </select>
+                                    <input type="number" class="border border-gray-400 mr-2" style="width: 25%;"
+                                        id="quantity" min="1" value="1" required>
+                                    <div id="removeProductButton" style="width: 25%;">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-end">
+                            <button type="button" class="bg-yellow-500 text-black p-2 rounded-lg hover:bg-yellow-600"
+                                id="addProductBtn">
+                                Aggiungi prodotto
+                            </button>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 font-bold mb-2" for="total">
+                                Totale
+                            </label>
+                            <input type="number" class="border border-gray-400 p-2 w-full" id="total" required>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 font-bold mb-2" for="paymentMethod">
+                                Metodo di pagamento
+                            </label>
+                            <select class="border border-gray-400 p-2 w-full" id="paymentMethod" required>
+                                <option value="">Seleziona un metodo di pagamento</option>
+                                <option value="Contanti">Contanti</option>
+                                <option value="Carta di credito/Bancomat">Carta di credito/Bancomat</option>
+                            </select>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-gray-700 font-bold mb-2" for="paidAt">
+                                Data
+                            </label>
+                            <input type="date" class="border border-gray-400 p-2 w-full" id="paidAt" required>
+                        </div>
+                    </form>
+                    <div
+                        class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
+                        <div class="flex items-center">
+                            <button class="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Crea
+                                fattura</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tailwind elements -->
+    <script src="/elements/index.min.js"></script>
+
+    <!-- Compile -->
+    <script src="/js/bill.js"></script>
+
+    <!-- Logout -->
+    <script src="/js/logout.js"></script>
+</body>
+
+</html>

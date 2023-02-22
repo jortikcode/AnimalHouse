@@ -41,12 +41,20 @@ const prepareUpdate = async (body, userID) => {
   const {
     name,
     surname,
+    email,
+    password,
+    city,
+    via,
+    postal_code,
+    birth,
+    tipi,
     petName,
     petParticularSigns,
     petBirthYear,
     petAnimalType,
-    imgName,
-    punteggiDeiGiochi,
+    game,
+    score,
+    isVip,
     clearPets,
   } = body;
   if (name) {
@@ -55,8 +63,50 @@ const prepareUpdate = async (body, userID) => {
   if (surname) {
     updateObj.surname = surname;
   }
-  // Inserimento dati animale
+  if (email) {
+    updateObj.email = email;
+  }
+  if (password) {
+    updateObj.password = password;
+  }
+  if (city || via || postal_code) {
+    updateObj.address = {
+      city: city || "",
+      via: via || "",
+      postal_code: postal_code || "",
+    };
+  }
+  if (birth) {
+    updateObj.birth = new Date(birth);
+  }
+  if (tipi) {
+    if (Array.isArray(tipi)) {
+      const animaliPreferiti = [];
+      for (let i = 0; i < tipi.length; i += 1) {
+        const animale = { animalType: tipi[i] };
+        animaliPreferiti.push(animale);
+      }
+      updateObj.animaliPreferiti = animaliPreferiti;
+    } else {
+      const animaliPreferiti = { animalType: tipi };
+      updateObj.animaliPreferiti = animaliPreferiti;
+    }
+  }
+  if (game != "" && score != "") {
+    if (Array.isArray(game)) {
+      const punteggiDeiGiochi = [];
+      for (let i = 0; i < game.length; i += 1) {
+        const gioco = { game: game[i], score: Number(score[i]) || 0 };
+        punteggiDeiGiochi.push(gioco);
+      }
+      updateObj.punteggiDeiGiochi = punteggiDeiGiochi;
+    } else {
+      const punteggiDeiGiochi = { game: game, score: Number(score) };
+      updateObj.punteggiDeiGiochi = punteggiDeiGiochi;
+    }
+  }
   if (petName || petParticularSigns || petBirthYear || petAnimalType) {
+    // Inserimento dati animale
     updateObj.animaliPreferiti = [
       {
         name: petName,
@@ -66,25 +116,19 @@ const prepareUpdate = async (body, userID) => {
       },
     ];
   }
-  if (imgName) {
-    updateObj.imgName = imgName;
-  }
-  if (punteggiDeiGiochi) {
-    updateObj.punteggiDeiGiochi = punteggiDeiGiochi;
+  if (isVip) {
+    updateObj.isVip = Boolean(isVip == "true");
   }
 
   if (clearPets) {
     const user = await User.findOne({ _id: userID });
     for (const animal of user.animaliPreferiti) {
       try {
-        fs.unlink(
-          path.join(global.baseDir, "public", "media", animal.imgName),
-          (err) => {
-            if (err) {
-              console.log(err);
-            }
+        fs.unlink(path.join(global.baseDir, "public", "media", animal.imgName), (err) => {
+          if (err) {
+            console.log(err);
           }
-        );
+        });
       } catch (e) {
         console.log(e);
       }
@@ -96,8 +140,9 @@ const prepareUpdate = async (body, userID) => {
 
 const updateUser = async (req, res) => {
   const { id: userID } = req.params;
+  console.log(req.body);
   const updateObj = await prepareUpdate(req.body, userID);
-
+  console.log(updateObj);
   // Inserimento di un nuovo pet
   if (req.body.petImage) {
     if (req.file?.filename) updateObj.animaliPreferiti[0].imgName = req.file.filename;
@@ -108,7 +153,22 @@ const updateUser = async (req, res) => {
     // Inserimento nuova immagine del profilo di un utente
     updateObj.imgName = req.file.filename;
   }
-
+  if (req.file?.filename) {
+    updateObj.imgName = req.file.filename;
+    /* Cancello l'immagine precente */
+    const user = await User.findOne({ _id: userID });
+    if (!user) {
+      throw createCustomError(`Non esiste nessun utente con id : ${user}`, StatusCodes.NOT_FOUND);
+    }
+    /* l'immagine di default degli utenti */
+    if (user.imgName != "favicon.png") {
+      fs.unlink(path.join(global.baseDir, "public", "media", user.imgName), (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+    }
+  }
   const user = await User.findOneAndUpdate(
     { _id: userID },
     { $set: updateObj },

@@ -13,6 +13,43 @@ jQuery(function () {
     getUsers(query);
     delete query[param];
   });
+  /* modifica utente per avere più animali preferiti */
+  const animali = document.querySelector("#animali");
+  const aggiungiAnimali = document.querySelector("#aggiungiAnimali");
+  aggiungiAnimali.addEventListener("click", () => {
+    const animale = document.createElement("div");
+    animale.classList.add("animale", "flex");
+    animale.innerHTML = `
+    <input class="border rounded-md p-2 w-full" name="tipi" type="text"
+    placeholder="Animale" aria-placeholder="Tipo di animale pereferito">
+<button type="button"
+    class="rimuovi bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Rimuovi</button>
+    `;
+    animali.appendChild(animale);
+  });
+  animali.addEventListener("click", (event) => {
+    if (event.target.classList.contains("rimuovi")) {
+      event.target.parentElement.remove();
+    }
+  });
+  /* modifica utente per avere più punteggi */
+  const punteggi = document.querySelector("#punteggi");
+  const aggiungiPunteggi = document.querySelector("#aggiungiPunteggi");
+  aggiungiPunteggi.addEventListener("click", () => {
+    const punteggio = document.createElement("div");
+    punteggio.classList.add("punteggio", "flex");
+    punteggio.innerHTML = `
+      <input class="border rounded-md p-2 w-1/2" type="text" name="game" placeholder="Nome del gioco">
+      <input class="border rounded-md p-2 w-1/3" type="number" name="score" placeholder="Punteggio">
+      <button type="button" class="rimuovi bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Rimuovi</button>
+    `;
+    punteggi.appendChild(punteggio);
+  });
+  punteggi.addEventListener("click", (event) => {
+    if (event.target.classList.contains("rimuovi")) {
+      event.target.parentElement.remove();
+    }
+  });
 });
 
 const getUsers = async (query) => {
@@ -59,31 +96,65 @@ const populateViewUser = async (id) => {
   document.getElementById("viewUserBirth").textContent = user.birth?.slice(0, 10);
   document.getElementById("viewUserGender").textContent = user.gender;
   document.getElementById("viewUserVip").textContent = user.isVip ? "Si" : "No";
-  let animals = "";
+  let animals = [];
   if (user.animaliPreferiti) {
     for (let i = 0; i < user.animaliPreferiti.length; i += 1) {
-      animals += user.animaliPreferiti[i].type | "";
+      if (user.animaliPreferiti[i].animalType) animals.push(user.animaliPreferiti[i].animalType);
     }
   }
-  document.getElementById("viewUserAnimals").textContent = animals;
-  let scores = "";
+  document.getElementById("viewUserAnimals").textContent = animals.join(", ");
+  let scores = [];
   if (user.punteggiDeiGiochi) {
     for (let i = 0; i < user.punteggiDeiGiochi.length; i += 1) {
-      scores += user.punteggiDeiGiochi[i].punteggio | "";
+      scores.push(`${user.punteggiDeiGiochi[i].game} - ${user.punteggiDeiGiochi[i].score}`);
     }
   }
-  document.getElementById("viewUserGameScore").textContent = scores;
+  document.getElementById("viewUserGameScore").textContent = scores.join(", ");
 };
 
 const populateModifyUser = async (id) => {
-  const service = await getUser(id);
-  document.getElementById("modifyName").value = service.serviceName;
-  document.getElementById("modifyDescription").value = service.description;
-  document.getElementById("modifyPrice").value = service.price;
-  if (service.isVip) {
-    document.getElementById("modifyRadioSi").checked = true;
+  const user = await getUser(id);
+  $("#modifyName").val(user.name);
+  $("#modifySurname").val(user.surname);
+  $("#modifyEmail").val(user.email);
+  $("#modifyPassword").val("");
+  $("#modifyCity").val(user.address?.city);
+  $("#modifyVia").val(user.address?.via);
+  $("#modifyPostal_code").val(user.address?.postal_code);
+  $("#modifyBirth").val(user.birth?.slice(0, 10));
+  if (user.animaliPreferiti) {
+    const animali = document.querySelector("#animali");
+    animali.innerHTML = "";
+    for (let i = 0; i < user.animaliPreferiti.length; i += 1) {
+      const animale = document.createElement("div");
+      animale.classList.add("animale", "flex");
+      animale.innerHTML = `
+    <input class="border rounded-md p-2 w-full" name="tipi" type="text"
+    placeholder="Animale" aria-placeholder="Tipo di animale pereferito" value="${user.animaliPreferiti[i].animalType}">
+<button type="button"
+    class="rimuovi bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Rimuovi</button>
+    `;
+      animali.appendChild(animale);
+    }
+  }
+  if (user.punteggiDeiGiochi) {
+    const punteggi = document.querySelector("#punteggi");
+    punteggi.innerHTML = "";
+    for (let i = 0; i < user.punteggiDeiGiochi.length; i += 1) {
+      const punteggio = document.createElement("div");
+      punteggio.classList.add("punteggio", "flex");
+      punteggio.innerHTML = `
+      <input class="border rounded-md p-2 w-1/2" type="text" name="game" placeholder="Nome del gioco" value="${user.punteggiDeiGiochi[i].game}">
+      <input class="border rounded-md p-2 w-1/3" type="number" name="score" placeholder="Punteggio" value="${user.punteggiDeiGiochi[i].score}">
+      <button type="button" class="rimuovi bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Rimuovi</button>
+    `;
+      punteggi.appendChild(punteggio);
+    }
+  }
+  if (user.isVip) {
+    $("#modifyRadioSi").prop("checked", true);
   } else {
-    document.getElementById("modifyRadioNo").checked = true;
+    $("#modifyRadioNo").prop("checked", true);
   }
   document.getElementById("modifyForm").dataset.userId = id;
 };
@@ -91,7 +162,7 @@ const populateModifyUser = async (id) => {
 const modifyUser = async (id) => {
   const form = document.getElementById("modifyForm");
   const formData = new FormData(form);
-  const response = await fetch(`http://localhost:8000/api/v1/services/${id}`, {
+  const response = await fetch(`http://localhost:8000/api/v1/users/${id}`, {
     method: "PATCH",
     body: formData,
   });
@@ -100,12 +171,9 @@ const modifyUser = async (id) => {
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
     const filled = errorTemplate({ error: error.msg });
     $("#error").html(filled);
-  } else {
-    const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
-    const query = {};
-    query.location = locationInfo._id;
-    getServices(query);
+    return;
   }
+  getUsers({});
 };
 
 const deleteUser = async (id) => {

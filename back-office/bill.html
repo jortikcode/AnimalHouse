@@ -12,11 +12,14 @@
     <script src="/js/handlebars-v4.7.7.js"></script>
     <!-- JQuery -->
     <script src="/js/jquery.js"></script>
+
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
 </head>
 
-<body class="flex flex-col min-h-screen">
+<body class="flex flex-col min-h-screen items-center">
+
     <!-- Navbar -->
-    <nav class="flex items-center justify-between flex-wrap bg-yellow-500 p-6">
+    <nav class="flex items-center justify-between flex-wrap bg-yellow-500 p-6 w-full">
         <div class="flex items-center flex-shrink-0 text-white mr-6">
             <a class="navbar-brand" href="/back-office">
                 <img class="mx-auto responsive-img" src="/img/black-logo.png" alt="Animal House logo"
@@ -26,9 +29,6 @@
             <div class="text-lg lg:flex-grow">
                 <a href="/back-office" class="block mt-4 lg:inline-block lg:mt-0 text-black mx-2">
                     Home
-                </a>
-                <a href="/back-office/sedi" class="block mt-4 lg:inline-block lg:mt-0 text-black  mx-2">
-                    Sedi
                 </a>
                 <a href="/back-office/utenti" class="block mt-4 lg:inline-block lg:mt-0 text-black mx-2">
                     Utenti
@@ -60,92 +60,34 @@
     </nav>
 
     <!-- Main -->
-    <main class="flex-1">
+    <main class="flex-1 w-full">
         <div class="bg-gray-200 min-h-screen p-10">
             <h1 class="text-center text-3xl font-bold">Fatture</h1>
             <div class="flex flex-wrap justify-center">
                 <div class="container mx-auto mt-6">
-                    <div class="flex flex-wrap justify-between">
-                        <div class="flex items-end justify-start">
-                            <div class="text-gray-700">
-                                Ricerca per:
-                                <div class="flex items-center justify-start">
-                                    <select class="border border-gray-400 rounded-lg px-2 py-1">
-                                        <option value="__id">ID</option>
-                                        <option value="user">Utente</option>
-                                        <option value="total">Totale</option>
-                                        <option value="paymentMethod">Metodo di pagamento</option>
-                                        <option value="paidAt">Data</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="px-2">
-                                <div class="container mx-auto ">
-                                    <div class="flex items-center justify-start ">
-                                        <form>
-                                            <input class="bg-white rounded-lg p-2" type="text"
-                                                placeholder="Cerca fattura" />
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex items-end">
-                            <button class="bg-yellow-500 text-black rounded-lg px-2 py-2" data-bs-toggle="modal"
-                                data-bs-target="#createModal">Nuova
-                                fattura</button>
-                        </div>
-                    </div>
-                    <table class=" table-auto w-full border-2 border-black rounded-lg"
-                        aria-label="tabella per la gestione delle fatture">
+                    <!-- Messaggio di errore -->
+                    <div id="error"></div>
+                    <table class="sortable table-auto w-full border-2 border-black rounded-lg border-spacing-0"
+                        aria-label="tabella per la gestione dei prodotti">
                         <thead>
                             <tr class="bg-yellow-500">
-                                <th class="cursor-pointer px-4 py-2" data-order-by="__id">ID</th>
-                                <th class="cursor-pointer px-4 py-2" data-order-by="user">Utente</th>
-                                <th class="cursor-pointer px-4 py-2" data-order-by="total">Totale</th>
-                                <th class="cursor-pointer px-4 py-2" data-order-by="paymentMethod">Metodo di
-                                    pagamento</th>
-                                <th class="cursor-pointer px-4 py-2" data-order-by="paidAt">Data</th>
+                                <th class="cursor-pointer px-4 py-2">Utente</th>
+                                <th class="cursor-pointer px-4 py-2">Totale</th>
+                                <th class="cursor-pointer px-4 py-2">Metodo di pagamento</th>
+                                <th class="cursor-pointer px-4 py-2">Data</th>
                                 <th class="px-4 py-2">Azioni</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td class="border border-black px-4 py-2">1</td>
-                                <td class="border border-black px-4 py-2">Gianni</td>
-                                <td class="border border-black px-4 py-2">5$</td>
-                                <td class="border border-black px-4 py-2">cash</td>
-                                <td class="border border-black px-4 py-2">11/09/2001</td>
-                                <td class="border border-black px-1 py-2 flex justify-center">
-                                    <button class="bg-yellow-500 text-black rounded-lg px-2 py-1 mx-1"><img
-                                            class="mx-auto responsive-img" src="/img/view.png" alt="Visualizza"
-                                            style="max-height: 30PX; min-width: 1em;" /></button>
-                                    <button class="bg-yellow-500 text-black rounded-lg px-2 py-1 mx-1"><img
-                                            class="mx-auto responsive-img" src="/img/edit.png" alt="Modifica"
-                                            style="max-height: 30PX; min-width: 1em;" /></button>
-                                    <button class="bg-yellow-500 text-black rounded-lg px-2 py-1 mx-1"><img
-                                            class="mx-auto responsive-img" src="/img/remove.png" alt="Elimina"
-                                            style="max-height: 30PX; min-width: 1em;" /></button>
-                                </td>
-                            </tr>
-                            <!-- Aggiungi altre righe per altri prodotti -->
+                        <tbody id="tableRows">
                         </tbody>
                     </table>
-                </div>
-
-                <div class="container mx-auto mt-6">
-                    <div class="flex justify-center">
-                        <button class="bg-yellow-500 text-black rounded px-4 py-2 mx-2">Precedente</button>
-                        <button class="bg-yellow-500 text-black rounded px-4 py-2 mx-2">Successivo</button>
-                    </div>
                 </div>
             </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white text-center py-10">
+    <footer class="bg-gray-800 text-white text-center py-10 w-full">
         <div class="container mx-auto">
             <div class="flex flex-wrap justify-between">
                 <div class="w-1/3">
@@ -162,83 +104,63 @@
         </div>
     </footer>
 
-    <!-- Modal -->
+    <!-- View Modal -->
     <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
-        id="createModal">
+        id="viewModal">
         <div class="modal-dialog modal-dialog-scrollable relative w-auto pointer-events-none">
             <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current"
                 style="max-height: 100%;">
                 <div>
                     <!-- Modal header -->
                     <div
-                        class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                        <h5 class="text-xl font-medium leading-normal text-gray-800"> Nuova fattura</h5>
+                        class="modal-header bg-yellow-500 flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
+                        <h5 class="text-xl font-medium leading-normal text-gray-800">Dettaglio prodotto</h5>
                     </div>
                 </div>
                 <!-- Modal body -->
                 <div class="modal-body relative p-4">
-                    <form class="bg-white p-8 rounded-lg">
-                        <div class="mb-6">
-                            <label class="block text-gray-700 font-bold mb-2" for="user">
-                                Utente
-                            </label>
-                            <select class="border border-gray-400 p-2 w-full" id="user" required>
-                                <option value="">Seleziona un utente</option>
-                                <!-- Popolare dinamicamente con gli utenti disponibili -->
-                            </select>
+                    <div class="bg-white p-4 rounded-md shadow-md">
+                        <div class="mb-4 flex justify-center">
+                            <img id="viewProductImg" class="w-1/2 mx-auto" src="" alt="Immagine del prodotto">
                         </div>
-                        <div class="mb-6">
-                            <label class="block text-gray-700 font-bold mb-2" for="products">
-                                Prodotto
-                            </label>
-                            <div id="productsContainer">
-                                <div id="productTemplate" class="flex">
-                                    <select class="border border-gray-400 p-2 w-1/2 mr-2" id="product" required>
-                                        <option value="">Seleziona un prodotto</option>
-                                        <!-- Popolare dinamicamente con i prodotti disponibili -->
-                                    </select>
-                                    <input type="number" class="border border-gray-400 mr-2" style="width: 25%;"
-                                        id="quantity" min="1" value="1" required>
-                                    <div id="removeProductButton" style="width: 25%;">
-
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="mb-4">
+                            <label for="viewProductName" class="block text-gray-700 font-bold mb-1">Nome
+                                prodotto</label>
+                            <span id="viewProductName" class="p-2 w-full"></span>
                         </div>
-                        <div class="flex justify-end">
-                            <button type="button" class="bg-yellow-500 text-black p-2 rounded-lg hover:bg-yellow-600"
-                                id="addProductBtn">
-                                Aggiungi prodotto
-                            </button>
+                        <div class="mb-4">
+                            <label for="viewProductPrice" class="block text-gray-700 font-bold mb-1">Prezzo</label>
+                            <span id="viewProductPrice" class="p-2 w-full"></span>
                         </div>
-                        <div class="mb-6">
-                            <label class="block text-gray-700 font-bold mb-2" for="total">
-                                Totale
-                            </label>
-                            <input type="number" class="border border-gray-400 p-2 w-full" id="total" required>
+                        <div class="mb-4">
+                            <label for="viewProductDescription"
+                                class="block text-gray-700 font-bold mb-1">Descrizione</label>
+                            <span id="viewProductDescription" class="p-2 w-full"></span>
                         </div>
-                        <div class="mb-6">
-                            <label class="block text-gray-700 font-bold mb-2" for="paymentMethod">
-                                Metodo di pagamento
-                            </label>
-                            <select class="border border-gray-400 p-2 w-full" id="paymentMethod" required>
-                                <option value="">Seleziona un metodo di pagamento</option>
-                                <option value="Contanti">Contanti</option>
-                                <option value="Carta di credito/Bancomat">Carta di credito/Bancomat</option>
-                            </select>
+                        <div class="mb-4">
+                            <label for="viewProductFeatured" class="block text-gray-700 font-bold mb-1">In primo
+                                piano</label>
+                            <span id="viewProductFeatured" class="p-2 w-full"></span>
                         </div>
-                        <div class="mb-6">
-                            <label class="block text-gray-700 font-bold mb-2" for="paidAt">
-                                Data
-                            </label>
-                            <input type="date" class="border border-gray-400 p-2 w-full" id="paidAt" required>
+                        <div class="mb-4">
+                            <label for="viewProductRating"
+                                class="block text-gray-700 font-bold mb-1">Valutazione</label>
+                            <span id="viewProductRating" class="p-2 w-full"></span>
                         </div>
-                    </form>
-                    <div
-                        class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
-                        <div class="flex items-center">
-                            <button class="bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Crea
-                                fattura</button>
+                        <div class="mb-4">
+                            <label for="viewProductQta" class="block text-gray-700 font-bold mb-1">Quantità
+                                disponibile</label>
+                            <span id="viewProductQta" class="p-2 w-full"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label for="viewProductCategory"
+                                class="block text-gray-700 font-bold mb-1">Categoria</label>
+                            <span id="viewProductCategory" class="p-2 w-full"></span>
+                        </div>
+                        <div class="mb-4">
+                            <label for="viewProductSubcategory"
+                                class="block text-gray-700 font-bold mb-1">Sottocategorie</label>
+                            <span id="viewProductSubcategory" class="p-2 w-full"></span>
                         </div>
                     </div>
                 </div>
@@ -254,6 +176,35 @@
 
     <!-- Logout -->
     <script src="/js/logout.js"></script>
+
+    <!-- HBS Template -->
+    <script id="errorTemplate" type="text/x-handlebars-template">
+        {{#if error}}
+        <div class="alert bg-yellow-100 rounded-lg py-5 px-6 mb-3 text-base text-yellow-700 inline-flex items-center w-full alert-dismissible fade show" role="alert">
+            {{error}}. Refreshare la pagina
+            <button type="button" class="btn-close box-content w-4 h-4 p-1 ml-auto text-yellow-900 border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-yellow-900 hover:opacity-75 hover:no-underline" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {{/if}}
+    </script>
+
+    <script id="billsTemplate" type="text/x-handlebars-template">
+        {{#if bills}}
+        {{#each bills}}
+        <tr>
+            <td class="border border-black px-4 py-2 text-center">{{this.user.email}}</td>
+            <td class="border border-black px-4 py-2 text-center">{{this.total}}€</td>
+            <td class="border border-black px-4 py-2 text-center">{{this.paymentMethod}}</td>
+            <td class="border border-black px-4 py-2 text-center">{{this.paidAt}}</td>
+            <td class="border border-black px-4 py-2">
+                <div class="flex items-center gap-2 justify-center">
+                    <button data-productid="{{this._id}}" onclick="populateViewBill(this.dataset.productid)" data-bs-toggle="modal" data-bs-target="#viewModal" class="bg-yellow-500  items-center px-2 py-2 mx-2 rounded-lg"><img
+                        style="max-height: 2em; min-height: 1em; max-width: 3em; min-width: 1em;" src="/img/view.png" alt="Visualizza"/></button>
+                </div>
+            </td>
+        </tr>
+        {{/each}}
+        {{/if}}
+    </script>
 </body>
 
 </html>

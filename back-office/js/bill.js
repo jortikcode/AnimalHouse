@@ -1,47 +1,45 @@
-const thead = document.querySelector("thead");
-thead.addEventListener("click", (event) => {
-  const target = event.target;
-  if (target.tagName === "TH") {
-    sortTable(target.dataset.orderBy);
+jQuery(function () {
+  getBills();
+});
+const getDateTime = (dateString) => {
+  const formattedDate = dateString.slice(0, 10);
+  const formattedTime = dateString.slice(11, 16);
+  return `${formattedDate} ${formattedTime}`;
+};
+
+const getBills = async (query) => {
+  const response = await fetch("http://localhost:8000/api/v1/bill?" + new URLSearchParams(query));
+  if (!response.ok) {
+    const error = await response.json();
+    const errorTemplate = Handlebars.compile($("#errorTemplate").html());
+    const filled = errorTemplate({ error: error.msg });
+    $("#error").html(filled);
   }
-});
+  const bills = await response.json();
+  if (bills.length > 0) {
+    const billsTemplate = Handlebars.compile($("#billsTemplate").html());
+    for (const bill of bills) {
+      bill.paidAt = getDateTime(bill.paidAt);
+      bill.total = bill.total.toFixed(2);
+    }
+    const filled = billsTemplate({ bills: bills });
+    $("#tableRows").html(filled);
+  } else {
+    $("#tableRows").html("");
+  }
+};
 
-function sortTable(orderBy) {
-  // implementare qui la logica per ordinare i dati della tabella
-  // ...
-}
-
-/* Aggiungi più prodotti al modale aggiungi nuova fattura */
-const modale = document.querySelector("#createModal");
-const addProductButton = document.querySelector("#addProductBtn");
-const productsContainer = document.querySelector("#productsContainer");
-const productTemplate = document
-  .querySelector("#productTemplate")
-  .cloneNode(true);
-productTemplate.style.display = "block";
-
-addProductButton.addEventListener("click", () => {
-  const newProductsContainer = productsContainer.cloneNode(true);
-  console.log(newProductsContainer);
-  const removeButtonContainer = newProductsContainer.querySelector(
-    "#removeProductButton"
-  );
-  const removeButton = document.createElement("button");
-  removeButton.classList.add(
-    "remove-button",
-    "rounded-lg",
-    "p-2",
-    "text-black",
-    "bg-yellow-500",
-    "w-full"
-  );
-  removeButton.innerHTML = "Rimuovi";
-
-  removeButton.addEventListener("click", () => {
-    newProductsContainer.remove();
-  });
-  removeButtonContainer.appendChild(removeButton);
-  productsContainer.parentNode.appendChild(newProductsContainer);
-  modale.classList.remove("overflow-y-auto");
-  modale.classList.add("overflow-y-auto");
-});
+const getBill = async (id) => {
+  if (id) {
+    const response = await fetch(`http://localhost:8000/api/v1/bill/${id}`);
+    if (!response.ok) {
+      const error = await response.json();
+      const errorTemplate = Handlebars.compile($("#errorTemplate").html());
+      const filled = errorTemplate({ error: error.msg });
+      $("#error").html(filled);
+      return;
+    }
+    const bill = await response.json();
+    return bill;
+  }
+};
