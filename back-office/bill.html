@@ -114,53 +114,35 @@
                     <!-- Modal header -->
                     <div
                         class="modal-header bg-yellow-500 flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                        <h5 class="text-xl font-medium leading-normal text-gray-800">Dettaglio prodotto</h5>
+                        <h5 class="text-xl font-medium leading-normal text-gray-800">Dettaglio fattura</h5>
                     </div>
                 </div>
                 <!-- Modal body -->
                 <div class="modal-body relative p-4">
                     <div class="bg-white p-4 rounded-md shadow-md">
-                        <div class="mb-4 flex justify-center">
-                            <img id="viewProductImg" class="w-1/2 mx-auto" src="" alt="Immagine del prodotto">
+                        <div class="mb-4">
+                            <label for="viewBillUser" class="block text-gray-700 font-bold mb-1">Utente</label>
+                            <span id="viewBillUser" class="p-2 w-full"></span>
                         </div>
                         <div class="mb-4">
-                            <label for="viewProductName" class="block text-gray-700 font-bold mb-1">Nome
-                                prodotto</label>
-                            <span id="viewProductName" class="p-2 w-full"></span>
+                            <label for="viewBillContent" class="block text-gray-700 font-bold mb-1">Prodotti /
+                                Servizio</label>
+                            <div id="content">
+                            </div>
                         </div>
                         <div class="mb-4">
-                            <label for="viewProductPrice" class="block text-gray-700 font-bold mb-1">Prezzo</label>
-                            <span id="viewProductPrice" class="p-2 w-full"></span>
+                            <label for="viewBillTotal" class="block text-gray-700 font-bold mb-1">Totale</label>
+                            <span id="viewBillTotal" class="p-2 w-full"></span>
                         </div>
                         <div class="mb-4">
-                            <label for="viewProductDescription"
-                                class="block text-gray-700 font-bold mb-1">Descrizione</label>
-                            <span id="viewProductDescription" class="p-2 w-full"></span>
+                            <label for="viewBillPaymantMethod" class="block text-gray-700 font-bold mb-1">Metodo di
+                                pagamento</label>
+                            <span id="viewBillPaymantMethod" class="p-2 w-full"></span>
                         </div>
                         <div class="mb-4">
-                            <label for="viewProductFeatured" class="block text-gray-700 font-bold mb-1">In primo
-                                piano</label>
-                            <span id="viewProductFeatured" class="p-2 w-full"></span>
-                        </div>
-                        <div class="mb-4">
-                            <label for="viewProductRating"
-                                class="block text-gray-700 font-bold mb-1">Valutazione</label>
-                            <span id="viewProductRating" class="p-2 w-full"></span>
-                        </div>
-                        <div class="mb-4">
-                            <label for="viewProductQta" class="block text-gray-700 font-bold mb-1">Quantità
-                                disponibile</label>
-                            <span id="viewProductQta" class="p-2 w-full"></span>
-                        </div>
-                        <div class="mb-4">
-                            <label for="viewProductCategory"
-                                class="block text-gray-700 font-bold mb-1">Categoria</label>
-                            <span id="viewProductCategory" class="p-2 w-full"></span>
-                        </div>
-                        <div class="mb-4">
-                            <label for="viewProductSubcategory"
-                                class="block text-gray-700 font-bold mb-1">Sottocategorie</label>
-                            <span id="viewProductSubcategory" class="p-2 w-full"></span>
+                            <label for="viewBillPaidAt" class="block text-gray-700 font-bold mb-1">Data di
+                                pagamento</label>
+                            <span id="viewBillPaidAt" class="p-2 w-full"></span>
                         </div>
                     </div>
                 </div>
