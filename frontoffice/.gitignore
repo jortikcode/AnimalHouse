@@ -10,6 +10,7 @@
 
 # production
 /build
+/frontofficeBuild
 
 # misc
 .DS_Store

@@ -29,6 +29,8 @@ app.use("/js", express.static(path.join(__dirname, "..", "back-office", "js")));
 app.use("/elements", express.static(path.join(__dirname, "node_modules", "tw-elements", "dist", "js")));
 app.use(express.static(path.join(__dirname, "./back-office")));
 app.use(express.static(path.join(__dirname, "build")));
+app.use(express.static(path.join(__dirname, 'frontofficeBuild')));
+app.use(express.static(path.join(__dirname, 'gameBuild')));
 app.use(express.static(path.join(__dirname, "public", "")));
 // middleware per usare i dati nel body delle richieste
 app.use(express.urlencoded({ extended: true }));
@@ -36,6 +38,12 @@ app.use(cors());
 app.use(express.json());
 
 app.enable("trust proxy");
+app.get("/frontoffice*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontofficeBuild", "index.html"));
+});
+app.get("/game*", (req, res) => {
+  res.sendFile(path.join(__dirname, "gameBuild", "index.html"));
+});
 
 // Routes
 app.use("/back-office", require("./routes/back-office"));

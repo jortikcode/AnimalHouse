@@ -12,6 +12,12 @@
 # misc
 .DS_Store
 
+#game build
+gameBuild
+
+#frontoffice build
+frontofficeBuild
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
