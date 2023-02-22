@@ -6,10 +6,10 @@ const { StatusCodes } = require("http-status-codes");
 const mongoose = require("mongoose");
 const product = require("../models/product");
 
-/* Crea una nuova fattura */
-const createBill = async (req, res) => {
+const createBillProducts = async (body) => {
+  const { user, type, products, total, paymentMethod } = body;
   let quantities = [];
-  for (const product of req.body.products) {
+  for (const product of products) {
     const { qta: quantity } = await Product.findById(product.product);
     quantities.push(quantity);
     if (quantity < parseInt(product.quantity)) throw createCustomError(`Impossibile ordinare, svuotare il carrello e riprovare`, StatusCodes.CONFLICT);
@@ -20,7 +20,7 @@ const createBill = async (req, res) => {
   session.startTransaction();
   let index = 0;
   const updatedProducts = [];
-  for (const product of req.body.products) {
+  for (const product of products) {
     const updatedProduct = await Product.findOneAndUpdate(
       { _id: product.product },
       {
@@ -36,13 +36,43 @@ const createBill = async (req, res) => {
     updatedProducts.push(updatedProduct);
     index++;
   }
-  const bill = await Bill.create(req.body);
+  const bill = await Bill.create({
+    user,
+    type,
+    products,
+    total,
+    paymentMethod,
+  });
   // Il carrello puo' essere
-  const cart = await Cart.deleteOne({ user: req.body.user });
+  const cart = await Cart.deleteOne({ user: user });
   // Fine della transazione
   await session.commitTransaction();
 
-  res.status(StatusCodes.CREATED).json({ bill: bill, products: updatedProducts, cart: cart });
+  return { bill: bill, products: updatedProducts, cart: cart };
+};
+
+const createBillService = async (body) => {
+  const { user, type, service, total, paymentMethod } = body;
+  const bill = await Bill.create({
+    user,
+    type,
+    service,
+    total,
+    paymentMethod,
+  });
+  return { bill: bill };
+};
+
+/* Crea una nuova fattura */
+const createBill = async (req, res) => {
+  let response = {};
+  if (req.body.type == "products") {
+    response = await createBillProducts(req.body);
+  }
+  if (req.body.type == "service") {
+    response = await createBillService(req.body);
+  }
+  res.status(StatusCodes.CREATED).json(response);
 };
 
 /* Ottiene tutte le fatture */
