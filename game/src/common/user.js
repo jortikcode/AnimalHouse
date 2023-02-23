@@ -7,7 +7,7 @@ export const isLogged = () => JSON.parse(localStorage.getItem("user")) !== null;
 
 // Utility per leggere/scrivere sul localstorage
 const getUserInfo = () => JSON.parse(localStorage.getItem("user")).userInfo;
-const getUserToken = () => localStorage.getItem("token");
+const getUserToken = () => JSON.parse(localStorage.getItem("user")).token;
 const updateUserLocalStorage = (token, newUser) => {
   localStorage.setItem("user", JSON.stringify({
     token,
@@ -30,7 +30,6 @@ const isLessScore = (score1, score2, gameType) => {
 export const updateScore = async (scoreObject) => {
   const token = getUserToken();
   const userInfo = getUserInfo();
-  console.log(userInfo)
   // Indice dell'oggetto da aggiornare dentro punteggiDeiGiochi
   let toRemoveIndex = -1;
   let index = 0;
