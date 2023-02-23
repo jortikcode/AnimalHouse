@@ -12,7 +12,8 @@
     <script src="/js/handlebars-v4.7.7.js"></script>
     <!-- JQuery -->
     <script src="/js/jquery.js"></script>
-
+    <!-- Chart js -->
+    <script src="/chart/Chart.js"></script>
     <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
 </head>
 
@@ -67,6 +68,14 @@
                 <div class="container mx-auto mt-6">
                     <!-- Messaggio di errore -->
                     <div id="error"></div>
+                    <div class="flex flex-wrap p-6">
+                        <div class="w-1/2">
+                            <canvas id="chartLine"></canvas>
+                        </div>
+                        <div class="w-1/2">
+                            <canvas id="chartPie"></canvas>
+                        </div>
+                    </div>
                     <table class="sortable table-auto w-full border-2 border-black rounded-lg border-spacing-0"
                         aria-label="tabella per la gestione dei prodotti">
                         <thead>

@@ -24,6 +24,7 @@ const getBills = async (query) => {
     }
     const filled = billsTemplate({ bills: bills });
     $("#tableRows").html(filled);
+    drawCharts(bills);
   } else {
     $("#tableRows").html("");
   }
@@ -67,4 +68,74 @@ const populateViewBill = async (id) => {
   document.getElementById("viewBillTotal").textContent = `${bill.total.toFixed(2)}€ (di cui IVA ${iva.toFixed(2)}€)`;
   document.getElementById("viewBillPaymantMethod").textContent = bill.paymentMethod;
   document.getElementById("viewBillPaidAt").textContent = getDateTime(bill.paidAt);
+};
+
+const drawCharts = (bills) => {
+  drawLine(bills);
+  drawPie(bills);
+};
+
+const drawLine = (bills) => {
+  /* Preparo i dati per chart js */
+  const data = {
+    labels: bills.map((bill) => new Date(bill.createdAt).toLocaleDateString()),
+    datasets: [
+      {
+        label: "Vendite",
+        data: bills.map((bill) => bill.total),
+        borderColor: "green",
+        fill: false,
+      },
+    ],
+  };
+
+  // Creare un elemento canvas in cui verrà disegnato il grafico
+  const canvasLine = document.getElementById("chartLine").getContext("2d");
+  // Creare il grafico utilizzando Chart.js
+  new Chart(canvasLine, {
+    type: "line",
+    data,
+  });
+};
+
+const drawPie = (bills) => {
+  let totProducts = 0;
+  let totService = 0;
+  for (let i = 0; i < bills.length; i += 1) {
+    if (bills[i].type == "service") {
+      totService += Number(bills[i].total);
+    }
+    if (bills[i].type == "products") {
+      totProducts += Number(bills[i].total);
+    }
+  }
+
+  const data = [
+    {
+      label: "Prodotti",
+      value: totProducts.toFixed(2),
+      color: "orange",
+    },
+    {
+      label: "Servizi",
+      value: totService.toFixed(2),
+      color: "lightblue",
+    },
+  ];
+
+  const canvasPie = document.getElementById("chartPie").getContext("2d");
+
+  // Creare il grafico utilizzando Chart.js
+  new Chart(canvasPie, {
+    type: "pie",
+    data: {
+      labels: data.map((d) => d.label),
+      datasets: [
+        {
+          data: data.map((d) => d.value),
+          backgroundColor: data.map((d) => d.color),
+        },
+      ],
+    },
+  });
 };

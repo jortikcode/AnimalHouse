@@ -27,10 +27,11 @@ app.use("/css", express.static(path.join(__dirname, "public", "css")));
 app.use("/img", express.static(path.join(__dirname, "public", "media")));
 app.use("/js", express.static(path.join(__dirname, "..", "back-office", "js")));
 app.use("/elements", express.static(path.join(__dirname, "node_modules", "tw-elements", "dist", "js")));
+app.use("/chart", express.static(path.join(__dirname, "node_modules", "chart.js", "dist")));
 app.use(express.static(path.join(__dirname, "./back-office")));
 app.use(express.static(path.join(__dirname, "build")));
-app.use(express.static(path.join(__dirname, 'frontofficeBuild')));
-app.use(express.static(path.join(__dirname, 'gameBuild')));
+app.use(express.static(path.join(__dirname, "frontofficeBuild")));
+app.use(express.static(path.join(__dirname, "gameBuild")));
 app.use(express.static(path.join(__dirname, "public", "")));
 // middleware per usare i dati nel body delle richieste
 app.use(express.urlencoded({ extended: true }));
