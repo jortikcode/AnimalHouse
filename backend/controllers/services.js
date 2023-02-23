@@ -24,7 +24,13 @@ const prepareQuery = (query) => {
 
 const getAllServices = async (req, res) => {
   const queryObject = prepareQuery(req.query);
-  const services = await Service.find(queryObject).populate("location");
+  const { limit } = req.query
+  let results = []
+  if (limit)
+    results = Service.find(queryObject).populate("location").limit(limit);
+  else
+    results = Service.find(queryObject).populate("location")
+  const services = await results
   res.status(StatusCodes.OK).json(services);
 };
 

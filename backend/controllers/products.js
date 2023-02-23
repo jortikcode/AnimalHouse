@@ -23,7 +23,7 @@ const prepareQuery = (query) => {
 };
 
 const getAllProducts = async (req, res) => {
-  const { sort, fields, numericFilters, getCategories } = req.query;
+  const { sort, fields, numericFilters, getCategories, limit } = req.query;
   if (getCategories) {
     const categories = await Product.distinct("category");
     return res.status(StatusCodes.OK).json(categories);
@@ -48,7 +48,11 @@ const getAllProducts = async (req, res) => {
       }
     });
   }
-  let result = Product.find(queryObject);
+  let result = []
+  if (limit)
+    result = Product.find(queryObject).limit(limit);
+  else
+    result = Product.find(queryObject)
   // sort
   if (sort) {
     const sortList = sort.split(",").join(" ");
