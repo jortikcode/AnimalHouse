@@ -17,7 +17,7 @@ import ManagePosts from './pages/ManagePosts';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/frontoffice">
       <div className="w-full min-h-screen">
       <Navbar />
       <Routes>
