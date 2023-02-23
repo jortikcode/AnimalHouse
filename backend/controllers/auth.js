@@ -8,10 +8,7 @@ const sendEmail = require("../scripts/sendEmail");
 const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    throw createCustomError(
-      "Fornire email e password",
-      StatusCodes.BAD_REQUEST
-    );
+    throw createCustomError("Fornire email e password", StatusCodes.BAD_REQUEST);
   }
   // verifico l'email
   const user = await User.findOne({ email: email });
@@ -30,10 +27,7 @@ const login = async (req, res) => {
 const loginAdmin = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    throw createCustomError(
-      "Fornire email e password",
-      StatusCodes.BAD_REQUEST
-    );
+    throw createCustomError("Fornire email e password", StatusCodes.BAD_REQUEST);
   }
   // verifico l'email e che sia Admin
   const admin = await Admin.findOne({ email: email }).populate("location");
@@ -91,16 +85,13 @@ const forgotPassword = async (req, res) => {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
     user.save();
-    throw createCustomError(
-      "L'email non è stata inviata, riprovare",
-      StatusCodes.INTERNAL_SERVER_ERROR
-    );
+    throw createCustomError("L'email non è stata inviata, riprovare", StatusCodes.INTERNAL_SERVER_ERROR);
   }
 };
 
 const resetPassword = async (req, res) => {
   // creo il digest del token per poi confrontarlo con quello salvato sul db
-  const resetToken = crypto.update(req.params.token).digest("hex");
+  const resetToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
   // controllo che sia presente sul db e che non sia scaduto
   const user = await User.findOne({
     resetPasswordToken: resetToken,

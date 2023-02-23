@@ -45,7 +45,9 @@ app.get("/frontoffice*", (req, res) => {
 app.get("/game*", (req, res) => {
   res.sendFile(path.join(__dirname, "gameBuild", "index.html"));
 });
-
+app.get("/resetPassword/:token", (req, res) => {
+  res.sendFile(path.join(global.baseDir, "..", "./back-office", "resetPassword.html"));
+});
 // Routes
 app.use("/back-office", require("./routes/back-office"));
 app.use("/api/v1", require("./routes/apiRouter"));
