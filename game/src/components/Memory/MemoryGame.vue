@@ -6,6 +6,26 @@
     >
       Memoria
     </h1>
+    <div class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div
+        class="rounded shadow-xl overflow-hidden"
+        v-for="card in cards"
+        @click="(e) => selectCard(card.id)"
+        :key="card.id"
+      >
+        <img
+          v-show="!card.guessed && !card.selected"
+          src="#"
+          class="w-full h-full bg-black"
+        />
+        <img
+          :alt="card.id.toString()"
+          v-show="card.guessed || card.selected"
+          class=""
+          :src="card.imgUrl"
+        />
+      </div>
+    </div>
   </div>
   <div class="flex flex-col mt-9 items-center gap-y-2" v-else>
     <PacmanLoader color="#ff2a99" />
@@ -104,7 +124,7 @@ export default {
       this.moves = 0;
       this.loading = true;
     },
-    async selecCard(id) {
+    async selectCard(id) {
       const cardIndex = this.cards.findIndex((card) => card.id === id);
       if (this.cards[cardIndex].selected || this.cards[cardIndex].guessed)
         return;
@@ -169,6 +189,12 @@ export default {
                 } // Position of the alert 'top right', 'top left', 'bottom left', 'bottom right'
               );
           }
+        } else {
+          const twinIndex = this.cards.findIndex(
+            (card) => card.id === alreadySelected.id
+          );
+          this.cards[twinIndex].selected = true;
+          this.cards[cardIndex].selected = true;
         }
       }
     },
