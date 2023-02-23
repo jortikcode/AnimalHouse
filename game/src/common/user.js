@@ -19,7 +19,8 @@ const updateUserLocalStorage = (token, newUser) => {
 const isLessScore = (score1, score2, gameType) => {
   switch (gameType) {
     case HANGMAN:
-      // Nel caso dell'impiccato, piu' e' basso lo score, meno mosse ci ha messo ad indovinare il giocatore
+    case MEMORY:
+      // Nel caso di questi giochi, piu' e' basso lo score, meno mosse ci ha messo ad indovinare il giocatore
       return score1 > score2;
     default:
       return score2 > score1;

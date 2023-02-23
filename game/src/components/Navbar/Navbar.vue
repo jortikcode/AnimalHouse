@@ -2,8 +2,6 @@
 import { ref } from "vue";
 import navbarItems from "./navbarItems.json";
 const baseMediaUrl = import.meta.env.VITE_BASE_MEDIA_URL;
-console.log(import.meta.env.VITE_BASE_MEDIA_URL)
-console.log(`${baseMediaUrl}/black-logo.png`)
 let visibleMenu = ref(true)
 const toggleMenu = (e) => {
     visibleMenu.value = !visibleMenu.value
