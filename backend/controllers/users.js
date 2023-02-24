@@ -105,8 +105,9 @@ const prepareUpdate = async (body, userID) => {
       const punteggiDeiGiochi = { game: game, score: Number(score) };
       updateObj.punteggiDeiGiochi = punteggiDeiGiochi;
     }
-  } else if (punteggiDeiGiochi.length > 0) {
-    updateObj.punteggiDeiGiochi = punteggiDeiGiochi
+  } else if (punteggiDeiGiochi) {
+    if (punteggiDeiGiochi.length > 0)
+      updateObj.punteggiDeiGiochi = punteggiDeiGiochi
   }
   if (petName || petParticularSigns || petBirthYear || petAnimalType) {
     // Inserimento dati animale
