@@ -16,6 +16,10 @@
         "link": "/game/games/videos"         
     },
     {
+        "value": "Sapevi che",
+        "link": "/game/games/curiosities"
+    },
+    {
         "value": "Vetrina Prodotti",
         "link": "/game/showcase"    
     }
