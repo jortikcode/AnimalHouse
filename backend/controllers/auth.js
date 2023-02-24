@@ -64,8 +64,6 @@ const forgotPassword = async (req, res) => {
   }
   // genero un token
   const resetToken = user.getResetPasswordToken();
-  // salvo il token
-  await user.save();
   // creo l'url da mandare
   const resetURL = `${process.env.SITE_URL}/resetPassword/${resetToken}`;
   // creo il messaggio da mandare
