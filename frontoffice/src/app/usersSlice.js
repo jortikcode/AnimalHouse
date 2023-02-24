@@ -51,6 +51,20 @@ const forgotPassword = createAsyncThunk(
     }
 )
 
+const cancelAccount = createAsyncThunk(
+    `${name}/cancelAccount`,
+    async (_, thunkAPI) => {
+        const user = thunkAPI.getState().auth.user;
+        const response = await fetch(`${baseApiUrl}/users/${ user.userInfo._id }`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${user.token}`
+            }
+        })
+        return await response.json()
+    }
+)
+
 // Thunk per aggiornare un utente
 const updateUser = createAsyncThunk(
     `${name}/update`,
@@ -66,6 +80,11 @@ const updateUser = createAsyncThunk(
                 formData.append("imgName", userInfo.animaliPreferiti[0].imageName[0])
             }
             formData.append("petImage", true)
+        } else {
+            for (const key of Object.keys(userInfo)){
+                console.log(key, userInfo[key])
+                formData.append(key, userInfo[key])
+            }
         }
         const response = await fetch(`${baseApiUrl}/users/${ user.userInfo._id }`, { 
             method: 'PATCH',
@@ -154,13 +173,21 @@ const userSlice = createSlice({
             localStorage.setItem('user', JSON.stringify({ token: oldUser.token , userInfo: action.payload }))
             state.updatingUser = false
         })
+        builder.addCase(cancelAccount.fulfilled, (state, action) => {
+            localStorage.removeItem('user')
+            localStorage.removeItem('token')
+            state.user = {}
+            console.log(action.payload)
+            state.isLogged = false
+            state.updatingUser = false
+        })
         builder.addCase(forgotPassword.fulfilled, (state, action) => {
             state.resetPassword = action.payload
         })
     }
 })
 
-export const { logout, loadAnimals, waitingUserByID } = { ...userSlice.actions }
-export { login, signup, updateUser, getUserByID, removePets, forgotPassword }
+export const { logout, loadAnimals, waitingUserByID, waitingUpdateUser } = { ...userSlice.actions }
+export { login, signup, updateUser, getUserByID, removePets, forgotPassword, cancelAccount }
 
 export const auth = userSlice.reducer

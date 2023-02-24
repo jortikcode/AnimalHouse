@@ -1,12 +1,11 @@
 import Scoreboard from "../components/PersonalArea/Scoreboard";
-
-const { useLayoutEffect } = require("react");
-const { FidgetSpinner } = require("react-loader-spinner");
-const { useSelector, useDispatch } = require("react-redux");
-const {
+import { useSelector, useDispatch } from "react-redux";
+import { FidgetSpinner } from "react-loader-spinner";
+import {
   waitingLeaderboard,
   getLeaderboard,
-} = require("../app/leaderboardSlice");
+} from "../app/leaderboardSlice"
+import { useLayoutEffect } from "react";
 
 const ScoreboardPage = () => {
   const dispatch = useDispatch();

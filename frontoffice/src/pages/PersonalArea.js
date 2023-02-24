@@ -17,6 +17,12 @@ const PersonalArea = () => {
           {" "}
           Area utente{" "}
         </h1>
+        <div className="flex justify-center">
+        <Link to="/myarea/modify" className="border-4 border-black p-3 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-lg break-keep w-42 max-w-full">
+          Modifica/Cancella dati
+        </Link>
+        </div>
+
         <h2 className="tracking-wide block text-black text-center text-2xl my-6">
           {" "}
           Bentornato, {user.userInfo.name} 💫{" "}

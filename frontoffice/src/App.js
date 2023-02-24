@@ -16,6 +16,7 @@ import Footer from './components/Footer/Footer';
 import ManagePets from './pages/ManagePets';
 import ManagePosts from './pages/ManagePosts';
 import ScoreboardPage from './pages/ScoreboardPage';
+import ModifyForm from './components/PersonalArea/ModifyForm';
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path='/myarea/pets' element={<ManagePets />} />
           <Route path='/myarea/forum' element={<ManagePosts />} />
           <Route path='/myarea/leaderboard' element={<ScoreboardPage />} />
+          <Route path='/myarea/modify' element={<ModifyForm />} />
         </Route>
         <Route path='/login' element={<LoginRegisterPage login={true} />} />
         <Route path='/resetpassword' element={<ResetPassword />} />
