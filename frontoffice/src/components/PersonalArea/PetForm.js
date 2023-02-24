@@ -61,7 +61,7 @@ const PetForm = () => {
             >
               Foto profilo
             </label>
-            <input id="imageName" type="file" {...register("imageName")} />
+            <input id="imageName" type="file" {...register("imageName")} multiple={false} accept="image/png, image/gif, image/jpeg"/>
           </div>
           <div className="flex flex-col items-center">
             <label

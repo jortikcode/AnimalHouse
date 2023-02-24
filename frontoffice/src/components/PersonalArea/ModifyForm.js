@@ -13,11 +13,12 @@ const ModifyForm = () => {
   const dispatch = useDispatch();
   const { user, updatingUser } = useSelector((state) => state.auth);
   const [cancelButton, setCancelButton] = useState(false);
-  const { name, surname, email } = user.userInfo;
+  const { name, surname, email, imgName } = user.userInfo;
   const defaultValues = {
     name,
     surname,
     email,
+    imgName
   };
   const {
     register,
@@ -35,6 +36,9 @@ const ModifyForm = () => {
         updateObj.surname = data.surname
     if (data.email !== defaultValues.email)
         updateObj.email = data.email
+    if (data.imgName !== defaultValues.imgName){
+        updateObj.imgName = data.imgName[0]
+    }
     if (JSON.stringify(updateObj) === JSON.stringify({})) return
     dispatch(waitingUpdateUser());
     dispatch(updateUser({ userInfo: updateObj }));
@@ -91,6 +95,15 @@ const ModifyForm = () => {
         className="bg-white w-[500px] max-w-full rounded mt-8 p-4 mb-4 flex flex-col justify-center shadow-lg"
         onSubmit={handleSubmit(onSubmit)}
       >
+        <div className="mb-4">
+            <label
+                className="text-lg block text-gray-700 font-bold mb-2"
+                htmlFor="imgName"
+            >
+                Foto profilo
+            </label>
+        <input id="imgName" type="file" {...register("imgName")} multiple={false} accept="image/png, image/gif, image/jpeg"/>
+        </div>
         <div className="mb-4">
           <label
             className="text-lg block text-gray-700 font-bold mb-2"
