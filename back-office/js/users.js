@@ -164,6 +164,9 @@ const modifyUser = async (id) => {
   const formData = new FormData(form);
   const response = await fetch(`http://localhost:8000/api/v1/users/${id}`, {
     method: "PATCH",
+    headers: {
+      "Authorization": `Bearer ${window.localStorage.getItem("token")}`
+    },
     body: formData,
   });
   if (!response.ok) {

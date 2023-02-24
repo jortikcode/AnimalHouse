@@ -64,6 +64,9 @@ const forgotPassword = async (req, res) => {
   }
   // genero un token
   const resetToken = user.getResetPasswordToken();
+  await user.save({
+    validateModifiedOnly: true
+  })
   // creo l'url da mandare
   const resetURL = `${process.env.SITE_URL}/resetPassword/${resetToken}`;
   // creo il messaggio da mandare
@@ -91,6 +94,9 @@ const resetPassword = async (req, res) => {
   // creo il digest del token per poi confrontarlo con quello salvato sul db
   const resetToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
   // controllo che sia presente sul db e che non sia scaduto
+  const userprova = await User.findOne({
+    email: "puccigonzales@gmail.com"
+  })
   const user = await User.findOne({
     resetPasswordToken: resetToken,
     resetPasswordExpire: { $gt: Date.now() },
@@ -100,7 +106,9 @@ const resetPassword = async (req, res) => {
   }
   // cambio la password e annullo il token
   user.password = req.body.password;
-  await user.save();
+  await user.save({
+    validateModifiedOnly: true
+  });
   user.resetPasswordToken = undefined;
   user.resetPasswordExpire = undefined;
   res.status(StatusCodes.OK).json({ msg: "Password ripristina con successo" });
