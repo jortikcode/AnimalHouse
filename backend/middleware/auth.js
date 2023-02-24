@@ -7,7 +7,7 @@ const { StatusCodes } = require("http-status-codes");
 const authenticationMiddleware = async (req, res, next) => {
   // verico che il token sia presente
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.statsWith("Barer ")) {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     throw createCustomError("Token non presente", StatusCodes.UNAUTHORIZED);
   }
   // perchè sarà nel formato "Barer token"
