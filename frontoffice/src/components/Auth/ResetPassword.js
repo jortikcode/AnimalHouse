@@ -28,7 +28,7 @@ function ResetPassword() {
 
   return (
     <>
-      {!isLogged && resetPassword?.msg !== "Email inviata" && (
+      {!isLogged && resetPassword?.msg !== sentEmailMsg && (
         <div className="flex items-center flex-col mt-12">
           <div className="prose">
             {" "}

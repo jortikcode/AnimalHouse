@@ -3,23 +3,67 @@ import queryString from "query-string";
 import { baseApiUrl } from "../index";
 const name = "leaderboard";
 
+const HANGMAN = "HANGMAN"
+const MEMORY = "MEMORY"
+const QUIZ = "QUIZ"
+const gameTypes = [
+  HANGMAN,
+  MEMORY,
+  QUIZ
+]
+
 // Stato iniziale della info sulla classifica
 const initialState = {
-  leaderboard: [],
-  bestUsers: [],
+  leaderboard: {},
+  loadingLeaderboard: false
 };
 
-// Thunk per ottenere la lista delle sedi
 export const getLeaderboard = createAsyncThunk(
-  `${name}/getLeaderboard`,
-  async ({_}) => {
-    const params = queryString.stringify({
-      city,
-    });
-    const response = await fetch(`${baseApiUrl}/locations?${params}`);
-    return response.json();
+  `${name}/getScores`,
+  async (_, thunkAPI) => {
+      const user = thunkAPI.getState().auth.user;
+      const response = await fetch(`${baseApiUrl}/users?scoreGames=true&fields=punteggiDeiGiochi,name`, {
+          method: 'GET',
+          headers: {
+              Authorization: `Bearer ${user.token}`,
+          },
+      })
+      return await response.json()
   }
-);
+)
+
+const getScoresArray = (usersArray, gameType) => {
+  const resultArray = []
+  for (const user of usersArray){
+    for (const score of user.punteggiDeiGiochi)
+      if (score.game.toUpperCase() === gameType)
+        resultArray.push({
+          name: user.name,
+          score: score.score
+        })
+  }
+  return resultArray
+}
+
+const compare = (a, b) => {
+  if (a > b)
+    return 1
+  else if (b < a)
+    return -1
+  else
+    return 0
+}
+
+const divideScores = (scores) => {
+  const finalScoreboards = {}
+  for (const type of gameTypes){
+    finalScoreboards[type] = getScoresArray(scores, type).sort((user1, user2) => {
+      if (type === HANGMAN || type === MEMORY) compare(user1.score, user2.score)
+      else compare(user1.score, user2.score)
+    })
+  }
+  return finalScoreboards
+}
 
 const leaderboardSlice = createSlice({
   name,
@@ -31,8 +75,8 @@ const leaderboardSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(getLeaderboard.fulfilled, (state, action) => {
+      state.leaderboard = divideScores(action.payload)
       state.loadingLeaderboard = false;
-      state.leaderboard = action.payload;
     });
   },
 });

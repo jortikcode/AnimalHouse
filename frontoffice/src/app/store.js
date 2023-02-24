@@ -4,6 +4,7 @@ import { marketplace } from './productsSlice'
 import { locations } from './locationsSlice'
 import { posts } from './postsSlice'
 import { bookings } from './servicesSlice'
+import { leaderboard } from './leaderboardSlice'
 
 export default configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export default configureStore({
     marketplace,
     locations,
     posts,
-    bookings
+    bookings,
+    leaderboard
   }
 })

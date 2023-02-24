@@ -1,5 +1,9 @@
 [
     {
+        "value": "Le classifiche",
+        "link": "/myarea/leaderboard"
+    },
+    {
         "value": "Fatturazioni",
         "link": "/myarea/bills"
     },
