@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const { authenticationMiddleware } = require("../middleware/auth");
 const path = require("path");
 /// File upload
 const multer = require("multer");
@@ -15,7 +16,7 @@ const upload = multer({ storage: storage });
 
 const { getAllProducts, createProduct, getProduct, updateProduct, deleteProduct } = require("../controllers/products");
 
-router.route("/").get(getAllProducts).post(upload.single("imgName"), createProduct);
-router.route("/:id").get(getProduct).patch(upload.single("imgName"), updateProduct).delete(deleteProduct);
+router.route("/").get(getAllProducts).post(authenticationMiddleware, upload.single("imgName"), createProduct);
+router.route("/:id").get(getProduct).patch(authenticationMiddleware, upload.single("imgName"), updateProduct).delete(authenticationMiddleware, deleteProduct);
 
 module.exports = router;

@@ -57,6 +57,9 @@ const createProduct = async () => {
   const formData = new FormData(form);
   const response = await fetch(`http://localhost:8000/api/v1/products`, {
     method: "POST",
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+    },
     body: formData,
   });
   if (!response.ok) {

@@ -10,9 +10,6 @@ router.get("/login", (req, res) => {
 router.get("/utenti", (req, res) => {
   res.sendFile(path.join(global.baseDir, "..", "./back-office", "users.html"));
 });
-router.get("/sedi", (req, res) => {
-  res.sendFile(path.join(global.baseDir, "..", "./back-office", "location.html"));
-});
 router.get("/prodotti", (req, res) => {
   res.sendFile(path.join(global.baseDir, "..", "./back-office", "product.html"));
 });

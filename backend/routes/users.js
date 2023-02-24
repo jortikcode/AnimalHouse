@@ -1,5 +1,5 @@
 const router = require("express").Router();
-
+const { authenticationMiddleware } = require("../middleware/auth");
 const path = require("path");
 /// File upload
 const multer = require("multer");
@@ -18,6 +18,6 @@ const { getAllUsers, getUser, updateUser, deleteUser } = require("../controllers
 
 router.route("/").get(getAllUsers);
 
-router.route("/:id").get(getUser).patch(upload.single("imgName"), updateUser).delete(deleteUser);
+router.route("/:id").get(getUser).patch(upload.single("imgName"), authenticationMiddleware, updateUser).delete(authenticationMiddleware, deleteUser);
 
 module.exports = router;

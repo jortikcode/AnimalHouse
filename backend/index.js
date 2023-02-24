@@ -51,6 +51,7 @@ app.get("/resetPassword/:token", (req, res) => {
 // Routes
 app.use("/back-office", require("./routes/back-office"));
 app.use("/api/v1", require("./routes/apiRouter"));
+console.log("PASSATO QUA");
 app.use(notFound);
 // Da usare sempre come ultimo
 app.use(errorHandlerMiddleware);

@@ -63,6 +63,7 @@ const getUsers = async (query) => {
   }
   const users = await response.json();
   if (users.length > 0) {
+    console.log(users);
     const usersTemplate = Handlebars.compile($("#usersTemplate").html());
     const filled = usersTemplate({ users: users });
     $("#tableRows").html(filled);
@@ -165,7 +166,7 @@ const modifyUser = async (id) => {
   const response = await fetch(`http://localhost:8000/api/v1/users/${id}`, {
     method: "PATCH",
     headers: {
-      "Authorization": `Bearer ${window.localStorage.getItem("token")}`
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     },
     body: formData,
   });
@@ -176,6 +177,8 @@ const modifyUser = async (id) => {
     $("#error").html(filled);
     return;
   }
+  const user = await response.json();
+  console.log(user);
   getUsers({});
 };
 
