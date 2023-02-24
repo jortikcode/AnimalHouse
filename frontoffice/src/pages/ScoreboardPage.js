@@ -1,3 +1,5 @@
+import Scoreboard from "../components/PersonalArea/Scoreboard";
+
 const { useLayoutEffect } = require("react");
 const { FidgetSpinner } = require("react-loader-spinner");
 const { useSelector, useDispatch } = require("react-redux");
@@ -34,8 +36,9 @@ const ScoreboardPage = () => {
       </div>
     );
   return (
-    <div className="flex mt-8 justify-center">
+    <div className="flex flex-col gap-y-8 mt-8 justify-center mb-24">
       <h2 className="font-bold text-3xl text-center">Classifica dei giochi</h2>
+      { Object.keys(leaderboard).map((gameType, index) => <Scoreboard key={gameType} gameType={gameType} scores={leaderboard[gameType]} /> ) }
     </div>
   );
 };
