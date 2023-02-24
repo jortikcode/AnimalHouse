@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../app/usersSlice";
 import { loginObject } from "../../utils/auth";
 import { ErrorMessage } from '@hookform/error-message';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 function LoginCard(){
@@ -57,6 +57,9 @@ function LoginCard(){
                 required: "Password mancante"
             })} />
             <ErrorMessage as={<p className="text-red-600" />} errors={errors} name="password" />
+            </div>
+            <div className="mb-4">
+                <Link to="/resetpassword" className="underline" >Hai dimenticato la password?</Link>
             </div>
 
             <div className="justify-center flex">

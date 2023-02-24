@@ -7,6 +7,7 @@ import Navbar from './components/Navbar/Navbar'
 import LoginRegisterPage from './pages/LoginRegisterPage';
 import PostDetails from './components/Forum/PostDetails';
 import ProductDetails from './components/Marketplace/ProductDetails';
+import ResetPassword from './components/Auth/ResetPassword'
 import ManageCart from './pages/ManageCart';
 import PersonalArea from './pages/PersonalArea';
 import Bills from './components/PersonalArea/Bills';
@@ -37,6 +38,7 @@ function App() {
           <Route path='/myarea/forum' element={<ManagePosts />} />
         </Route>
         <Route path='/login' element={<LoginRegisterPage login={true} />} />
+        <Route path='/resetpassword' element={<ResetPassword />} />
         <Route path='/signup' element={<LoginRegisterPage signup={true} />} />
       </Routes>
       </div>

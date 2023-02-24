@@ -38,6 +38,19 @@ const signup = createAsyncThunk(
     }   
 )
 
+// Thunk per il reset della password
+const forgotPassword = createAsyncThunk(
+    `${name}/forgotPassword`,
+    async ({ email }) => {
+        const response = await fetch(`${baseApiUrl}/auth/resetPassword`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        })
+        return await response.json()
+    }
+)
+
 // Thunk per aggiornare un utente
 const updateUser = createAsyncThunk(
     `${name}/update`,
@@ -141,10 +154,13 @@ const userSlice = createSlice({
             localStorage.setItem('user', JSON.stringify({ token: oldUser.token , userInfo: action.payload }))
             state.updatingUser = false
         })
+        builder.addCase(forgotPassword.fulfilled, (state, action) => {
+            state.resetPassword = action.payload
+        })
     }
 })
 
 export const { logout, loadAnimals, waitingUserByID } = { ...userSlice.actions }
-export { login, signup, updateUser, getUserByID, removePets }
+export { login, signup, updateUser, getUserByID, removePets, forgotPassword }
 
 export const auth = userSlice.reducer
