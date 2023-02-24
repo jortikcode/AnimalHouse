@@ -43,6 +43,43 @@ const getUser = async (req, res) => {
   res.status(StatusCodes.OK).json(user);
 };
 
+const deleteImages = async (
+  userID,
+  { clearPets = false, clearUser = false }
+) => {
+  const user = await User.findOne({ _id: userID });
+  if (!user) {
+    throw createCustomError(
+      `Non esiste nessun utente con id : ${user}`,
+      StatusCodes.NOT_FOUND
+    );
+  }
+  if (user.animaliPreferiti && clearPets)
+    for (const animal of user.animaliPreferiti) {
+      try {
+        fs.unlink(
+          path.join(global.baseDir, "public", "media", animal.imgName),
+          (err) => {
+            if (err) {
+              console.log(err);
+            }
+          }
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  if (user.imgName != "favicon.png" && clearUser)
+    fs.unlink(
+      path.join(global.baseDir, "public", "media", user.imgName),
+      (err) => {
+        if (err) {
+          console.log(err);
+        }
+      }
+    );
+};
+
 const prepareUpdate = async (body, userID) => {
   const updateObj = {};
   const {
@@ -132,21 +169,7 @@ const prepareUpdate = async (body, userID) => {
   }
 
   if (clearPets) {
-    const user = await User.findOne({ _id: userID });
-    for (const animal of user.animaliPreferiti) {
-      try {
-        fs.unlink(
-          path.join(global.baseDir, "public", "media", animal.imgName),
-          (err) => {
-            if (err) {
-              console.log(err);
-            }
-          }
-        );
-      } catch (e) {
-        console.log(e);
-      }
-    }
+    deleteImages(userID, { clearPets: true });
     updateObj.animaliPreferiti = [];
   }
   return updateObj;
@@ -166,30 +189,9 @@ const updateUser = async (req, res) => {
       ...user.animaliPreferiti,
     ];
   } else if (req.file?.filename) {
-    // Inserimento nuova immagine del profilo di un utente
-    updateObj.imgName = req.file.filename;
-  }
-  if (req.file?.filename) {
     updateObj.imgName = req.file.filename;
     /* Cancello l'immagine precente */
-    const user = await User.findOne({ _id: userID });
-    if (!user) {
-      throw createCustomError(
-        `Non esiste nessun utente con id : ${user}`,
-        StatusCodes.NOT_FOUND
-      );
-    }
-    /* l'immagine di default degli utenti */
-    if (user.imgName != "favicon.png") {
-      fs.unlink(
-        path.join(global.baseDir, "public", "media", user.imgName),
-        (err) => {
-          if (err) {
-            console.log(err);
-          }
-        }
-      );
-    }
+    deleteImages(userID, { clearUser: true });
   }
   const user = await User.findOneAndUpdate(
     { _id: userID },
@@ -211,6 +213,9 @@ const updateUser = async (req, res) => {
 const deleteUser = async (req, res) => {
   if (req.userInfo?._id == req.params.id || req.headers.admin) {
     const { id: userID } = req.params;
+    if (userID) {
+      deleteImages(userID, { clearPets: true, clearUser: true });
+    }
     const user = await User.findOneAndDelete({ _id: userID });
     if (!user) {
       throw createCustomError(
