@@ -6,16 +6,29 @@
     >
       Memoria
     </h1>
+    <span
+      v-show="message"
+      class="text-center text-3xl font-bold tracking-tighter mx-auto text-pink-500 bg-black p-3 rounded-lg"
+    >
+      {{ message }}
+    </span>
+    <button
+      class="text-center md:text-3xl text-xl font-bold tracking-tighter mx-auto bg-green-400 hover:bg-green-600 p-3 rounded-lg"
+      type="button"
+      @click="(e) => loadGame()"
+    >
+      Nuova partita
+    </button>
     <div class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div
-        class="rounded shadow-xl overflow-hidden"
+        class="rounded shadow-xl overflow-hidden flex justify-center items-center"
         v-for="card in cards"
         @click="(e) => selectCard(card.id)"
         :key="card.id"
       >
         <img
           v-show="!card.guessed && !card.selected"
-          src="#"
+          :src="questionMarkUrl"
           class="w-full h-full bg-black"
         />
         <img
@@ -39,7 +52,7 @@ import VueBasicAlert from "vue-basic-alert";
 import { isLogged } from "../../common/user";
 
 const winString = "Hai vinto";
-const stillPlaying = "In corso";
+const stillPlaying = "Partita in corso";
 const shuffleArray = (array) => {
   let currentIndex = array.length,
     randomIndex;
@@ -80,13 +93,6 @@ const createCard = (cards, newImg) => {
     },
   ];
 };
-/*
-{
-    selected: Boolean,
-    image: String,
-    id: Number
-}
-*/
 export default {
   name: "MemoryGame",
   components: {
@@ -98,6 +104,7 @@ export default {
       cards: [],
       moves: 0,
       loading: true,
+      message: ""
     };
   },
   async mounted() {
@@ -109,6 +116,9 @@ export default {
         return winString;
       else return stillPlaying;
     },
+    questionMarkUrl() {
+      return import.meta.env.VITE_BASE_MEDIA_URL + "/animalQuestionMark.jpg"
+    }
   },
   methods: {
     async loadGame() {
@@ -138,7 +148,7 @@ export default {
       this.moves++;
       this.cards[cardIndex].selected = true;
 
-      const alreadySelected = getAlreadySelected();
+      const alreadySelected = getAlreadySelected(this.cards[cardIndex].id);
       if (alreadySelected !== undefined) {
         // C'e' gia' una carta selezionata
         if (alreadySelected.group === this.cards[cardIndex].group) {
@@ -148,8 +158,11 @@ export default {
           );
           this.cards[twinIndex].guessed = true;
           this.cards[cardIndex].guessed = true;
+          this.cards[twinIndex].selected = false;
+          this.cards[cardIndex].selected = false;
 
           if (this.status === winString) {
+            this.message = "Hai vinto in " + this.moves + " mosse, rigioca campione!"
             if (isLogged()) {
               const scoreToStore = {
                 game: "MEMORY",
@@ -193,8 +206,10 @@ export default {
           const twinIndex = this.cards.findIndex(
             (card) => card.id === alreadySelected.id
           );
-          this.cards[twinIndex].selected = true;
-          this.cards[cardIndex].selected = true;
+          // Lasciamo le card revealed per 1 secondo
+          await new Promise((r) => setTimeout(r, 1000));
+          this.cards[twinIndex].selected = false;
+          this.cards[cardIndex].selected = false;
         }
       }
     },
