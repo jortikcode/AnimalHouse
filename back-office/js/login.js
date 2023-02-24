@@ -21,7 +21,7 @@ const getToken = async (email, password, localStorage) => {
   } else {
     const admin = await response.json();
     const { token, locationInfo } = { ...admin };
-    localStorage.setItem("token", token);
+    localStorage.setItem("token", JSON.stringify(token));
     localStorage.setItem("locationInfo", JSON.stringify(locationInfo));
     window.location.replace("/back-office");
   }
