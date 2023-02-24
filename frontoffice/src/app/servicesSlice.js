@@ -21,14 +21,16 @@ export const getAllServices = createAsyncThunk(
   `${name}/getAllServices`,
   async ({
     location = ""
-  }) => {
+  }, thunkAPI) => {
     const params = queryString.stringify({
       location,
     });
     const response = await fetch(
       `${baseApiUrl}/services?${params}`
     );
-    return await response.json();
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
+    return response.json();
   }
 );
 
@@ -39,7 +41,7 @@ export const getAllBookings = createAsyncThunk(
     serviceID = "",
     startDate = "",
     userID = ""
-  }) => {
+  }, thunkAPI) => {
     const params = queryString.stringify({
       serviceID,
       startDate,
@@ -48,7 +50,9 @@ export const getAllBookings = createAsyncThunk(
     const response = await fetch(
       `${baseApiUrl}/booking?${params}`
     );
-    return await response.json();
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
+    return response.json();
   }
 );
 
@@ -72,8 +76,8 @@ export const createBooking = createAsyncThunk(
       }
     );
     if (!response.ok)
-      return rejectWithValue("Errore generico");
-    return await response.json();
+      return thunkAPI.rejectWithValue(await response.json())
+    return response.json();
   }
 );
 
@@ -93,8 +97,8 @@ export const deleteBooking = createAsyncThunk(
       }
     );
     if (!response.ok)
-      return rejectWithValue("Errore generico");
-    return await response.json();
+      return thunkAPI.rejectWithValue(await response.json())
+    return response.json();
   }
 );
 
@@ -103,11 +107,13 @@ export const getServiceByID = createAsyncThunk(
     `${name}/getServiceByID`,
     async ({
       id
-    }) => {
+    }, thunkAPI) => {
       const response = await fetch(
         `${baseApiUrl}/services/${id}`
       );
-      return await response.json();
+      if (!response.ok)
+        return thunkAPI.rejectWithValue(await response.json())
+      return response.json();
     }
   );
   

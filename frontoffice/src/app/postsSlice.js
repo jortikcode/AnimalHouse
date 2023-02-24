@@ -18,14 +18,16 @@ const initialState = {
 // Thunk per ottenere la lista dei post
 export const getAllPosts = createAsyncThunk(
   `${name}/getAllPosts`,
-  async ({ category = "", createdBy = "" }) => {
+  async ({ category = "", createdBy = "" }, thunkAPI) => {
     if (category === "all") category = "";
     const params = queryString.stringify({
       category,
       createdBy
     });
     const response = await fetch(`${baseApiUrl}/posts?${params}`);
-    return await response.json();
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
+    return response.json();
   }
 );
 
@@ -41,7 +43,9 @@ export const createPost = createAsyncThunk(
             },
             body: JSON.stringify(data)
         });
-        return await response.json();
+        if (!response.ok)
+          return thunkAPI.rejectWithValue(await response.json())
+        return response.json();
     }
 )
 
@@ -63,7 +67,9 @@ export const updatePost = createAsyncThunk(
         category: data.category,
       }),
     });
-    return await response.json();
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
+    return response.json();
   }
 );
 
@@ -79,26 +85,31 @@ export const deletePost = createAsyncThunk(
           Authorization: `Bearer ${user.token}`,
         },
       });
-
-      return await response.json();
+      if (!response.ok)
+        return thunkAPI.rejectWithValue(await response.json())
+      return response.json();
     }
 )
 
 // Thunk per ottenere la lista dei post
 export const getPostByID = createAsyncThunk(
   `${name}/getPostByID`,
-  async ({ id = "" }) => {
+  async ({ id = "" }, thunkAPI) => {
     const response = await fetch(`${baseApiUrl}/posts/${id}`);
-    return await response.json();
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
+    return response.json();
   }
 );
 
 // Thunk per ottenere la lista delle categorie dei post
 export const getAllCategories = createAsyncThunk(
   `${name}/getAllCategories`,
-  async () => {
+  async (_, thunkAPI) => {
     const response = await fetch(`${baseApiUrl}/posts?getCategories=true`);
-    return await response.json();
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
+    return response.json();
   }
 );
 

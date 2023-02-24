@@ -16,11 +16,13 @@ const initialState = {
 // Thunk per ottenere la lista delle sedi
 export const getLocationsByCity = createAsyncThunk(
   `${name}/getLocationsByCity`,
-  async ({ city = "" }) => {
+  async ({ city = "" }, thunkAPI) => {
     const params = queryString.stringify({
       city,
     });
     const response = await fetch(`${baseApiUrl}/locations?${params}`);
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
     return response.json();
   }
 );
@@ -28,8 +30,10 @@ export const getLocationsByCity = createAsyncThunk(
 // Thunk per ottenere info su una location dato l'id
 export const getLocationByID = createAsyncThunk(
   `${name}/getLocationByID`,
-  async ({ id = "" }) => {
+  async ({ id = "" }, thunkAPI) => {
     const response = await fetch(`${baseApiUrl}/locations/${id}`);
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
     return response.json();
   }
 );
@@ -37,8 +41,10 @@ export const getLocationByID = createAsyncThunk(
 // Thunk per ottenere la lista delle citta'
 export const getAllCities = createAsyncThunk(
   `${name}/getAllCities`,
-  async () => {
+  async (_, thunkAPI) => {
     const response = await fetch(`${baseApiUrl}/locations/city`);
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
     return response.json();
   }
 );

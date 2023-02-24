@@ -15,39 +15,45 @@ const initialState = {
 // Thunk per il login di un utente
 const login = createAsyncThunk(
     `${name}/login`,
-    async ({ email, password }) => {
+    async ({ email, password }, thunkAPI) => {
         const response = await fetch(`${baseApiUrl}/auth/login`, { 
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({ email, password })
         });
-        return await response.json();
+        if (!response.ok)
+            return thunkAPI.rejectWithValue(await response.json())
+        return response.json();
     }
 );
 
 // Thunk per la registrazione di un utente
 const signup = createAsyncThunk(
     `${name}/signup`,
-    async (userInfo) => {
+    async (userInfo, thunkAPI) => {
         const response = await fetch(`${baseApiUrl}/auth/register`, { 
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(userInfo)
         })
-        return await response.json();
+        if (!response.ok)
+            return thunkAPI.rejectWithValue(await response.json())
+        return response.json();
     }   
 )
 
 // Thunk per il reset della password
 const forgotPassword = createAsyncThunk(
     `${name}/forgotPassword`,
-    async ({ email }) => {
+    async ({ email }, thunkAPI) => {
         const response = await fetch(`${baseApiUrl}/auth/resetPassword`, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email })
         })
-        return await response.json()
+        if (!response.ok)
+            return thunkAPI.rejectWithValue(await response.json())
+        return response.json()
     }
 )
 
@@ -61,7 +67,9 @@ const cancelAccount = createAsyncThunk(
                 Authorization: `Bearer ${user.token}`
             }
         })
-        return await response.json()
+        if (!response.ok)
+            return thunkAPI.rejectWithValue(await response.json())
+        return response.json()
     }
 )
 
@@ -93,7 +101,9 @@ const updateUser = createAsyncThunk(
             },
             body: formData
         })
-        return await response.json();
+        if (!response.ok)
+            return thunkAPI.rejectWithValue(await response.json())
+        return response.json();
     }   
 )
 
@@ -111,15 +121,19 @@ const removePets = createAsyncThunk(
                 clearPets: true
             })
         })
-        return await response.json();
+        if (!response.ok)
+            return thunkAPI.rejectWithValue(await response.json())
+        return response.json();
     }
 )
 
 const getUserByID = createAsyncThunk(
     `${name}/getUserByID`,
-    async ({ id }) => {
+    async ({ id }, thunkAPI) => {
         const response = await fetch(`${baseApiUrl}/users/${id}`)
-        return await response.json()
+        if (!response.ok)
+            return thunkAPI.rejectWithValue(await response.json())
+        return response.json()
     }
 )
 
@@ -181,8 +195,15 @@ const userSlice = createSlice({
             state.isLogged = false
             state.updatingUser = false
         })
+        builder.addCase(cancelAccount.rejected, (state, action) => {
+            console.log(action.payload)
+            state.updatingUser = false
+        })
         builder.addCase(forgotPassword.fulfilled, (state, action) => {
             state.resetPassword = action.payload
+        })
+        builder.addCase(forgotPassword.rejected, (state, action) => {
+            console.log(action.payload)
         })
     }
 })

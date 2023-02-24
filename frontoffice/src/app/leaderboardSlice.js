@@ -27,7 +27,9 @@ export const getLeaderboard = createAsyncThunk(
               Authorization: `Bearer ${user.token}`,
           },
       })
-      return await response.json()
+      if (!response.ok)
+        return thunkAPI.rejectWithValue(await response.json())
+      return response.json()
   }
 )
 

@@ -30,7 +30,7 @@ export const getAllProducts = createAsyncThunk(
     category = "",
     location = "",
     city = ""
-  }) => {
+  }, thunkAPI) => {
     if (category === "all") category = "";
     if (city === "all") location = "";
     if (!featured) featured = "";
@@ -45,7 +45,9 @@ export const getAllProducts = createAsyncThunk(
     const response = await fetch(
       `${baseApiUrl}/products?${params}&numericFilters=${numericFilters}`
     );
-    return await response.json();
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
+    return response.json();
   }
 );
 
@@ -59,7 +61,9 @@ export const getAllBills = createAsyncThunk(
       userID: id,
     });
     const response = await fetch(`${baseApiUrl}/bill?${params}`);
-    return await response.json();
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
+    return response.json();
   }
 );
 
@@ -76,7 +80,9 @@ export const getCart = createAsyncThunk(
     const response = await fetch(`${baseApiUrl}/cart?${params}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    return await response.json();
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
+    return response.json();
   }
 );
 
@@ -101,7 +107,9 @@ export const createBill = createAsyncThunk(
         service: data?.service,
       }),
     });
-    return await response.json();
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
+    return response.json();
   }
 );
 
@@ -123,7 +131,9 @@ export const addToCart = createAsyncThunk(
         productId: id,
       }),
     });
-    return await response.json();
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
+    return response.json();
   }
 );
 
@@ -146,25 +156,31 @@ export const updateCart = createAsyncThunk(
         quantity,
       }),
     });
-    return await response.json();
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
+    return response.json();
   }
 );
 
 // Thunk per ottenere la lista delle categorie
 export const getAllCategories = createAsyncThunk(
   `${name}/getAllCategories`,
-  async () => {
+  async (_, thunkAPI) => {
     const response = await fetch(`${baseApiUrl}/products?getCategories=true`);
-    return await response.json();
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
+    return response.json();
   }
 );
 
 // Thunk per ottenere ottenere info di uno specifico prodotto
 export const getProduct = createAsyncThunk(
   `${name}/getProduct`,
-  async ({ id }) => {
+  async ({ id }, thunkAPI) => {
     const response = await fetch(`${baseApiUrl}/products/${id}`);
-    return await response.json();
+    if (!response.ok)
+      return thunkAPI.rejectWithValue(await response.json())
+    return response.json();
   }
 );
 
