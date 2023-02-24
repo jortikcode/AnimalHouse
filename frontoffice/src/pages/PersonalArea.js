@@ -23,7 +23,7 @@ const PersonalArea = () => {
         </Link>
         </div>
         <div className="flex justify-center mt-7">
-          <img src={`${process.env.REACT_APP_BASE_MEDIA_URL}/${user.userInfo.imgName}`} className="shadow-xl rounded-full w-200px max-w-full"/>
+          <img src={`${process.env.REACT_APP_BASE_MEDIA_URL}/${user.userInfo.imgName}`} className="shadow-xl rounded-full w-[100px] max-w-full"/>
         </div>
         <h2 className="tracking-wide block text-black text-center text-2xl my-6">
           {" "}
