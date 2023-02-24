@@ -67,7 +67,7 @@ export const createBooking = createAsyncThunk(
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authentication": `Bearer ${user.token}`
+          "Authorization": `Bearer ${user.token}`
         },
         body: JSON.stringify({
           ...data,
@@ -92,7 +92,7 @@ export const deleteBooking = createAsyncThunk(
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "Authentication": `Bearer ${user.token}`
+          "Authorization": `Bearer ${user.token}`
         },
       }
     );
