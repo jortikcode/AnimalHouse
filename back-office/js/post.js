@@ -31,6 +31,9 @@ const deletePost = async (id) => {
   if (id) {
     const response = await fetch(`http://localhost:8000/api/v1/posts/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      },
     });
     if (!response.ok) {
       const error = await response.json();

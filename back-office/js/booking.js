@@ -106,6 +106,7 @@ const createBooking = async () => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     },
     body: JSON.stringify(data),
   });
@@ -273,6 +274,7 @@ const modifyBooking = async (id) => {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
     },
     body: JSON.stringify(data),
   });
@@ -293,6 +295,9 @@ const deleteBooking = async (id) => {
   if (id) {
     const response = await fetch(`http://localhost:8000/api/v1/booking/${id}`, {
       method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      },
     });
     if (!response.ok) {
       const error = await response.json();

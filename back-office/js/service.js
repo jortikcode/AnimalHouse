@@ -58,6 +58,9 @@ const createService = async () => {
   const formData = new FormData(form);
   const response = await fetch(`http://localhost:8000/api/v1/services`, {
     method: "POST",
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+    },
     body: formData,
   });
   if (!response.ok) {
@@ -100,6 +103,9 @@ const modifyService = async (id) => {
   const formData = new FormData(form);
   const response = await fetch(`http://localhost:8000/api/v1/services/${id}`, {
     method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+    },
     body: formData,
   });
   if (!response.ok) {
@@ -119,6 +125,7 @@ const deleteService = async (id) => {
   if (id) {
     const response = await fetch(`http://localhost:8000/api/v1/services/${id}`, {
       method: "DELETE",
+      headers: { Authorization: `Bearer ${window.localStorage.getItem("token")}` },
     });
     if (!response.ok) {
       const error = await response.json();
