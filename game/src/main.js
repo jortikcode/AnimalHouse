@@ -8,7 +8,7 @@ import QuizGame from './components/Quiz/QuizGame.vue'
 import HangmanGame from './components/Hangman/HangmanGame.vue'
 import VideosPage from './components/Videos/VideosPage.vue'
 import ShowcasePage from './components/Showcase/ShowcasePage.vue'
-import CatFacts from './components/CatFacts/CatFacts.vue'
+import CuriosityFacts from './components/Facts/CuriosityFacts.vue'
 
 const prefix = "/game"
 
@@ -40,7 +40,7 @@ const router = createRouter({
     },
     {
       path: CuriositiesRoute,
-      component: CatFacts
+      component: CuriosityFacts
     },
     {
       path: ShowcaseRoute,
