@@ -1,13 +1,15 @@
 import { Link } from "react-router-dom";
 
-const Post = ({ _id, title, text, createdAt, createdBy, category }) => {
+const Post = ({ _id, title, text, createdAt, createdBy, category, imgName }) => {
   return (
     <div className={`flex items-center justify-center ${createdBy.isVip ? "bg-black text-yellow-400 border-red-700" : "bg-yellow-400 text-black border-black" } border-4  rounded-xl my-4 mx-4`}>
       <div className="p-8 w-[23rem] max-w-full">
         <p className="flex text-sm rounded-xl w-fit p-2 bg-yellow-400 text-black">
           {category}
         </p>
-
+        <div className="flex justify-center mt-7">
+          <img src={`${process.env.REACT_APP_BASE_MEDIA_URL}/${createdBy.imgName}`} alt="profile" className="shadow-xl rounded-full w-[100px] max-w-full"/>
+        </div>
         <p className="font-bold text-3xl mt-2">{title}</p>
 
         <p className="mt-5">Creato il: {new Date(createdAt).toLocaleString()}</p>

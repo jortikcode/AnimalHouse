@@ -24,7 +24,10 @@ function RegisterCard() {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    dispatch(signup(signupObject(data)));
+    dispatch(signup(signupObject({
+      ...data,
+      birth: (new Date(data.birth)).toISOString()
+    })));
   };
 
   useEffect(() => {

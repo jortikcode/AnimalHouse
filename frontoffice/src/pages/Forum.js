@@ -170,8 +170,8 @@ const Forum = () => {
 
 
       <div className="grid md:grid-cols-3 grid-cols-1 mb-8 mt-8 mx-4 items-stretch">
-        {posts.map((post, index) => {
-          return <Post {...post} key={index} />;
+        {posts.filter(post => post.createdBy !== null).map((post, index) => {
+            return <Post {...post} key={index} />;
         })}
       </div>
     </div>

@@ -11,20 +11,22 @@ import {
   waitingGetPostById,
 } from "../../app/postsSlice";
 import { getUserByID, waitingUserByID } from "../../app/usersSlice";
-import postCategories from "./categories.json"
+import postCategories from "./categories.json";
 
 const PostDetails = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset
-  } = useForm()
+    reset,
+  } = useForm();
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loadingPost, post } = useSelector((state) => state.posts);
-  const { loadUserByID, userSearched, user, isLogged } = useSelector(state => state.auth);
+  const { loadUserByID, userSearched, user, isLogged } = useSelector(
+    (state) => state.auth
+  );
   const [formVisible, setFormVisible] = useState(false);
   const { title, text, category, createdBy, createdAt } = post;
 
@@ -33,11 +35,13 @@ const PostDetails = () => {
   }, [isLogged, navigate]);
 
   const onSubmit = (data) => {
-    dispatch(updatePost({
-      _id: id,
-      ...data
-    }))
-    reset(data)
+    dispatch(
+      updatePost({
+        _id: id,
+        ...data,
+      })
+    );
+    reset(data);
   };
 
   const toggleDelete = (id) => {
@@ -55,9 +59,9 @@ const PostDetails = () => {
       reset({
         title: post.title,
         text: post.text,
-        category: post.category
-      })
-  }, [ post, reset ] )
+        category: post.category,
+      });
+  }, [post, reset]);
 
   useEffect(() => {
     if (createdBy) {
@@ -65,7 +69,6 @@ const PostDetails = () => {
       dispatch(getUserByID({ id: createdBy }));
     }
   }, [dispatch, createdBy]);
-
 
   if (!isLogged) return <></>;
 
@@ -95,6 +98,13 @@ const PostDetails = () => {
       <div className="rounded-xl p-5 flex flex-col w-fit max-w-[40rem] bg-yellow-400 border-4 border-black">
         <div className="flex md:flex-row flex-col items-center justify-between border-b-4 border-white md:space-x-8 md:space-y-0 space-y-4 pb-3">
           <div className="flex flex-col md:items-baseline items-center">
+            <div className="flex justify-center mt-7">
+              <img
+                src={`${process.env.REACT_APP_BASE_MEDIA_URL}/${userSearched.imgName}`}
+                alt="profile"
+                className="shadow-xl rounded-full w-[100px] max-w-full"
+              />
+            </div>
             <p className="font-bold text-3xl text-amber-800 tracking-tighter">
               {" "}
               {userSearched.name} {userSearched.surname}{" "}
@@ -128,7 +138,7 @@ const PostDetails = () => {
             type="button"
             onClick={(e) => setFormVisible((old) => !old)}
           >
-            { !formVisible ? "Modifica" : "Annulla" }
+            {!formVisible ? "Modifica" : "Annulla"}
           </button>
           <button
             className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-2 px-4 rounded"
