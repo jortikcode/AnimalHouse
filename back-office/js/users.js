@@ -92,7 +92,7 @@ const populateViewUser = async (id) => {
   document.getElementById("viewUserName").textContent = user.name;
   document.getElementById("viewUserSurname").textContent = user.surname;
   document.getElementById("viewUserEmail").textContent = user.email;
-  document.getElementById("viewUserAddress").textContent = user.address;
+  document.getElementById("viewUserAddress").textContent = `${user.address.via} ${user.address.city} ${user.address.postal_code}`;
   document.getElementById("viewUserBirth").textContent = user.birth?.slice(0, 10);
   document.getElementById("viewUserGender").textContent = user.gender;
   document.getElementById("viewUserVip").textContent = user.isVip ? "Si" : "No";
