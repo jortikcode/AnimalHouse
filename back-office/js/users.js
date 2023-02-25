@@ -63,7 +63,6 @@ const getUsers = async (query) => {
   }
   const users = await response.json();
   if (users.length > 0) {
-    console.log(users);
     const usersTemplate = Handlebars.compile($("#usersTemplate").html());
     const filled = usersTemplate({ users: users });
     $("#tableRows").html(filled);
@@ -145,7 +144,7 @@ const populateModifyUser = async (id) => {
       const punteggio = document.createElement("div");
       punteggio.classList.add("punteggio", "flex");
       punteggio.innerHTML = `
-      <input class="border rounded-md p-2 w-1/2" type="text" name="game" placeholder="Nome del gioco" value="${user.punteggiDeiGiochi[i].game}">
+      <input class="border rounded-md p-2 w-1/2" type="text" name="game" placeholder="Nome del gioco" value="${user.punteggiDeiGiochi[i].game.toUpperCase()}">
       <input class="border rounded-md p-2 w-1/3" type="number" name="score" placeholder="Punteggio" value="${user.punteggiDeiGiochi[i].score}">
       <button type="button" class="rimuovi bg-yellow-500 text-black px-4 py-2 rounded-lg hover:bg-yellow-600">Rimuovi</button>
     `;
@@ -177,8 +176,6 @@ const modifyUser = async (id) => {
     $("#error").html(filled);
     return;
   }
-  const user = await response.json();
-  console.log(user);
   getUsers({});
 };
 

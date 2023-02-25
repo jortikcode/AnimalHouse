@@ -11,31 +11,33 @@ const authenticationMiddleware = async (req, res, next) => {
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     throw createCustomError("Token non presente", StatusCodes.UNAUTHORIZED);
   }
-  next();
   // perchè sarà nel formato "Barer token"
-  /* const token = authHeader.split(" ")[1];
+  const token = authHeader.split(" ")[1];
   if (!token) {
     throw createCustomError("Non autorizzato", StatusCodes.UNAUTHORIZED);
   }
   try {
     // prendo l'id dell'utente e verifico che sia presente
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
+    console.log(token);
+    let newToken = token.replace(/"/g, "");
+    console.log(newToken);
+    const decoded = jwt.verify(newToken, process.env.JWT_SECRET);
+    console.log(decoded);
     const user = await User.findOne({ _id: decoded.id });
     if (!user) {
       const admin = await Admin.findOne({ _id: decoded.id });
       if (!admin) {
         throw createCustomError("Utente non trovato", StatusCodes.NOT_FOUND);
       }
-      req.admin = true;
-      next();
+      req.isAdmin = true;
+      return next();
     }
-    // setto il campo userInfo e proseguo
+    //setto il campo userInfo e proseguo
     req.userInfo = user;
     next();
   } catch (error) {
     throw createCustomError("Non autorizzato", StatusCodes.UNAUTHORIZED);
-  } */
+  }
 };
 
 module.exports = { authenticationMiddleware };

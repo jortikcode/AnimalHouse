@@ -16,7 +16,7 @@ const upload = multer({ storage: storage });
 
 const { getAllProducts, createProduct, getProduct, updateProduct, deleteProduct } = require("../controllers/products");
 
-router.route("/").get(getAllProducts).post(authenticationMiddleware, upload.single("imgName"), createProduct);
-router.route("/:id").get(getProduct).patch(authenticationMiddleware, upload.single("imgName"), updateProduct).delete(authenticationMiddleware, deleteProduct);
+router.route("/").get(getAllProducts).post(upload.single("imgName"), authenticationMiddleware, createProduct);
+router.route("/:id").get(getProduct).patch(upload.single("imgName"), authenticationMiddleware, updateProduct).delete(authenticationMiddleware, deleteProduct);
 
 module.exports = router;

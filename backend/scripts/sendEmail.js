@@ -16,7 +16,7 @@ const sendEmail = (options) => {
     },
   });
 
-  var mailOptions = {
+  let mailOptions = {
     from: process.env.EMAIL_USER,
     to: options.to,
     subject: options.subject,
