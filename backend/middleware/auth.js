@@ -18,11 +18,8 @@ const authenticationMiddleware = async (req, res, next) => {
   }
   try {
     // prendo l'id dell'utente e verifico che sia presente
-    console.log(token);
     let newToken = token.replace(/"/g, "");
-    console.log(newToken);
     const decoded = jwt.verify(newToken, process.env.JWT_SECRET);
-    console.log(decoded);
     const user = await User.findOne({ _id: decoded.id });
     if (!user) {
       const admin = await Admin.findOne({ _id: decoded.id });

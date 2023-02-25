@@ -47,7 +47,6 @@ const getBill = async (id) => {
 
 const populateViewBill = async (id) => {
   const bill = await getBill(id);
-  console.log(bill);
   document.getElementById("viewBillUser").textContent = bill.user.email;
   const container = document.getElementById("content");
   container.innerHTML = "";

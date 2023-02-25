@@ -90,7 +90,6 @@ const updateUser = createAsyncThunk(
             formData.append("petImage", true)
         } else {
             for (const key of Object.keys(userInfo)){
-                console.log(key, userInfo[key])
                 formData.append(key, userInfo[key])
             }
         }
@@ -191,7 +190,6 @@ const userSlice = createSlice({
             localStorage.removeItem('user')
             localStorage.removeItem('token')
             state.user = {}
-            console.log(action.payload)
             state.isLogged = false
             state.updatingUser = false
         })

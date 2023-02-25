@@ -164,7 +164,6 @@ const deleteProduct = async (req, res) => {
   const { id: productID } = req.params;
   const product = await Product.findOne({ _id: productID });
   if (!product) {
-    console.log(productID);
     throw createCustomError(`Non esiste nessun prodotto con id : ${productID}`, StatusCodes.NOT_FOUND);
   }
   if (product.imgName != "default_product_image.jpg") {
