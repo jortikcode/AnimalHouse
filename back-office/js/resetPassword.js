@@ -8,7 +8,7 @@ $("#form").on("submit", function (event) {
 });
 
 const resetPassword = async (password, token) => {
-  const response = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/auth/resetPassword/${token}`, {
+  const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/auth/resetPassword/${token}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ password }),

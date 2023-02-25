@@ -45,7 +45,7 @@ const getDateTime = (dateString) => {
 };
 
 const getBookings = async (query) => {
-  const response = await fetch("http://site212222.tw.cs.unibo.it/api/v1/booking?" + new URLSearchParams(query));
+  const response = await fetch("https://site212222.tw.cs.unibo.it/api/v1/booking?" + new URLSearchParams(query));
   if (!response.ok) {
     const error = await response.json();
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -68,7 +68,7 @@ const getBookings = async (query) => {
 
 const getBooking = async (id) => {
   if (id) {
-    const response = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/booking/${id}`);
+    const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/booking/${id}`);
     if (!response.ok) {
       const error = await response.json();
       const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -102,7 +102,7 @@ const createBooking = async () => {
     service,
     date,
   };
-  const response = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/booking`, {
+  const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/booking`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -131,7 +131,7 @@ const populateViewBooking = async (id) => {
 };
 
 const populateUsers = async (toPopulateField) => {
-  const usersResponse = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/users`);
+  const usersResponse = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/users`);
   if (!usersResponse.ok) {
     const error = await usersResponse.json();
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -149,7 +149,7 @@ const populateServices = async (toPopulateField, userID, booking) => {
   const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
   const query = {};
   query.location = locationInfo._id;
-  const userResponse = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/users/${userID}`);
+  const userResponse = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/users/${userID}`);
   if (!userResponse.ok) {
     const error = await userResponse.json();
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -161,7 +161,7 @@ const populateServices = async (toPopulateField, userID, booking) => {
   if (!user.isVip) {
     query.isVip = user.isVip;
   }
-  const response = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/services?` + new URLSearchParams(query));
+  const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/services?` + new URLSearchParams(query));
   if (!response.ok) {
     const error = await response.json();
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -203,7 +203,7 @@ const populateHour = async (toPopulateField, serviceID, date) => {
   const endDate = new Date(date);
   endDate.setDate(endDate.getDate() + 1);
   query.endDate = endDate.toISOString().slice(0, 10);
-  const response = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/booking?` + new URLSearchParams(query));
+  const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/booking?` + new URLSearchParams(query));
   if (!response.ok) {
     const error = await response.json();
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -270,7 +270,7 @@ const modifyBooking = async (id) => {
     service,
     date,
   };
-  const response = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/booking/${id}`, {
+  const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/booking/${id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -293,7 +293,7 @@ const modifyBooking = async (id) => {
 
 const deleteBooking = async (id) => {
   if (id) {
-    const response = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/booking/${id}`, {
+    const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/booking/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${window.localStorage.getItem("token")}`,
