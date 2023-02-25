@@ -101,7 +101,7 @@ const ProductDetails = () => {
             <div className="border-t border-gray-200 pt-4">
               <dt className="font-medium text-gray-900">Prezzo</dt>
               <dd className="mt-2 text-sm text-gray-500">
-                {price}€
+                €{price.toFixed(2)}
               </dd>
             </div>
 

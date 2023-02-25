@@ -291,7 +291,7 @@ const ServiceDetails = () => {
 
                 <div className="flex justify-between items-center">
                   <span className="title-font font-medium text-2xl text-gray-900">
-                    €{service.price}
+                    €{service.price.toFixed(2)}
                   </span>
                   <input
                     type="submit"

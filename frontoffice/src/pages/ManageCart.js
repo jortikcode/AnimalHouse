@@ -90,7 +90,7 @@ const ManageCart = () => {
             <div className="flex justify-end font-bold space-x-4 text-2xl border-t border-gray-100 px-5 py-4">
               <div>Totale</div>
               <div className="text-blue-600">
-                EURO <span> {total.toFixed(2)} </span>
+                €<span> {total.toFixed(2)} </span>
               </div>
             </div>
           </div>

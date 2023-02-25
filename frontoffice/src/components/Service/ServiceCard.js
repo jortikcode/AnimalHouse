@@ -26,7 +26,7 @@ const ServiceCard = ({
         <p className="font-bold text-3xl mt-2">{serviceName}</p>
         <p className="font-bold text-sm mt-2">{isVip ? "VIP" : ""}</p>
 
-        <p className="mt-5">Prezzo a seduta: €{price}</p>
+        <p className="mt-5">Prezzo a seduta: €{price.toFixed(2)}</p>
         <p className="font-light truncate"> {description} </p>
 
         {((user.userInfo.isVip && isVip) || (!isVip)) && <Link to={`/services/${_id}`} className="bg-yellow-500 text-black font-semibold py-2 px-5 text-sm mt-6 inline-flex items-center group gap-x-2">

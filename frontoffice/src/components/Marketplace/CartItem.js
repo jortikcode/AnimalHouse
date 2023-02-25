@@ -14,7 +14,7 @@ const CartItem = ({ id, name, price, qta, availables }) => {
     <>
       <td className="p-2 font-medium text-gray-800">{name}</td>
       <td className="p-2 text-left">{qta}</td>
-      <td className="p-2 text-left font-medium text-green-500">EURO {price}</td>
+      <td className="p-2 text-left font-medium text-green-500"> €{price.toFixed(2)}</td>
       <td className="p-2 flex justify-center space-x-3">
         <button
           type="button"
