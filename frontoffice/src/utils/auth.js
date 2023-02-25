@@ -3,9 +3,9 @@ export const signupObject = (formData) => {
         name: formData.name,
         surname: formData.surname,
         address: {
-            city: formData.city,
-            via: formData.address,
-            postal_code: formData.cap
+            city: formData.city || "Sconosciuto",
+            via: formData.via || "Sconosciuto",
+            postal_code: Number(formData.cap) || 777
         },
         email: formData.email,
         password: formData.password,

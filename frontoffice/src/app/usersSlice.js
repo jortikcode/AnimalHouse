@@ -31,21 +31,10 @@ const login = createAsyncThunk(
 const signup = createAsyncThunk(
     `${name}/signup`,
     async (userInfo, thunkAPI) => {
-        let registerInfo = {}
-        if (userInfo.via || userInfo.city || userInfo.cap)
-            registerInfo["address"] = { 
-                city: userInfo.city || "Sconosciuto",
-                via: userInfo.via || "Sconosciuto",
-                postal_code: Number(userInfo.cap) || 777
-             }
-        registerInfo = {
-            ...userInfo,
-            ...registerInfo
-        }
         const response = await fetch(`${baseApiUrl}/auth/register`, { 
             method: 'post',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(registerInfo)
+            body: JSON.stringify(userInfo)
         })
         if (!response.ok)
             return thunkAPI.rejectWithValue(await response.json())
@@ -179,9 +168,9 @@ const userSlice = createSlice({
             state.isLogged = false
         })
         builder.addCase(signup.fulfilled, (state, action) => {
-            localStorage.setItem('user', JSON.stringify(action.payload))
-            state.user = action.payload
-            state.isLogged = true
+            //localStorage.setItem('user', JSON.stringify(action.payload))
+            //state.user = action.payload
+            //state.isLogged = true
         })
         builder.addCase(signup.rejected, (state, action) => {
             state.user = {}
