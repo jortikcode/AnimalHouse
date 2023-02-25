@@ -29,6 +29,9 @@ const getProducts = async (query) => {
   }
   const products = await response.json();
   if (products.length > 0) {
+    for (let product of products) {
+      product.price = product.price.toFixed(2);
+    }
     const productsTemplate = Handlebars.compile($("#productsTemplate").html());
     const filled = productsTemplate({ products: products });
     $("#tableRows").html(filled);
@@ -79,7 +82,7 @@ const populateViewProduct = async (id) => {
   const product = await getProduct(id);
   document.getElementById("viewProductImg").src = `/img/${product.imgName}`;
   document.getElementById("viewProductName").textContent = product.name;
-  document.getElementById("viewProductPrice").textContent = product.price;
+  document.getElementById("viewProductPrice").textContent = product.price.toFixed(2);
   document.getElementById("viewProductDescription").textContent = product.description;
   document.getElementById("viewProductFeatured").textContent = product.featured ? "Si" : "No";
   document.getElementById("viewProductRating").textContent = product.rating;
@@ -91,7 +94,7 @@ const populateViewProduct = async (id) => {
 const populateModifyProduct = async (id) => {
   const product = await getProduct(id);
   document.getElementById("modifyName").value = product.name;
-  document.getElementById("modifyPrice").value = product.price;
+  document.getElementById("modifyPrice").value = product.price.toFixed(2);
   document.getElementById("modifyDescription").value = product.description;
   document.getElementById("modifyQta").value = product.qta;
   document.getElementById("modifyFeatured").checked = product.featured;
