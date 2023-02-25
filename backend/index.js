@@ -12,11 +12,11 @@ const errorHandlerMiddleware = require("./middleware/error-handler");
 // includiamo il file delle variabili d'ambiente di sviluppo o di produzione
 if (process.argv.length > 2)
   require("dotenv").config({
-    path: path.join(".env.development"),
+    path: path.join(__dirname, ".env.development"),
   });
 else
   require("dotenv").config({
-    path: path.join(".env.production"),
+    path: path.join(__dirname, ".env.production"),
   });
 
 const app = express();
