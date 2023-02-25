@@ -53,7 +53,7 @@ jQuery(function () {
 });
 
 const getUsers = async (query) => {
-  const response = await fetch("http://localhost:8000/api/v1/users?" + new URLSearchParams(query));
+  const response = await fetch("http://site212222.tw.cs.unibo.it/api/v1/users?" + new URLSearchParams(query));
   if (!response.ok) {
     const error = await response.json();
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -73,7 +73,7 @@ const getUsers = async (query) => {
 
 const getUser = async (id) => {
   if (id) {
-    const response = await fetch(`http://localhost:8000/api/v1/users/${id}`);
+    const response = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/users/${id}`);
     if (!response.ok) {
       const error = await response.json();
       const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -162,7 +162,7 @@ const populateModifyUser = async (id) => {
 const modifyUser = async (id) => {
   const form = document.getElementById("modifyForm");
   const formData = new FormData(form);
-  const response = await fetch(`http://localhost:8000/api/v1/users/${id}`, {
+  const response = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/users/${id}`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${window.localStorage.getItem("token")}`,
@@ -181,7 +181,7 @@ const modifyUser = async (id) => {
 
 const deleteUser = async (id) => {
   if (id) {
-    const response = await fetch(`http://localhost:8000/api/v1/users/${id}`, {
+    const response = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/users/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + window.localStorage.getItem("token"),

@@ -20,7 +20,7 @@ jQuery(function () {
 });
 
 const getProducts = async (query) => {
-  const response = await fetch("http://localhost:8000/api/v1/products?" + new URLSearchParams(query));
+  const response = await fetch("http://site212222.tw.cs.unibo.it/api/v1/products?" + new URLSearchParams(query));
   if (!response.ok) {
     const error = await response.json();
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -42,7 +42,7 @@ const getProducts = async (query) => {
 
 const getProduct = async (id) => {
   if (id) {
-    const response = await fetch(`http://localhost:8000/api/v1/products/${id}`);
+    const response = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/products/${id}`);
     if (!response.ok) {
       const error = await response.json();
       const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -58,7 +58,7 @@ const getProduct = async (id) => {
 const createProduct = async () => {
   const form = document.getElementById("createForm");
   const formData = new FormData(form);
-  const response = await fetch(`http://localhost:8000/api/v1/products`, {
+  const response = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/products`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${window.localStorage.getItem("token")}`,
@@ -106,7 +106,7 @@ const populateModifyProduct = async (id) => {
 const modifyProduct = async (id) => {
   const form = document.getElementById("modifyForm");
   const formData = new FormData(form);
-  const response = await fetch(`http://localhost:8000/api/v1/products/${id}`, {
+  const response = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/products/${id}`, {
     method: "PATCH",
     body: formData,
   });
@@ -125,7 +125,7 @@ const modifyProduct = async (id) => {
 
 const deleteProduct = async (id) => {
   if (id) {
-    const response = await fetch(`http://localhost:8000/api/v1/products/${id}`, {
+    const response = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/products/${id}`, {
       method: "DELETE",
     });
     if (!response.ok) {

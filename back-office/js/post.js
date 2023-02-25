@@ -9,7 +9,7 @@ jQuery(function () {
 const getPosts = async (category) => {
   const query = { category: category };
   $("#title").text(category);
-  const response = await fetch("http://localhost:8000/api/v1/posts?" + new URLSearchParams(query));
+  const response = await fetch("http://site212222.tw.cs.unibo.it/api/v1/posts?" + new URLSearchParams(query));
   if (!response.ok) {
     const error = await response.json();
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -29,7 +29,7 @@ const getPosts = async (category) => {
 
 const deletePost = async (id) => {
   if (id) {
-    const response = await fetch(`http://localhost:8000/api/v1/posts/${id}`, {
+    const response = await fetch(`http://site212222.tw.cs.unibo.it/api/v1/posts/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${window.localStorage.getItem("token")}`,
