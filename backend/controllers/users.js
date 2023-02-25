@@ -48,11 +48,12 @@ const deleteImages = async (userID, { clearPets = false, clearUser = false }) =>
   if (user.animaliPreferiti && clearPets)
     for (const animal of user.animaliPreferiti) {
       try {
-        fs.unlink(path.join(global.baseDir, "public", "media", animal.imgName), (err) => {
-          if (err) {
-            console.log(err);
-          }
-        });
+        if (animal.imgName !== "default_pet_image.jpg")
+          fs.unlink(path.join(global.baseDir, "public", "media", animal.imgName), (err) => {
+            if (err) {
+              console.log(err);
+            }
+          });
       } catch (e) {
         console.log(e);
       }
