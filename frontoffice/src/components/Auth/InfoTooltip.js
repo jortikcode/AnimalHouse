@@ -2,7 +2,7 @@ const InfoTooltip = (props) => {
     return (
     <>
         {props.message && 
-        (<span className="group relative">
+        (<span className="group relative" id="fieldrules">
             <span className="absolute w-40 md:w-72 max-w-screen-md top-2 left-3 scale-0 rounded bg-gray-800 p-2 text-xs text-white group-hover:scale-100"> 
                 {props.message} 
             </span>
