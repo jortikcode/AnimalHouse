@@ -29,12 +29,12 @@
         <img
           v-show="!card.guessed && !card.selected"
           :src="questionMarkUrl"
-          class="w-full h-full bg-black object-cover"
+          class="bg-black h-64 w-full object-cover object-center"
         />
         <img
           :alt="`Carta del gruppo ${card.group}`"
           v-show="card.guessed || card.selected"
-          class="object-cover"
+          class="h-64 w-full object-cover object-center"
           :src="card.imgUrl"
         />
       </div>
