@@ -20,7 +20,7 @@ jQuery(function () {
 });
 
 const getServices = async (query) => {
-  const response = await fetch("http://localhost:8000/api/v1/services?" + new URLSearchParams(query));
+  const response = await fetch("https://site212222.tw.cs.unibo.it/api/v1/services?" + new URLSearchParams(query));
   if (!response.ok) {
     const error = await response.json();
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -40,7 +40,7 @@ const getServices = async (query) => {
 
 const getService = async (id) => {
   if (id) {
-    const response = await fetch(`http://localhost:8000/api/v1/services/${id}`);
+    const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/services/${id}`);
     if (!response.ok) {
       const error = await response.json();
       const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -56,7 +56,7 @@ const getService = async (id) => {
 const createService = async () => {
   const form = document.getElementById("createForm");
   const formData = new FormData(form);
-  const response = await fetch(`http://localhost:8000/api/v1/services`, {
+  const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/services`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${window.localStorage.getItem("token")}`,
@@ -101,7 +101,7 @@ const populateModifyService = async (id) => {
 const modifyService = async (id) => {
   const form = document.getElementById("modifyForm");
   const formData = new FormData(form);
-  const response = await fetch(`http://localhost:8000/api/v1/services/${id}`, {
+  const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/services/${id}`, {
     method: "PATCH",
     headers: {
       Authorization: `Bearer ${window.localStorage.getItem("token")}`,
@@ -123,7 +123,7 @@ const modifyService = async (id) => {
 
 const deleteService = async (id) => {
   if (id) {
-    const response = await fetch(`http://localhost:8000/api/v1/services/${id}`, {
+    const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/services/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${window.localStorage.getItem("token")}` },
     });

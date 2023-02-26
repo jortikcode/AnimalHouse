@@ -90,7 +90,8 @@ const getAllBills = async (req, res) => {
   } else {
     result = result.sort("paidAt");
   }
-  const bills = await result;
+  let bills = await result;
+  bills = bills.filter((bill) => bill.user != null);
   res.status(StatusCodes.OK).json(bills);
 };
 

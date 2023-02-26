@@ -8,7 +8,7 @@ const getDateTime = (dateString) => {
 };
 
 const getBills = async (query) => {
-  const response = await fetch("http://localhost:8000/api/v1/bill?" + new URLSearchParams(query));
+  const response = await fetch("https://site212222.tw.cs.unibo.it/api/v1/bill?" + new URLSearchParams(query));
   if (!response.ok) {
     const error = await response.json();
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -32,7 +32,7 @@ const getBills = async (query) => {
 
 const getBill = async (id) => {
   if (id) {
-    const response = await fetch(`http://localhost:8000 http://localhost:8000/api/v1/bill/${id}`);
+    const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/bill/${id}`);
     if (!response.ok) {
       const error = await response.json();
       const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -57,10 +57,12 @@ const populateViewBill = async (id) => {
     container.appendChild(content);
   } else {
     for (let i = 0; i < bill.products.length; i += 1) {
-      const content = document.createElement("p");
-      content.classList.add("p-2", "w-full");
-      content.textContent = `${bill.products[i].product.name} x${bill.products[i].quantity} ${bill.products[i].product.price.toFixed(2)}€`;
-      container.appendChild(content);
+      if (bill.products[i].product != null) {
+        const content = document.createElement("p");
+        content.classList.add("p-2", "w-full");
+        content.textContent = `${bill.products[i].product.name} x${bill.products[i].quantity} ${bill.products[i].product.price.toFixed(2)}€`;
+        container.appendChild(content);
+      }
     }
   }
   const iva = Number(bill.total) * 0.22;

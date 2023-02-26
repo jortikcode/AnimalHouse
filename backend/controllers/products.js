@@ -59,7 +59,6 @@ const getAllProducts = async (req, res) => {
   } else {
     result = result.sort("featured");
   }
-
   if (fields) {
     const fieldList = fields.split(",").join(" ");
     result = result.select(fieldList);
@@ -86,24 +85,6 @@ const createProduct = async (req, res) => {
     imgName,
     location,
   });
-  const locations = await Location.find({});
-  console.log(locations);
-  for (const loc of locations) {
-    console.log(loc);
-    if (loc._id != location) {
-      await Product.create({
-        name,
-        price,
-        description,
-        featured: Boolean(featured),
-        qta: 0,
-        category,
-        subcategory: subcategory.split(",").map((sub) => sub.trim()),
-        imgName,
-        location: loc._id,
-      });
-    }
-  }
   res.status(StatusCodes.CREATED).json(product);
 };
 

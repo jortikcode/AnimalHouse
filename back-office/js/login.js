@@ -7,7 +7,7 @@ $("#form").on("submit", function (event) {
 });
 
 const getToken = async (email, password, localStorage) => {
-  const response = await fetch(`http://localhost:8000/api/v1/auth/loginAdmin`, {
+  const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/auth/loginAdmin`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),

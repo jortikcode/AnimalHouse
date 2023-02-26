@@ -1,6 +1,4 @@
 const Booking = require("../models/booking");
-const Service = require("../models/services");
-const User = require("../models/users");
 const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
 
@@ -8,7 +6,7 @@ const prepareQuery = async (query) => {
   const { startDate, endDate, serviceID, userID } = query;
   const queryObject = {};
   if (userID) {
-    queryObject.user = userID
+    queryObject.user = userID;
   }
   if (serviceID) {
     queryObject.service = serviceID;
@@ -53,12 +51,10 @@ const getAllBookings = async (req, res) => {
   if (location) {
     bookings = bookings.filter((booking) => booking.service?.location.toString() === location.toString());
   }
-  if (user) {
-    bookings = bookings.filter((booking) => booking.user !== null);
-  }
-  if (service) {
-    bookings = bookings.filter((booking) => booking.service !== null);
-  }
+  bookings = bookings.filter((booking) => booking.user !== null);
+
+  bookings = bookings.filter((booking) => booking.service !== null);
+
   res.status(StatusCodes.OK).json(bookings);
 };
 
