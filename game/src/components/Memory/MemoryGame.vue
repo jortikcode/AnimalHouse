@@ -19,7 +19,7 @@
     >
       Nuova partita
     </button>
-    <div class="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       <div
         class="rounded shadow-xl overflow-hidden flex justify-center items-center"
         v-for="card in cards"
@@ -29,12 +29,12 @@
         <img
           v-show="!card.guessed && !card.selected"
           :src="questionMarkUrl"
-          class="w-full h-full bg-black"
+          class="w-full h-full bg-black object-cover"
         />
         <img
           :alt="`Carta del gruppo ${card.group}`"
           v-show="card.guessed || card.selected"
-          class=""
+          class="object-cover"
           :src="card.imgUrl"
         />
       </div>
