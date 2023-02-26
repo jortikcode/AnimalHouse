@@ -168,9 +168,9 @@ const userSlice = createSlice({
             state.isLogged = false
         })
         builder.addCase(signup.fulfilled, (state, action) => {
-            //localStorage.setItem('user', JSON.stringify(action.payload))
-            //state.user = action.payload
-            //state.isLogged = true
+            localStorage.setItem('user', JSON.stringify(action.payload))
+            state.user = action.payload
+            state.isLogged = true
         })
         builder.addCase(signup.rejected, (state, action) => {
             state.user = {}
