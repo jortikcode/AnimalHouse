@@ -94,9 +94,6 @@ const resetPassword = async (req, res) => {
   // creo il digest del token per poi confrontarlo con quello salvato sul db
   const resetToken = crypto.createHash("sha256").update(req.params.token).digest("hex");
   // controllo che sia presente sul db e che non sia scaduto
-  const userprova = await User.findOne({
-    email: "puccigonzales@gmail.com"
-  })
   const user = await User.findOne({
     resetPasswordToken: resetToken,
     resetPasswordExpire: { $gt: Date.now() },

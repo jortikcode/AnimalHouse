@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const Location = require("../models/locations");
 const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
 const fs = require("fs");
@@ -48,11 +49,9 @@ const getAllProducts = async (req, res) => {
       }
     });
   }
-  let result = []
-  if (limit)
-    result = Product.find(queryObject).limit(limit);
-  else
-    result = Product.find(queryObject)
+  let result = [];
+  if (limit) result = Product.find(queryObject).limit(limit);
+  else result = Product.find(queryObject);
   // sort
   if (sort) {
     const sortList = sort.split(",").join(" ");
@@ -86,6 +85,22 @@ const createProduct = async (req, res) => {
     imgName,
     location,
   });
+  const locations = await Location.find({});
+  for (const loc in locations) {
+    if (loc._id != location) {
+      await Product.create({
+        name,
+        price,
+        description,
+        featured: Boolean(featured),
+        qta: 0,
+        category,
+        subcategory: subcategory.split(",").map((sub) => sub.trim()),
+        imgName,
+        location: loc._id,
+      });
+    }
+  }
   res.status(StatusCodes.CREATED).json(product);
 };
 
