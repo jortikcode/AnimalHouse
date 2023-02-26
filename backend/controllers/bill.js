@@ -91,6 +91,7 @@ const getAllBills = async (req, res) => {
     result = result.sort("paidAt");
   }
   let bills = await result;
+  // Gestione servizi / prodotti cancellati molto spartana
   bills = bills.filter((bill) => bill.user != null);
   bills = bills.filter((bill) => bill.user !== null);
   for (let i = 0; i < bills.length; i++) {
@@ -100,6 +101,12 @@ const getAllBills = async (req, res) => {
       });
     }
   }
+  bills = bills.filter((bill) => {
+    if (bill.type === "products")
+      return bill.products.length > 0
+    else
+      return bill.service !== null
+  })
   res.status(StatusCodes.OK).json(bills);
 };
 
