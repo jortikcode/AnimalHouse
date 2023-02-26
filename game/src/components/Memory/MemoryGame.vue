@@ -32,7 +32,7 @@
           class="w-full h-full bg-black"
         />
         <img
-          :alt="card.id.toString()"
+          :alt="`Carta del gruppo ${card.group}`"
           v-show="card.guessed || card.selected"
           class=""
           :src="card.imgUrl"
@@ -49,7 +49,7 @@
 import { getAnimalPicture, animalTypes } from "../../common/animalPictures";
 import PacmanLoader from "vue-spinner/src/PacmanLoader.vue";
 import VueBasicAlert from "vue-basic-alert";
-import { isLogged } from "../../common/user";
+import { isLogged, updateScore } from "../../common/user";
 
 const winString = "Hai vinto";
 const stillPlaying = "Partita in corso";
