@@ -92,6 +92,14 @@ const getAllBills = async (req, res) => {
   }
   let bills = await result;
   bills = bills.filter((bill) => bill.user != null);
+  bills = bills.filter((bill) => bill.user !== null);
+  for (let i = 0; i < bills.length; i++) {
+    if (bills[i]?.products?.length > 0) {
+      bills[i].products = bills[i].products.filter((product) => {
+        return product.product !== null;
+      });
+    }
+  }
   res.status(StatusCodes.OK).json(bills);
 };
 
@@ -102,6 +110,10 @@ const getBill = async (req, res) => {
   if (!bill) {
     throw createCustomError(`Non esiste nessuna fattura con id : ${billID}`, StatusCodes.NOT_FOUND);
   }
+  if (bill.products?.length > 0)
+    bill.products = bill.products.filter((product) => {
+      return product.product !== null;
+    });
   res.status(StatusCodes.OK).json(bill);
 };
 
