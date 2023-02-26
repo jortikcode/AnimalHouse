@@ -85,7 +85,6 @@ const populateViewProduct = async (id) => {
   document.getElementById("viewProductPrice").textContent = product.price.toFixed(2);
   document.getElementById("viewProductDescription").textContent = product.description;
   document.getElementById("viewProductFeatured").textContent = product.featured ? "Si" : "No";
-  document.getElementById("viewProductRating").textContent = product.rating;
   document.getElementById("viewProductQta").textContent = product.qta;
   document.getElementById("viewProductCategory").textContent = product.category;
   document.getElementById("viewProductSubcategory").textContent = product.subcategory.join(", ");
