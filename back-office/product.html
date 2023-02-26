@@ -101,7 +101,6 @@
                                 <th class="cursor-pointer px-4 py-2" data-order-by="name">Nome</th>
                                 <th class="cursor-pointer px-4 py-2" data-order-by="price">Prezzo</th>
                                 <th class="cursor-pointer px-4 py-2" data-order-by="qta">Quantità</th>
-                                <th class="cursor-pointer px-4 py-2" data-order-by="rating">Valutazione</th>
                                 <th class="cursor-pointer px-4 py-2" data-order-by="category">Categoria</th>
                                 <th class="px-4 py-2">Azioni</th>
                             </tr>
@@ -169,11 +168,6 @@
                             <label for="viewProductFeatured" class="block text-gray-700 font-bold mb-1">In primo
                                 piano</label>
                             <span id="viewProductFeatured" class="p-2 w-full"></span>
-                        </div>
-                        <div class="mb-4">
-                            <label for="viewProductRating"
-                                class="block text-gray-700 font-bold mb-1">Valutazione</label>
-                            <span id="viewProductRating" class="p-2 w-full"></span>
                         </div>
                         <div class="mb-4">
                             <label for="viewProductQta" class="block text-gray-700 font-bold mb-1">Quantità
@@ -362,7 +356,6 @@
             <td class="border border-black px-4 py-2 text-center">{{this.name}}</td>
             <td class="border border-black px-4 py-2 text-center">{{this.price}}€</td>
             <td class="border border-black px-4 py-2 text-center">{{this.qta}}</td>
-            <td class="border border-black px-4 py-2 text-center">{{this.rating}}</td>
             <td class="border border-black px-4 py-2 text-center">{{this.category}}</td>
             <td class="border border-black px-4 py-2">
                 <div class="flex items-center gap-2 justify-center">

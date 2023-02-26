@@ -53,7 +53,6 @@ const getBookings = async (query) => {
     $("#error").html(filled);
   } else {
     const bookings = await response.json();
-    console.log(bookings);
     if (bookings.length > 0) {
       const bookingsTemplate = Handlebars.compile($("#bookingsTemplate").html());
       for (const booking of bookings) {

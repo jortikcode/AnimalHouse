@@ -1,5 +1,4 @@
 const Product = require("../models/product");
-const Location = require("../models/locations");
 const { createCustomError } = require("../errors/custom-error");
 const { StatusCodes } = require("http-status-codes");
 const fs = require("fs");
