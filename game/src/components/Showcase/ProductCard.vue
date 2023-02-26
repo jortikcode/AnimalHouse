@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col justify-between max-w-[300px] bg-pink-400 border-2 border-pink-400 rounded-lg overflow-hidden py-6 shadow-xl">
-      <img class="p-3 overflow-hidden rounded-lg" :src="this.imgUrl" />
+      <img class="p-3 h-64 w-full object-cover object-center overflow-hidden rounded-lg" :src="this.imgUrl" />
       <div class="p-4 bg-white">
         <p class="text-black font-bold text-2xl">{{ name }}</p>
         <p class="mt-2 text-black truncate">

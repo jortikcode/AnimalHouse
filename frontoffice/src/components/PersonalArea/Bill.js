@@ -24,7 +24,7 @@ const Bill = ({ serviceName, name, price, imgName, productID, serviceID, purchas
         <img
           alt="product"
           src={`${process.env.REACT_APP_BASE_MEDIA_URL}/${imgName}`}
-          className="w-full object-cover object-center overflow-hidden"
+          className="h-64 w-full object-cover object-center overflow-hidden"
         />
       </div>
       <div className="prod-info grid gap-10">
