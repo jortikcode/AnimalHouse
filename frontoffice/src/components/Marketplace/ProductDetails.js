@@ -18,7 +18,6 @@ const ProductDetails = () => {
     _id,
     name,
     description,
-    rating,
     category,
     subcategory,
     price,
@@ -65,20 +64,6 @@ const ProductDetails = () => {
 
           <dl className="mt-16 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-16 lg:gap-x-8">
             <div className="border-t border-gray-200 pt-4">
-              <dt className="font-medium text-gray-900">Recensioni</dt>
-              <dd className="mt-2 text-sm text-gray-500 flex flex-row">
-                {[...Array(rating)].map((e, index) => (
-                  <span
-                    className=""
-                    key={index}>
-                    {" "}
-                    <Star />{" "}
-                  </span>
-                ))}
-              </dd>
-            </div>
-
-            <div className="border-t border-gray-200 pt-4">
               <dt className="font-medium text-gray-900">Quantita' disponibile</dt>
               <dd className="mt-2 text-sm text-gray-500">{qta}</dd>
             </div>
@@ -117,7 +102,7 @@ const ProductDetails = () => {
           <img
             src={`${process.env.REACT_APP_BASE_MEDIA_URL}/${imgName}`}
             alt={`${name}`}
-            className="rounded-lg bg-gray-100"
+            className="rounded-lg bg-gray-100 h-96 w-full object-cover object-center"
           />
         </div>
       </div>

@@ -19,7 +19,7 @@ const ProductCard = ({ _id, name, price, imgName, rating, qta }) => {
   return (
       <div className="rounded-lg max-w-sm hover:bg-yellow-100 border-4 border-black my-3">
         <Link to={`/marketplace/${_id}`}>
-          <img className="rounded-t-lg p-8 object-cover" src={`${process.env.REACT_APP_BASE_MEDIA_URL}/${imgName}`} alt="product" />
+          <img className="mx-auto rounded-t-lg p-8 h-64 w-full object-cover object-center" src={`${process.env.REACT_APP_BASE_MEDIA_URL}/${imgName}`} alt="product" />
         </Link>
         <div className="px-5 pb-5">
           <Link to={`/marketplace/${_id}`}>
