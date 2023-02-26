@@ -70,6 +70,7 @@ const getAllProducts = async (req, res) => {
 
 const createProduct = async (req, res) => {
   const { name, price, description, featured, qta, category, subcategory, location } = req.body;
+  console.log(location);
   let imgName = "default_product_image.jpg";
   if (req.file?.filename) {
     imgName = req.file.filename;
@@ -86,7 +87,9 @@ const createProduct = async (req, res) => {
     location,
   });
   const locations = await Location.find({});
-  for (const loc in locations) {
+  console.log(locations);
+  for (const loc of locations) {
+    console.log(loc);
     if (loc._id != location) {
       await Product.create({
         name,

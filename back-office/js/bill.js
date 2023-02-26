@@ -8,7 +8,7 @@ const getDateTime = (dateString) => {
 };
 
 const getBills = async (query) => {
-  const response = await fetch("https://site212222.tw.cs.unibo.it/api/v1/bill?" + new URLSearchParams(query));
+  const response = await fetch("http://localhost:8000/api/v1/bill?" + new URLSearchParams(query));
   if (!response.ok) {
     const error = await response.json();
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
@@ -32,7 +32,7 @@ const getBills = async (query) => {
 
 const getBill = async (id) => {
   if (id) {
-    const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/bill/${id}`);
+    const response = await fetch(`http://localhost:8000 http://localhost:8000/api/v1/bill/${id}`);
     if (!response.ok) {
       const error = await response.json();
       const errorTemplate = Handlebars.compile($("#errorTemplate").html());
