@@ -60,7 +60,7 @@ const divideScores = (scores) => {
   for (const type of gameTypes){
     finalScoreboards[type] = getScoresArray(scores, type).sort((user1, user2) => {
       if (type === HANGMAN || type === MEMORY) return compare(user1.score, user2.score)
-      else return compare(user1.score, user2.score)
+      else return compare(user2.score, user1.score)
     })
   }
   return finalScoreboards
