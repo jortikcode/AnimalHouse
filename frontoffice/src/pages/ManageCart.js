@@ -70,7 +70,7 @@ const ManageCart = () => {
                       </div>
                     </th>
                     <th className="p-2">
-                      <div className="font-semibold text-left">Quantita'</div>
+                      <div className="font-semibold text-left">Quantità</div>
                     </th>
                     <th className="p-2">
                       <div className="font-semibold text-left">Prezzo unitario</div>

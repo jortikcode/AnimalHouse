@@ -38,7 +38,7 @@ export const getLocationByID = createAsyncThunk(
   }
 );
 
-// Thunk per ottenere la lista delle citta'
+// Thunk per ottenere la lista delle Città'
 export const getAllCities = createAsyncThunk(
   `${name}/getAllCities`,
   async (_, thunkAPI) => {
