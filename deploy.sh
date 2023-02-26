@@ -31,6 +31,6 @@ cd ..
 
 # copy files to department server
 cd backend
-rsync -av * .env.development .env.production node_modules juan.jaramillosaa@lucia.cs.unibo.it:/home/web/site212222/html/AnimalHouse/backend
+rsync --perms --chmod=a+rwx -av * .env.development .env.production node_modules juan.jaramillosaa@lucia.cs.unibo.it:/home/web/site212222/html/AnimalHouse/backend
 cd ../back-office
-rsync -av * juan.jaramillosaa@lucia.cs.unibo.it:/home/web/site212222/html/AnimalHouse/back-office
+rsync --perms --chmod=a+rwx -av * juan.jaramillosaa@lucia.cs.unibo.it:/home/web/site212222/html/AnimalHouse/back-office
