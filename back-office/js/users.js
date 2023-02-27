@@ -1,5 +1,5 @@
 jQuery(function () {
-  const token = window.localStorage.getItem("token");
+  const token = window.localStorage.getItem("adminToken");
   if (!token) {
     window.location.replace("/back-office/login");
   }
@@ -165,7 +165,7 @@ const modifyUser = async (id) => {
   const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/users/${id}`, {
     method: "PATCH",
     headers: {
-      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      Authorization: `Bearer ${window.localStorage.getItem("adminToken")}`,
     },
     body: formData,
   });
@@ -184,7 +184,7 @@ const deleteUser = async (id) => {
     const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/users/${id}`, {
       method: "DELETE",
       headers: {
-        Authorization: "Bearer " + window.localStorage.getItem("token"),
+        Authorization: "Bearer " + window.localStorage.getItem("adminToken"),
         admin: true,
       },
     });

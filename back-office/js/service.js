@@ -1,5 +1,5 @@
 jQuery(function () {
-  const token = window.localStorage.getItem("token");
+  const token = window.localStorage.getItem("adminToken");
   if (!token) {
     window.location.replace("/back-office/login");
   }
@@ -59,7 +59,7 @@ const createService = async () => {
   const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/services`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      Authorization: `Bearer ${window.localStorage.getItem("adminToken")}`,
     },
     body: formData,
   });
@@ -104,7 +104,7 @@ const modifyService = async (id) => {
   const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/services/${id}`, {
     method: "PATCH",
     headers: {
-      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      Authorization: `Bearer ${window.localStorage.getItem("adminToken")}`,
     },
     body: formData,
   });
@@ -125,7 +125,7 @@ const deleteService = async (id) => {
   if (id) {
     const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/services/${id}`, {
       method: "DELETE",
-      headers: { Authorization: `Bearer ${window.localStorage.getItem("token")}` },
+      headers: { Authorization: `Bearer ${window.localStorage.getItem("adminToken")}` },
     });
     if (!response.ok) {
       const error = await response.json();

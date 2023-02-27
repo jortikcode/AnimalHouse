@@ -1,4 +1,8 @@
 jQuery(function () {
+  const token = window.localStorage.getItem("adminToken");
+  if (!token) {
+    window.location.replace("/back-office/login");
+  }
   getBills();
 });
 const getDateTime = (dateString) => {

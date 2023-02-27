@@ -1,5 +1,5 @@
 jQuery(function () {
-  const token = window.localStorage.getItem("token");
+  const token = window.localStorage.getItem("adminToken");
   if (!token) {
     window.location.replace("/back-office/login");
   }
@@ -106,7 +106,7 @@ const createBooking = async () => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      Authorization: `Bearer ${window.localStorage.getItem("adminToken")}`,
     },
     body: JSON.stringify(data),
   });
@@ -274,7 +274,7 @@ const modifyBooking = async (id) => {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      Authorization: `Bearer ${window.localStorage.getItem("adminToken")}`,
     },
     body: JSON.stringify(data),
   });
@@ -296,7 +296,7 @@ const deleteBooking = async (id) => {
     const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/booking/${id}`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        Authorization: `Bearer ${window.localStorage.getItem("adminToken")}`,
       },
     });
     if (!response.ok) {
