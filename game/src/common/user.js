@@ -27,7 +27,7 @@ const isLessScore = (score1, score2, gameType) => {
   }
 };
 
-// Utitily per aggiornare il punteggio di un utente, ritorna true sse scoreObject e' stato inserito nella lista dei punteggi
+// Utitily per aggiornare il punteggio di un utente, ritorna true sse scoreObject è stato inserito nella lista dei punteggi
 export const updateScore = async (scoreObject) => {
   const token = getUserToken();
   const userInfo = getUserInfo();

@@ -180,7 +180,7 @@ export default {
         if (await updateScore(scoreToStore)) {
             this.$refs.alert.showAlert(
             "info", // There are 4 types of alert: success, info, warning, error
-            "Il tuo punteggio e' stato salvato correttamente.", // Message of the alert
+            "Il tuo punteggio è stato salvato correttamente.", // Message of the alert
             "Punteggio partita", // Header of the alert
             {
               iconSize: 35, // Size of the icon (px)
@@ -191,7 +191,7 @@ export default {
         } else
           this.$refs.alert.showAlert(
             "info", // There are 4 types of alert: success, info, warning, error
-            "Il tuo punteggio non e' stato salvato perche' non rilevante.", // Message of the alert
+            "Il tuo punteggio non è stato salvato perche' non rilevante.", // Message of the alert
             "Punteggio partita", // Header of the alert
             {
               iconSize: 35, // Size of the icon (px)
@@ -202,7 +202,7 @@ export default {
       } else {
         this.$refs.alert.showAlert(
           "warning", // There are 4 types of alert: success, info, warning, error
-          "Il tuo punteggio non e' stato salvato perche' non sei loggato.", // Message of the alert
+          "Il tuo punteggio non è stato salvato perche' non sei loggato.", // Message of the alert
           "Punteggio partita", // Header of the alert
           {
             iconSize: 35, // Size of the icon (px)

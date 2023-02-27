@@ -142,7 +142,7 @@ const Marketplace = () => {
               className="text-lg block text-gray-700 font-bold mb-2"
               htmlFor="city"
             >
-              Città'
+              Città
             </label>
 
             {loadingCities && (
@@ -170,7 +170,7 @@ const Marketplace = () => {
                     },
                   })}
                 >
-                  <option value="all"> Tutte le Città' </option>
+                  <option value="all"> Tutte le Città </option>
                   {cities.map((city, index) => (
                     <option value={city} key={index}>
                       {" "}
