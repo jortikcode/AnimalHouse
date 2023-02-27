@@ -17,7 +17,7 @@ const defaultValues = {
 const Forum = () => {
   const dispatch = useDispatch();
   const { posts, pageLoaded, errorMsg } = useSelector(state => state.posts)
-  const { user } = useSelector(state => state.auth)
+  const { user, isLogged } = useSelector(state => state.auth)
   const {
     register,
     handleSubmit,
@@ -56,7 +56,7 @@ const Forum = () => {
       <article className="prose tracking-tighter">
         <h1>Bacheca</h1>
       </article>
-      <div className="flex justify-center">
+      {isLogged && <div className="flex justify-center">
         <form
           autoComplete="off"
           className="bg-white shadow-lg w-[700px] max-w-sm rounded pt-6 pb-8 mb-4"
@@ -143,7 +143,7 @@ const Forum = () => {
             />
           </div>
         </form>
-      </div>
+      </div>}
       
       <div className="mb-4">
         <label
