@@ -75,7 +75,7 @@ const ModifyForm = () => {
           <p className="rounded-lg max-w-full break-words text-lg font-bold p-2">
             {" "}
             Sei sicuro? Una volta cancellato tutti i tuoi dati verranno
-            cancellati e non avrai piu' accesso al tuo account{" "}
+            cancellati e non avrai più accesso al tuo account{" "}
           </p>
           <button
             className="font-bold bg-red-600 text-white py-2 px-4 rounded"
