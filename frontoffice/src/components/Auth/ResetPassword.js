@@ -77,7 +77,7 @@ function ResetPassword() {
             {" "}
             <h1> Reset della password </h1>{" "}
           </div>
-          <p  className="block text-gray-700 font-bold mb-2"> Email inviata, potrebbe volerci un po' prima di ricevere l'email. </p>
+          <p  className="block text-gray-700 font-bold mb-2"> Email inviata, potrebbe volerci un pò prima di ricevere l'email. </p>
           <p className="block text-gray-700 font-bold mb-2"> Se non dovesse arrivare ti preghiamo di ricaricare questa pagina e re-inserire l'email</p>
         </div>
       )}
