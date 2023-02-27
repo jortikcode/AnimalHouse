@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 import { FidgetSpinner } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllBills, loadBills, waitingBills } from "../../app/productsSlice";
+import { clearErrorProducts, getAllBills, loadBills, waitingBills } from "../../app/productsSlice";
+import ErrorModal from "../../common/ErrorModal";
 import Bill from "./Bill";
 
 const Bills = () => {
   const dispatch = useDispatch();
-  const { bills, loadingBills, updatedBills } = useSelector(
+  const { bills, loadingBills, updatedBills, errorMsg } = useSelector(
     (state) => state.marketplace
   );
   useEffect(() => {
@@ -16,7 +17,10 @@ const Bills = () => {
       dispatch(getAllBills({}));
     }
   }, [dispatch, updatedBills]);
-  if (bills.length === 0)
+
+  if (errorMsg)
+    return <ErrorModal msg={errorMsg} clearErrorFunction={() => dispatch(clearErrorProducts())} />
+  else if (bills.length === 0)
     return (
       <>
         {!loadingBills && (

@@ -133,6 +133,9 @@ const serviceSlice = createSlice({
     },
     waitingGetAllBookings: (state) => {
       state.loadingBookings = true
+    },
+    clearServiceError: (state) => {
+      state.errorMsg = ""
     }
   },
   extraReducers: (builder) => {
@@ -176,6 +179,7 @@ export const {
     waitingGetAllServices,
     waitingGetByServiceByID,
     waitingGetService,
-    waitingGetAllBookings
+    waitingGetAllBookings,
+    clearServiceError
 } = serviceSlice.actions;
 export const bookings = serviceSlice.reducer;

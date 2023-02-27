@@ -74,6 +74,9 @@ const leaderboardSlice = createSlice({
     waitingLeaderboard: (state) => {
       state.loadingLeaderboard = true;
     },
+    clearLeaderboardError: (state) => {
+      state.errorMsg = ""
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getLeaderboard.fulfilled, (state, action) => {
@@ -86,6 +89,6 @@ const leaderboardSlice = createSlice({
   },
 });
 
-export const { waitingLeaderboard } = leaderboardSlice.actions;
+export const { waitingLeaderboard, clearLeaderboardError} = leaderboardSlice.actions;
 
 export const leaderboard = leaderboardSlice.reducer;

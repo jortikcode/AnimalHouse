@@ -40,7 +40,9 @@ const getAllPosts = async (req, res) => {
     const fieldList = fields.split(",").join(" ");
     result = result.select(fieldList);
   }
-  const posts = await result.populate("createdBy");
+  let posts = await result.populate("createdBy");
+  // Gestione servizi / prodotti cancellati molto spartana
+  posts = posts.filter((post) => post.createdBy !== null);
   res.status(StatusCodes.OK).json(posts);
 };
 

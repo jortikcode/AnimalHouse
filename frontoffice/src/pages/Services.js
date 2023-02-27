@@ -4,8 +4,9 @@ import { useForm } from "react-hook-form";
 import { FallingLines } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getAllCities, getLocationsByCity, waitingGetCities, waitingGetLocations } from "../app/locationsSlice";
+import { clearErrorLocations, getAllCities, getLocationsByCity, waitingGetCities, waitingGetLocations } from "../app/locationsSlice";
 import { getAllServices, waitingGetAllServices } from "../app/servicesSlice";
+import ErrorModal from "../common/ErrorModal";
 import ServiceCard from "../components/Service/ServiceCard";
 
 const defaultValues = {
@@ -15,7 +16,7 @@ const defaultValues = {
 
 const Services = () => {
   const dispatch = useDispatch();
-  const { cities, locations, loadingCities, loadingLocations } = useSelector((state) => state.locations);
+  const { cities, locations, loadingCities, loadingLocations, errorMsg } = useSelector((state) => state.locations);
   const { isLogged } = useSelector((state) => state.auth);
   const { services } = useSelector(state => state.bookings)
   const navigate = useNavigate()
@@ -46,8 +47,9 @@ const Services = () => {
     if (!isLogged) navigate("/login");
   }, [isLogged, navigate]);
   if (!isLogged) return <></>;
-  else
-  if (loadingCities)
+  else if(errorMsg)
+    return (<ErrorModal msg={errorMsg} clearErrorFunction={() => dispatch(clearErrorLocations())} />)
+  else if (loadingCities)
     return (
       <div className="flex mt-8 justify-center items-center">
         <FallingLines

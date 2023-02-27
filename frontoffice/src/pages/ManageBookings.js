@@ -1,12 +1,13 @@
 import { useLayoutEffect } from "react";
 import { FidgetSpinner } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllBookings, waitingGetAllBookings } from "../app/servicesSlice";
+import { clearServiceError, getAllBookings, waitingGetAllBookings } from "../app/servicesSlice";
+import ErrorModal from "../common/ErrorModal";
 import Booking from "../components/PersonalArea/Booking";
 
 const ManageBookings = () => {
   const { user } = useSelector((state) => state.auth);
-  const { bookings, loadingBookings } = useSelector((state) => state.bookings);
+  const { bookings, loadingBookings, errorMsg } = useSelector((state) => state.bookings);
   const { _id: userID } = user.userInfo;
   const dispatch = useDispatch();
 
@@ -14,7 +15,9 @@ const ManageBookings = () => {
     dispatch(waitingGetAllBookings());
     dispatch(getAllBookings({ userID }));
   }, [dispatch, userID]);
-
+  
+  if (errorMsg)
+    return <ErrorModal msg={errorMsg} clearErrorFunction={() => dispatch(clearServiceError())} />
   if (loadingBookings)
     return (
       <div className="flex mt-8 justify-center">

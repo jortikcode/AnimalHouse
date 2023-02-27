@@ -2,7 +2,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { createPost, firstLoad, getAllPosts, waitingGetAllPosts } from "../app/postsSlice";
+import { clearPostsError, createPost, firstLoad, getAllPosts, waitingGetAllPosts } from "../app/postsSlice";
 import Post from "../components/Forum/Post";
 import postCategories from "../components/Forum/categories.json"
 import ErrorModal from "../common/ErrorModal";
@@ -52,7 +52,7 @@ const Forum = () => {
 
   return (
     <div className="flex flex-col items-center mt-12">
-      <ErrorModal msg={errorMsg} />
+      <ErrorModal msg={errorMsg} clearErrorFunction={() => dispatch(clearPostsError())} />
       <article className="prose tracking-tighter">
         <h1>Bacheca</h1>
       </article>

@@ -130,6 +130,9 @@ const postsSlice = createSlice({
     waitingGetPostById: (state) => {
       state.loadingPost = true;
     },
+    clearPostsError: (state) => {
+      state.errorMsg = ""
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getAllPosts.fulfilled, (state, action) => {
@@ -156,7 +159,6 @@ const postsSlice = createSlice({
       state.post = {}
       state.pageLoaded = false
     });
-
     builder.addCase(getAllPosts.rejected, (state, action) => {
       state.errorMsg = action.payload.msg
     });
@@ -183,6 +185,7 @@ export const {
   waitingGetAllCategories,
   waitingGetPostById,
   firstLoad,
+  clearPostsError
 } = postsSlice.actions;
 
 export const posts = postsSlice.reducer;

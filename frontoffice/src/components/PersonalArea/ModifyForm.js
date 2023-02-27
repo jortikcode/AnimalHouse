@@ -5,13 +5,15 @@ import { ErrorMessage } from "@hookform/error-message";
 import { useState } from "react";
 import {
   cancelAccount,
+  clearErrorUser,
   updateUser,
   waitingUpdateUser,
 } from "../../app/usersSlice";
+import ErrorModal from "../../common/ErrorModal";
 
 const ModifyForm = () => {
   const dispatch = useDispatch();
-  const { user, updatingUser } = useSelector((state) => state.auth);
+  const { user, updatingUser, errorMsg } = useSelector((state) => state.auth);
   const [cancelButton, setCancelButton] = useState(false);
   const { name, surname, email, imgName } = user.userInfo;
   const defaultValues = {
@@ -44,6 +46,8 @@ const ModifyForm = () => {
     dispatch(updateUser({ userInfo: updateObj }));
   };
 
+  if (errorMsg)
+    return <ErrorModal msg={errorMsg} clearErrorFunction={() => dispatch(clearErrorUser())} />
   if (updatingUser)
     return (
       <div className="flex flex-col items-center mt-8 justify-center">

@@ -1,8 +1,9 @@
 import { ErrorMessage } from "@hookform/error-message";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { updateUser } from "../../app/usersSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { clearErrorUser, updateUser } from "../../app/usersSlice";
+import ErrorModal from "../../common/ErrorModal";
 import InfoTooltip from "../Auth/InfoTooltip";
 
 const defaultValues = {
@@ -15,6 +16,7 @@ const defaultValues = {
 const PetForm = () => {
   const dispatch = useDispatch();
   const [showForm, setShowForm] = useState(false);
+  const { errorMsg } = useSelector(state => state.auth)
 
   const {
     register,
@@ -40,6 +42,7 @@ const PetForm = () => {
   return (
     <>
       <div className="flex justify-center mt-8">
+        <ErrorModal msg={errorMsg} clearErrorFunction={() => dispatch(clearErrorUser())} />
         <button
           type="button"
           onClick={(e) => setShowForm((old) => !old)}

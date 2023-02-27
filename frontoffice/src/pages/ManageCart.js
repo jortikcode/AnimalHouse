@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getAllProducts, getCart, createBill } from "../app/productsSlice";
+import { getAllProducts, getCart, createBill, clearErrorProducts } from "../app/productsSlice";
+import ErrorModal from "../common/ErrorModal";
 import CartItem from "../components/Marketplace/CartItem";
 import paymentMethods from './data/paymentMethods.json'
 
@@ -24,7 +25,7 @@ const getInfoFromCart = (cart, productsInfo) => {
 
 const ManageCart = () => {
   const paymentMethod = useRef("contanti")
-  const { cart, products } = useSelector((state) => state.marketplace);
+  const { cart, products, errorMsg } = useSelector((state) => state.marketplace);
   const { isLogged } = useSelector(state => state.auth);
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -39,8 +40,9 @@ const ManageCart = () => {
   }, [isLogged, navigate]);
 
   if (!isLogged) return <></>;
-
-  if (cart?.products?.length === 0 || !cart.products)
+  if (errorMsg)
+    return <ErrorModal msg={errorMsg} clearErrorFunction={() => dispatch(clearErrorProducts())} />
+  else if (cart?.products?.length === 0 || !cart.products)
     return (<div className="flex flex-col justify-center items-center h-screen w-full">
               <h1 className="font-semibold text-black text-3xl">Non ci sono prodotti nel tuo carrello</h1>
     </div>)

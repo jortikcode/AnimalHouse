@@ -1,21 +1,23 @@
 import { useLayoutEffect } from "react";
 import { FidgetSpinner } from "react-loader-spinner";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllPosts, waitingGetAllPosts } from "../app/postsSlice";
+import { clearPostsError, getAllPosts, waitingGetAllPosts } from "../app/postsSlice";
+import ErrorModal from "../common/ErrorModal";
 import Post from "../components/Forum/Post";
 
 const ManagePosts = () => {
   const { user } = useSelector((state) => state.auth);
-  const { posts, loadingPosts } = useSelector((state) => state.posts);
   const { _id: createdBy } = user.userInfo;
+  const { posts, loadingPosts, errorMsg } = useSelector((state) => state.posts);
   const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     dispatch(waitingGetAllPosts());
     dispatch(getAllPosts({ createdBy }));
   }, [dispatch, createdBy]);
-
-  if (loadingPosts)
+  if (errorMsg)
+    <ErrorModal msg={errorMsg} clearErrorFunction={() => dispatch(clearPostsError())} />
+  else if (loadingPosts)
     return (
       <div className="flex mt-8 justify-center">
         <FidgetSpinner

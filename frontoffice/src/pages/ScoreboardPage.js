@@ -6,10 +6,12 @@ import {
   getLeaderboard,
 } from "../app/leaderboardSlice"
 import { useLayoutEffect } from "react";
+import ErrorModal from "../common/ErrorModal";
+import { clearErrorLocations } from "../app/locationsSlice";
 
 const ScoreboardPage = () => {
   const dispatch = useDispatch();
-  const { leaderboard, loadingLeaderboard } = useSelector(
+  const { leaderboard, loadingLeaderboard, errorMsg } = useSelector(
     (state) => state.leaderboard
   );
 
@@ -17,8 +19,9 @@ const ScoreboardPage = () => {
     dispatch(waitingLeaderboard());
     dispatch(getLeaderboard());
   }, [dispatch]);
-
-  if (loadingLeaderboard)
+  if (errorMsg)
+    <ErrorModal msg={errorMsg} clearErrorFunction={() => dispatch(clearErrorLocations())} />
+  else if (loadingLeaderboard)
     return (
       <div className="flex flex-col items-center mt-8 justify-center">
         <FidgetSpinner
