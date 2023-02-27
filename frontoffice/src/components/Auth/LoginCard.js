@@ -63,7 +63,7 @@ function LoginCard(){
             </div>
 
             <div className="justify-center flex">
-            <input value="Accedi" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit" />
+            <input value="Accedi" className="bg-yellow-400 hover:bg-yellow-600 text-black font-bold py-2 px-4 rounded" type="submit" />
             </div>
         </form>
     </div>
