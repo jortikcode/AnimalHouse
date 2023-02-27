@@ -43,6 +43,7 @@ const Marketplace = () => {
   } = useForm({
     defaultValues,
   });
+  const { isLogged } = useSelector(state => state.auth)
   const { products, loadingAll, categories, loadingLocations, pageLoaded, errorMsg } =
     useSelector((state) => state.marketplace);
   const { locations, cities, loadingCities, loadingCategories, errorMsg: errorLocationMsg } = useSelector(
@@ -65,9 +66,10 @@ const Marketplace = () => {
       dispatch(waitingGetCities());
       dispatch(getAllCities());
       dispatch(getAllProducts(getValues()));
-      dispatch(getCart({}));
+      if (isLogged)
+        dispatch(getCart({}));
     }
-  }, [dispatch, getValues, pageLoaded]);
+  }, [dispatch, getValues, pageLoaded, isLogged]);
 
   return (
     <div className="flex flex-col items-center mt-12">
