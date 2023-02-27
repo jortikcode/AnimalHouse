@@ -22,7 +22,7 @@ function ResetPassword() {
   };
 
   useEffect(() => {
-    // L'utente e' gia' loggato, lo rimandiamo alla Home
+    // L'utente e' già loggato, lo rimandiamo alla Home
     if (isLogged) navigate("/");
   }, [isLogged, navigate]);
 

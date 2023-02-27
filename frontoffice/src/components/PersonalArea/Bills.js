@@ -71,7 +71,7 @@ const Bills = () => {
               </div>
               <div className="flex flex-col col-start-2 ml-4 md:col-start-auto md:ml-0 md:justify-end space-y-3 mt-8 px-2">
                 <p className="text-black text-xl text-center">
-                  Modalita' di pagamento:{" "}
+                  Modalità di pagamento:{" "}
                   <span className="text-black font-bold bg-yellow-400 p-2 rounded-lg">
                     {" "}
                     {bill.paymentMethod}{" "}

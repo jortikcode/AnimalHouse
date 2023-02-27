@@ -150,7 +150,7 @@ export default {
 
       const alreadySelected = getAlreadySelected(this.cards[cardIndex].id);
       if (alreadySelected !== undefined) {
-        // C'e' gia' una carta selezionata
+        // C'e' già una carta selezionata
         if (alreadySelected.group === this.cards[cardIndex].group) {
           // E' stata selezionata la carta gemella
           const twinIndex = this.cards.findIndex(

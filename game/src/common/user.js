@@ -42,7 +42,7 @@ export const updateScore = async (scoreObject) => {
 
   for (const score of oldScores) {
     if (score.game === scoreObject.game)
-        // Esiste gia' uno score con il gioco game
+        // Esiste già uno score con il gioco game
         firstScore = false
     if (
       score.game === scoreObject.game &&

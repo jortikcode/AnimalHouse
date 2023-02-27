@@ -110,7 +110,7 @@ const ServiceDetails = () => {
         />
         <small>
           {" "}
-          Aspettando info sul servizio e sulle disponibilita' dalle nostre
+          Aspettando info sul servizio e sulle disponibilità dalle nostre
           sedi...{" "}
         </small>
       </div>

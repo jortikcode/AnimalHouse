@@ -31,7 +31,7 @@ function RegisterCard() {
   };
 
   useEffect(() => {
-    // L'utente e' gia' loggato, lo rimandiamo alla Home
+    // L'utente e' già loggato, lo rimandiamo alla Home
     if (isLogged) navigate("/");
   }, [isLogged, navigate]);
 
@@ -252,7 +252,7 @@ function RegisterCard() {
                   className="block text-gray-700 text-sm font-bold mb-2"
                   htmlFor="city"
                 >
-                  Citta'
+                  Citt
                 </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
