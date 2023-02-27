@@ -7,6 +7,7 @@ import {
   waitingGetService,
   getAllBookings,
   waitingGetAllBookings,
+  clearServiceError,
 } from "../../app/servicesSlice";
 import { Controller, useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
@@ -18,6 +19,7 @@ import setMinutes from "date-fns/setMinutes";
 import getDay from "date-fns/getDay";
 import { createBill } from "../../app/productsSlice";
 import paymentMethods from "../../pages/data/paymentMethods.json";
+import ErrorModal from "../../common/ErrorModal";
 
 const defaultValues = {
   date: "",
@@ -29,7 +31,7 @@ const ServiceDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLogged } = useSelector((state) => state.auth);
-  const { loadingOneService, service, loadingBookings, bookings } = useSelector(
+  const { loadingOneService, service, loadingBookings, bookings, errorMsg } = useSelector(
     (state) => state.bookings
   );
   const [excludedTimes, setExcludedTimes] = useState([]);
@@ -90,8 +92,10 @@ const ServiceDetails = () => {
     );
     reset(defaultValues);
   };
-
-  if (
+  
+  if (errorMsg)
+    return (<ErrorModal msg={errorMsg} clearErrorFunction={() => dispatch(clearServiceError())} />)
+  else if (
     loadingOneService ||
     JSON.stringify({}) === JSON.stringify(service) ||
     loadingBookings
