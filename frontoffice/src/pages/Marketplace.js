@@ -8,16 +8,19 @@ import {
   getAllProducts,
   getCart,
   waitingGetAll,
+  clearErrorProducts
 } from "../app/productsSlice";
 import {
   getAllCities,
   getLocationsByCity,
   waitingGetCities,
   waitingGetLocations,
+  clearErrorLocations
 } from "../app/locationsSlice";
 import { FallingLines, MagnifyingGlass } from "react-loader-spinner";
 import ProductCard from "../components/Marketplace/ProductCard";
 import priceRanges from "./data/priceRanges.json";
+import ErrorModal from "../common/ErrorModal";
 
 const defaultValues = {
   price: "price>=0",
@@ -40,9 +43,9 @@ const Marketplace = () => {
   } = useForm({
     defaultValues,
   });
-  const { products, loadingAll, categories, loadingLocations, pageLoaded } =
+  const { products, loadingAll, categories, loadingLocations, pageLoaded, errorMsg } =
     useSelector((state) => state.marketplace);
-  const { locations, cities, loadingCities, loadingCategories } = useSelector(
+  const { locations, cities, loadingCities, loadingCategories, errorMsg: errorLocationMsg } = useSelector(
     (state) => state.locations
   );
   // Flag della scritta "I prodotti del mese"
@@ -68,6 +71,8 @@ const Marketplace = () => {
 
   return (
     <div className="flex flex-col items-center mt-12">
+      <ErrorModal msg={errorMsg} clearErrorFunction={() => dispatch(clearErrorProducts())} />
+      <ErrorModal msg={errorLocationMsg} clearErrorFunction={() => dispatch(clearErrorLocations())} />
       <h1 className="font-bold text-4xl">Negozio</h1>
       <form
         autoComplete="off"

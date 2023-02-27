@@ -11,6 +11,7 @@ const initialState = {
   loadingLocations: false,
   loadingCities: false,
   loadingLocation: false,
+  errorMsg: ""
 };
 
 // Thunk per ottenere la lista delle sedi
@@ -66,6 +67,9 @@ const locationsSlice = createSlice({
     waitingGetCities: (state) => {
       state.loadingCities = true;
     },
+    clearErrorLocations: (state) => {
+      state.errorMsg = ""
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(getAllCities.fulfilled, (state, action) => {
@@ -79,10 +83,19 @@ const locationsSlice = createSlice({
     builder.addCase(getLocationByID.fulfilled, (state, action) => {
         state.loadingLocation = false
         state.location = action.payload
+    });
+    builder.addCase(getAllCities.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
+    })
+    builder.addCase(getLocationByID.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
+    })
+    builder.addCase(getLocationsByCity.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
     })
   },
 });
 
-export const { waitingGetCities, waitingGetLocations, waitingGetLocation } = locationsSlice.actions;
+export const { waitingGetCities, waitingGetLocations, waitingGetLocation, clearErrorLocations } = locationsSlice.actions;
 
 export const locations = locationsSlice.reducer;

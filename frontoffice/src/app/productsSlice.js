@@ -16,7 +16,8 @@ const initialState = {
   loadingCategories: false,
   loadingBills: false,
   pageLoaded: false,
-  updatedBills: false
+  updatedBills: false,
+  errorMsg: ""
 };
 
 // Thunk per ottenere la lista dei prodotti
@@ -210,7 +211,9 @@ const productSlice = createSlice({
     loadBills: (state) => {
       state.updatedBills = true
     },
-
+    clearErrorProducts: (state) => {
+      state.errorMsg = ""
+    },
     waitingGetAllCategories: (state) => {
       state.loadingCategories = true;
     },
@@ -220,37 +223,57 @@ const productSlice = createSlice({
       state.loadingAll = false;
       state.products = action.payload;
     });
-    builder.addCase(getAllProducts.rejected, (state) => {
+    builder.addCase(getAllProducts.rejected, (state, action) => {
       state.products = [];
+      state.errorMsg = action.payload.msg
     });
     builder.addCase(getProduct.fulfilled, (state, action) => {
       state.loadingOne = false;
       state.product = action.payload.product;
     });
-    builder.addCase(getProduct.rejected, (state) => {
+    builder.addCase(getProduct.rejected, (state, action) => {
       state.product = {};
+      state.errorMsg = action.payload.msg
     });
     builder.addCase(getAllCategories.fulfilled, (state, action) => {
       state.categories = action.payload;
       state.loadingCategories = false;
     });
+    builder.addCase(getAllCategories.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
+    });
     builder.addCase(getCart.fulfilled, (state, action) => {
       state.cart = action.payload;
+    });
+    builder.addCase(getCart.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
     });
     builder.addCase(updateCart.fulfilled, (state, action) => {
       state.cart = action.payload;
     });
+    builder.addCase(updateCart.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
+    });
     builder.addCase(addToCart.fulfilled, (state, action) => {
       state.cart = action.payload;
+    });
+    builder.addCase(addToCart.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
     });
     builder.addCase(createBill.fulfilled, (state, action) => {
       state.cart = {};
       state.updatedBills = false
     });
+    builder.addCase(createBill.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
+    });
     builder.addCase(getAllBills.fulfilled, (state, action) => {
       state.loadingBills = false;
       state.updatedBills = true
       state.bills = action.payload;
+    });
+    builder.addCase(getAllBills.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
     });
   },
 });
@@ -263,6 +286,7 @@ export const {
   waitingGetAllCategories,
   waitingBills,
   firstLoad,
-  loadBills
+  loadBills,
+  clearErrorProducts
 } = productSlice.actions;
 export const marketplace = productSlice.reducer;

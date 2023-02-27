@@ -13,7 +13,7 @@ const initialState = {
   loadingService: false,
   loadingAllServices: false,
   loadingBills: false,
-  error: ""
+  errorMsg: ""
 };
 
 // Thunk per ottenere la lista dei servizi
@@ -140,22 +140,34 @@ const serviceSlice = createSlice({
       state.loadingAllServices = false;
       state.services = action.payload;
     });
+    builder.addCase(getAllServices.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
+    })
     builder.addCase(getServiceByID.fulfilled, (state, action) => {
         state.loadingService = false
         state.service = action.payload
+    })
+    builder.addCase(getServiceByID.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
     })
     builder.addCase(createBooking.fulfilled, (state, action) => {
       state.bookings.unshift(action.payload)
     })
     builder.addCase(createBooking.rejected, (state, action) => {
-      state.error = action.payload
+      state.errorMsg = action.payload.msg
     })
     builder.addCase(getAllBookings.fulfilled, (state, action) => {
       state.loadingBookings = false
       state.bookings = action.payload
     })
+    builder.addCase(getAllBookings.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
+    })
     builder.addCase(deleteBooking.fulfilled, (state, action) => {
       state.bookings = state.bookings.filter((booking) => booking._id !== action.payload.bookingID)
+    })
+    builder.addCase(deleteBooking.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
     })
   },
 });

@@ -14,7 +14,8 @@ const gameTypes = [
 // Stato iniziale della info sulla classifica
 const initialState = {
   leaderboard: {},
-  loadingLeaderboard: false
+  loadingLeaderboard: false,
+  errorMsg: ""
 };
 
 export const getLeaderboard = createAsyncThunk(
@@ -79,6 +80,9 @@ const leaderboardSlice = createSlice({
       state.leaderboard = divideScores(action.payload)
       state.loadingLeaderboard = false;
     });
+    builder.addCase(getLeaderboard.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
+    })
   },
 });
 

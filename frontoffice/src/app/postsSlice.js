@@ -13,6 +13,7 @@ const initialState = {
   loadingPost: false,
   categories: [],
   loadingCategories: false,
+  errorMsg: ""
 };
 
 // Thunk per ottenere la lista dei post
@@ -154,6 +155,25 @@ const postsSlice = createSlice({
     builder.addCase(deletePost.fulfilled, (state, action) => {
       state.post = {}
       state.pageLoaded = false
+    });
+
+    builder.addCase(getAllPosts.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
+    });
+    builder.addCase(createPost.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
+    });
+    builder.addCase(getPostByID.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
+    });
+    builder.addCase(getAllCategories.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
+    });
+    builder.addCase(updatePost.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
+    });
+    builder.addCase(deletePost.rejected, (state, action) => {
+      state.errorMsg = action.payload.msg
     });
   },
 });

@@ -9,7 +9,8 @@ const initialState = {
     isLogged: localStorage.getItem('user') ? true : false,
     updatingUser: false,
     userSearched: {},
-    loadUserByID: false
+    loadUserByID: false,
+    errorMsg: ""
 }
 
 // Thunk per il login di un utente
@@ -150,6 +151,9 @@ const userSlice = createSlice({
         },
         waitingUserByID: (state) => {
             state.loadUserByID = true
+        },
+        clearErrorUser: (state) => {
+            state.errorMsg = ""
         }
 
     }, 
@@ -166,6 +170,7 @@ const userSlice = createSlice({
         builder.addCase(login.rejected, (state, action) => {
             state.user = {}
             state.isLogged = false
+            state.errorMsg = action.payload.msg
         })
         builder.addCase(signup.fulfilled, (state, action) => {
             localStorage.setItem('user', JSON.stringify(action.payload))
@@ -175,16 +180,23 @@ const userSlice = createSlice({
         builder.addCase(signup.rejected, (state, action) => {
             state.user = {}
             state.isLogged = false
+            state.errorMsg = action.payload.msg
         })
         builder.addCase(getUserByID.fulfilled, (state, action) => {
             state.userSearched = action.payload
             state.loadUserByID = false
+        })
+        builder.addCase(getUserByID.rejected, (state, action) => {
+            state.errorMsg = action.payload.msg
         })
         builder.addCase(updateUser.fulfilled, (state, action) => {
             state.user.userInfo = action.payload
             const oldUser = JSON.parse(localStorage.getItem('user'))
             localStorage.setItem('user', JSON.stringify({ token: oldUser.token , userInfo: action.payload }))
             state.updatingUser = false
+        })
+        builder.addCase(updateUser.rejected, (state, action) => {
+            state.errorMsg = action.payload.msg
         })
         builder.addCase(cancelAccount.fulfilled, (state, action) => {
             localStorage.removeItem('user')
@@ -194,19 +206,19 @@ const userSlice = createSlice({
             state.updatingUser = false
         })
         builder.addCase(cancelAccount.rejected, (state, action) => {
-            console.log(action.payload)
+            state.errorMsg = action.payload.msg
             state.updatingUser = false
         })
         builder.addCase(forgotPassword.fulfilled, (state, action) => {
             state.resetPassword = action.payload
         })
         builder.addCase(forgotPassword.rejected, (state, action) => {
-            console.log(action.payload)
+            state.errorMsg = action.payload.msg
         })
     }
 })
 
-export const { logout, loadAnimals, waitingUserByID, waitingUpdateUser } = { ...userSlice.actions }
+export const { logout, loadAnimals, waitingUserByID, waitingUpdateUser, clearErrorUser } = { ...userSlice.actions }
 export { login, signup, updateUser, getUserByID, removePets, forgotPassword, cancelAccount }
 
 export const auth = userSlice.reducer
