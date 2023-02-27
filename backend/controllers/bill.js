@@ -88,7 +88,7 @@ const getAllBills = async (req, res) => {
     const sortList = sort.split(",").join(" ");
     result = result.sort(sortList);
   } else {
-    result = result.sort("paidAt");
+    result = result.sort({ paidAt: "desc" });
   }
   let bills = await result;
   // Gestione servizi / prodotti cancellati molto spartana
