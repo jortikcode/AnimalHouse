@@ -1,5 +1,5 @@
 jQuery(function () {
-  const token = window.localStorage.getItem("token");
+  const token = window.localStorage.getItem("adminToken");
   if (!token) {
     window.location.replace("/back-office/login");
   }
@@ -17,9 +17,3 @@ jQuery(function () {
   });
   $("#output").html(filled);
 });
-
-const checkToken = () => {
-  if (!window.localStorage.getItem("token")) {
-    return false;
-  }
-};

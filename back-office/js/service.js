@@ -1,5 +1,5 @@
 jQuery(function () {
-  const token = window.localStorage.getItem("token");
+  const token = window.localStorage.getItem("adminToken");
   if (!token) {
     window.location.replace("/back-office/login");
   }
@@ -59,7 +59,7 @@ const createService = async () => {
   const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/services`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      Authorization: `Bearer ${window.localStorage.getItem("adminToken")}`,
     },
     body: formData,
   });
@@ -68,11 +68,14 @@ const createService = async () => {
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
     const filled = errorTemplate({ error: error.msg });
     $("#error").html(filled);
+    $("#createModal").modal("toggle");
   } else {
     const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
     const query = {};
     query.location = locationInfo._id;
     getServices(query);
+    $("#createForm").trigger("reset");
+    $("#createModal").modal("toggle");
   }
 };
 
@@ -104,7 +107,7 @@ const modifyService = async (id) => {
   const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/services/${id}`, {
     method: "PATCH",
     headers: {
-      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      Authorization: `Bearer ${window.localStorage.getItem("adminToken")}`,
     },
     body: formData,
   });
@@ -113,11 +116,13 @@ const modifyService = async (id) => {
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
     const filled = errorTemplate({ error: error.msg });
     $("#error").html(filled);
+    $("#modifyModal").modal("toggle");
   } else {
     const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
     const query = {};
     query.location = locationInfo._id;
     getServices(query);
+    $("#modifyModal").modal("toggle");
   }
 };
 
@@ -125,7 +130,7 @@ const deleteService = async (id) => {
   if (id) {
     const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/services/${id}`, {
       method: "DELETE",
-      headers: { Authorization: `Bearer ${window.localStorage.getItem("token")}` },
+      headers: { Authorization: `Bearer ${window.localStorage.getItem("adminToken")}` },
     });
     if (!response.ok) {
       const error = await response.json();

@@ -1,5 +1,5 @@
 jQuery(function () {
-  const token = window.localStorage.getItem("token");
+  const token = window.localStorage.getItem("adminToken");
   if (!token) {
     window.location.replace("/back-office/login");
   }
@@ -61,7 +61,7 @@ const createProduct = async () => {
   const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/products`, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      Authorization: `Bearer ${window.localStorage.getItem("adminToken")}`,
     },
     body: formData,
   });
@@ -70,11 +70,14 @@ const createProduct = async () => {
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
     const filled = errorTemplate({ error: error.msg });
     $("#error").html(filled);
+    $("#createModal").modal("toggle");
   } else {
     const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
     const query = {};
     query.location = locationInfo._id;
     getProducts(query);
+    $("#createForm").trigger("reset");
+    $("#createModal").modal("toggle");
   }
 };
 
@@ -109,7 +112,7 @@ const modifyProduct = async (id) => {
     method: "PATCH",
     body: formData,
     headers: {
-      Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+      Authorization: `Bearer ${window.localStorage.getItem("adminToken")}`,
     },
   });
   if (!response.ok) {
@@ -122,6 +125,7 @@ const modifyProduct = async (id) => {
     const query = {};
     query.location = locationInfo._id;
     getProducts(query);
+    $("#modifyModal").modal("toggle");
   }
 };
 
@@ -130,7 +134,7 @@ const deleteProduct = async (id) => {
     const response = await fetch(`https://site212222.tw.cs.unibo.it/api/v1/products/${id}`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${window.localStorage.getItem("token")}`,
+        Authorization: `Bearer ${window.localStorage.getItem("adminToken")}`,
       },
     });
     if (!response.ok) {
@@ -148,16 +152,12 @@ const deleteProduct = async (id) => {
 };
 
 function confirmDelete(id) {
-  // Disattivo tutti i bottoni dell'eliminazione
-  document.getElementsByClassName("removeButton").disabled = true;
-
   // Crea un div che contiene la card di conferma
   const cardDiv = document.createElement("div");
-  cardDiv.classList.add("fixed", "inset-0", "z-50", "flex", "items-center", "justify-center", "bg-gray-500", "bg-opacity-50", "w-full", "h-full");
-
+  cardDiv.classList.add("fixed", "inset-0", "flex", "items-center", "justify-center", "bg-gray-500", "bg-opacity-50", "w-full", "h-full");
   // Crea un div interno che contiene il contenuto della card
   const innerDiv = document.createElement("div");
-  innerDiv.classList.add("bg-white", "p-8", "rounded-lg", "shadow-lg");
+  innerDiv.classList.add("bg-white", "rounded-lg", "shadow-lg", "p-5");
 
   // Crea il titolo della card
   const titolo = document.createElement("h2");
