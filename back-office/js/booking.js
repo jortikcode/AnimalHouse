@@ -115,11 +115,14 @@ const createBooking = async () => {
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
     const filled = errorTemplate({ error: error.msg });
     $("#error").html(filled);
+    $("#createModal").modal("toggle");
   } else {
     const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
     const query = {};
     query.location = locationInfo._id;
     getBookings(query);
+    $("#createForm").trigger("reset");
+    $("#createModal").modal("toggle");
   }
 };
 
@@ -283,11 +286,14 @@ const modifyBooking = async (id) => {
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
     const filled = errorTemplate({ error: error.msg });
     $("#error").html(filled);
+    $("#modifyModal").modal("toggle");
   } else {
     const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
     const query = {};
     query.location = locationInfo._id;
     getBookings(query);
+    $("#modifyForm").trigger("reset");
+    $("#modifyModal").modal("toggle");
   }
 };
 

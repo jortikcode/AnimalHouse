@@ -174,9 +174,11 @@ const modifyUser = async (id) => {
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
     const filled = errorTemplate({ error: error.msg });
     $("#error").html(filled);
+    $("#modifyModal").modal("toggle");
     return;
   }
   getUsers({});
+  $("#modifyModal").modal("toggle");
 };
 
 const deleteUser = async (id) => {

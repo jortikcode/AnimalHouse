@@ -70,11 +70,14 @@ const createProduct = async () => {
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
     const filled = errorTemplate({ error: error.msg });
     $("#error").html(filled);
+    $("#createModal").modal("toggle");
   } else {
     const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
     const query = {};
     query.location = locationInfo._id;
     getProducts(query);
+    $("#createForm").trigger("reset");
+    $("#createModal").modal("toggle");
   }
 };
 
@@ -122,6 +125,7 @@ const modifyProduct = async (id) => {
     const query = {};
     query.location = locationInfo._id;
     getProducts(query);
+    $("#modifyModal").modal("toggle");
   }
 };
 

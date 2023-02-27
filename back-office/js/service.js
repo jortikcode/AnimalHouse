@@ -68,11 +68,14 @@ const createService = async () => {
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
     const filled = errorTemplate({ error: error.msg });
     $("#error").html(filled);
+    $("#createModal").modal("toggle");
   } else {
     const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
     const query = {};
     query.location = locationInfo._id;
     getServices(query);
+    $("#createForm").trigger("reset");
+    $("#createModal").modal("toggle");
   }
 };
 
@@ -113,11 +116,13 @@ const modifyService = async (id) => {
     const errorTemplate = Handlebars.compile($("#errorTemplate").html());
     const filled = errorTemplate({ error: error.msg });
     $("#error").html(filled);
+    $("#modifyModal").modal("toggle");
   } else {
     const locationInfo = JSON.parse(window.localStorage.getItem("locationInfo"));
     const query = {};
     query.location = locationInfo._id;
     getServices(query);
+    $("#modifyModal").modal("toggle");
   }
 };
 
